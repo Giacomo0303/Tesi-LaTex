@@ -147,7 +147,7 @@ matematica dettagliata per ogni singola azione:
               \caption{Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit{QK Pruning}, nella \textit{MHSA}.}
           \end{figure}
 
-    \item \textbf{Pruning VPROJ (Value-Projection):} Sia ${B}$ l'insieme dei blocchi \textit{Transformer} e $VP_{b_i}= \{ g \subset {W}_{VP, b_i} : |g| = K \}$ l'insieme dei raggruppamenti di cardinalità $K$ di dimensioni dei moduli \textit{Value} e \textit{Output Projection} di tutte le teste di attenzione nel blocco $i$-esimo. L'azione identifica il gruppo $g^*_{\mathrm{VP}}$ che minimizza:
+    \item \textbf{Pruning VPROJ (Value-Projection):} Sia ${B}$ l'insieme dei blocchi \textit{Transformer} e $\text{VP}_{b_i}= \{ g \subset {W}_{\text{VP}, b_i} : |g| = K \}$ l'insieme dei raggruppamenti di cardinalità $K$ di dimensioni dei moduli \textit{Value} e \textit{Output Projection} di tutte le teste di attenzione nel blocco $i$-esimo. L'azione identifica il gruppo $g^*_{\mathrm{VP}}$ che minimizza:
           \begin{equation}
               g^*_{\mathrm{VP}} = \arg\min_{\substack{b_i \in {B} \\ g_{K} \in VP_{b_i}}} \sum_{W_g \in g_{K}} {I}(W_g)
           \end{equation}
@@ -157,7 +157,7 @@ matematica dettagliata per ogni singola azione:
               \caption{Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit{VProj Pruning}, nella \textit{MHSA}.}
           \end{figure}
 
-    \item \textbf{Pruning HEAD:} Sia ${B}$ l'insieme dei blocchi \textit{Transformer} e $H_{b_i}= \{ h \in HEADS_{b_i}\}$ l'insieme di tutte le teste di attenzione nel blocco $i$-esimo. L'azione identifica la head $h^*$ che minimizza:
+    \item \textbf{Pruning HEAD:} Sia ${B}$ l'insieme dei blocchi \textit{Transformer} e $H_{b_i}= \{ h \in \text{HEADS}_{b_i}\}$ l'insieme di tutte le teste di attenzione nel blocco $i$-esimo. L'azione identifica la head $h^*$ che minimizza:
           \begin{equation}
               h^* = \arg\min_{\substack{b_i \in {B} \\ h \in H_{b_i}}} \sum_{W_g \in h} {I}(W_g)
           \end{equation}

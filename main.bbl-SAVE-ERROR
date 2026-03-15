@@ -19,6 +19,110 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{bengio1994learning}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=419350ebbeb4eba5351469f378dee007}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=fba0c25dc264271a2cad9bf44bc364b3}{%
+           family={Simard},
+           familyi={S\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=3b982eeab60ed3073c2e0601198b970a}{%
+           family={Frasconi},
+           familyi={F\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{5a77b4bc004e923d5e8c5809bb1d15cc}
+      \strng{fullhash}{5a77b4bc004e923d5e8c5809bb1d15cc}
+      \strng{fullhashraw}{5a77b4bc004e923d5e8c5809bb1d15cc}
+      \strng{bibnamehash}{5a77b4bc004e923d5e8c5809bb1d15cc}
+      \strng{authorbibnamehash}{5a77b4bc004e923d5e8c5809bb1d15cc}
+      \strng{authornamehash}{5a77b4bc004e923d5e8c5809bb1d15cc}
+      \strng{authorfullhash}{5a77b4bc004e923d5e8c5809bb1d15cc}
+      \strng{authorfullhashraw}{5a77b4bc004e923d5e8c5809bb1d15cc}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Neural Networks}
+      \field{number}{2}
+      \field{title}{Learning long-term dependencies with gradient descent is difficult}
+      \field{volume}{5}
+      \field{year}{1994}
+      \field{pages}{157\bibrangedash 166}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/72.279181
+      \endverb
+      \keyw{Recurrent neural networks;Production;Delay effects;Intelligent networks;Neural networks;Discrete transforms;Computer networks;Cost function;Neurofeedback;Displays}
+    \endentry
+    \entry{DBLP:journals/corr/ChoMGBSB14}{article}{}{}
+      \name{author}{6}{}{%
+        {{hash=3da7501a79d9346572c7fd6e41b615df}{%
+           family={Cho},
+           familyi={C\bibinitperiod},
+           given={Kyunghyun},
+           giveni={K\bibinitperiod}}}%
+        {{hash=d27fe3f9898ba01eeca28e3bd205f9ea}{%
+           family={Merrienboer},
+           familyi={M\bibinitperiod},
+           given={Bart},
+           giveni={B\bibinitperiod},
+           prefix={van},
+           prefixi={v\bibinitperiod}}}%
+        {{hash=23bc43e1663cf51073e07f4ba4940635}{%
+           family={Gülçehre},
+           familyi={G\bibinitperiod},
+           given={Çaglar},
+           giveni={Ç\bibinitperiod}}}%
+        {{hash=6deedc795e51da1bc7fd6289ab321a48}{%
+           family={Bougares},
+           familyi={B\bibinitperiod},
+           given={Fethi},
+           giveni={F\bibinitperiod}}}%
+        {{hash=449689e8c1ced50f608244e3a96fe6d3}{%
+           family={Schwenk},
+           familyi={S\bibinitperiod},
+           given={Holger},
+           giveni={H\bibinitperiod}}}%
+        {{hash=40a8e4774982146adc2688546f54efb2}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={Yoshua},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{9b1920db887fe0d658725c1e606b61f4}
+      \strng{fullhash}{ab67beaf866adf6627d1e94acd3f7edd}
+      \strng{fullhashraw}{ab67beaf866adf6627d1e94acd3f7edd}
+      \strng{bibnamehash}{ab67beaf866adf6627d1e94acd3f7edd}
+      \strng{authorbibnamehash}{ab67beaf866adf6627d1e94acd3f7edd}
+      \strng{authornamehash}{9b1920db887fe0d658725c1e606b61f4}
+      \strng{authorfullhash}{ab67beaf866adf6627d1e94acd3f7edd}
+      \strng{authorfullhashraw}{ab67beaf866adf6627d1e94acd3f7edd}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Learning Phrase Representations using {RNN} Encoder-Decoder for Statistical Machine Translation}
+      \field{volume}{abs/1406.1078}
+      \field{year}{2014}
+      \verb{eprint}
+      \verb 1406.1078
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1406.1078
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1406.1078
+      \endverb
+    \endentry
     \entry{hinton2015distilling}{misc}{}{}
       \name{author}{3}{}{%
         {{hash=9a8750ccdb2a4cf14d2655face1ce016}{%
@@ -51,7 +155,7 @@
       \field{labeltitlesource}{title}
       \field{eprintclass}{stat.ML}
       \field{eprinttype}{arXiv}
-      \field{title}{Distilling the Knowledge in a Neural Network}
+      \field{title}{Distilling the Knowledge in a Neural Network.}
       \field{year}{2015}
       \verb{eprint}
       \verb 1503.02531
@@ -61,6 +165,42 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/1503.02531
+      \endverb
+    \endentry
+    \entry{lstm}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=41b31e29fb2bdbf9f5c9c1b0d5b3e815}{%
+           family={Hochreiter},
+           familyi={H\bibinitperiod},
+           given={Sepp},
+           giveni={S\bibinitperiod}}}%
+        {{hash=288bdbcfe1b91ad7484d7a24f74f99ed}{%
+           family={Schmidhuber},
+           familyi={S\bibinitperiod},
+           given={Jürgen},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{4c2e1e2e1ac91e1df9d4f7b85ebe39b4}
+      \strng{fullhash}{4c2e1e2e1ac91e1df9d4f7b85ebe39b4}
+      \strng{fullhashraw}{4c2e1e2e1ac91e1df9d4f7b85ebe39b4}
+      \strng{bibnamehash}{4c2e1e2e1ac91e1df9d4f7b85ebe39b4}
+      \strng{authorbibnamehash}{4c2e1e2e1ac91e1df9d4f7b85ebe39b4}
+      \strng{authornamehash}{4c2e1e2e1ac91e1df9d4f7b85ebe39b4}
+      \strng{authorfullhash}{4c2e1e2e1ac91e1df9d4f7b85ebe39b4}
+      \strng{authorfullhashraw}{4c2e1e2e1ac91e1df9d4f7b85ebe39b4}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Neural Computation}
+      \field{number}{8}
+      \field{title}{Long Short-Term Memory}
+      \field{volume}{9}
+      \field{year}{1997}
+      \field{pages}{1735\bibrangedash 1780}
+      \range{pages}{46}
+      \verb{doi}
+      \verb 10.1162/neco.1997.9.8.1735
       \endverb
     \endentry
     \entry{kunstner2020limitationsempiricalfisherapproximation}{misc}{}{}
@@ -95,7 +235,7 @@
       \field{labeltitlesource}{title}
       \field{eprintclass}{cs.LG}
       \field{eprinttype}{arXiv}
-      \field{title}{Limitations of the Empirical Fisher Approximation for Natural Gradient Descent}
+      \field{title}{Limitations of the Empirical Fisher Approximation for Natural Gradient Descent.}
       \field{year}{2020}
       \verb{eprint}
       \verb 1905.12558
@@ -105,6 +245,37 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/1905.12558
+      \endverb
+    \endentry
+    \entry{lecun2015DeepLearning}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=53437f0d2bd4936f444a8196a69ea921}{%
+           family={LeCun},
+           familyi={L\bibinitperiod},
+           given={e\bibnamedelima G.\bibnamedelimi Hinton},
+           giveni={e\bibinitperiod\bibinitdelim G\bibinitperiod\bibinitdelim H\bibinitperiod},
+           suffix={Y.\bibnamedelimi Bengio},
+           suffixi={Y\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \strng{namehash}{53437f0d2bd4936f444a8196a69ea921}
+      \strng{fullhash}{53437f0d2bd4936f444a8196a69ea921}
+      \strng{fullhashraw}{53437f0d2bd4936f444a8196a69ea921}
+      \strng{bibnamehash}{53437f0d2bd4936f444a8196a69ea921}
+      \strng{authorbibnamehash}{53437f0d2bd4936f444a8196a69ea921}
+      \strng{authornamehash}{53437f0d2bd4936f444a8196a69ea921}
+      \strng{authorfullhash}{53437f0d2bd4936f444a8196a69ea921}
+      \strng{authorfullhashraw}{53437f0d2bd4936f444a8196a69ea921}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Deep Learning.}
+      \field{year}{2015}
+      \verb{urlraw}
+      \verb https://doi.org/10.1038/nature14539
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1038/nature14539
       \endverb
     \endentry
     \entry{molchanov2019importanceestimationneuralnetwork}{misc}{}{}
@@ -130,7 +301,7 @@
            given={Iuri},
            giveni={I\bibinitperiod}}}%
         {{hash=08129312c062dd971f82ea43031cdef0}{%
-           family={Kautz},
+           family={Kautz.},
            familyi={K\bibinitperiod},
            given={Jan},
            giveni={J\bibinitperiod}}}%
@@ -186,7 +357,7 @@
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{An algorithm for nonlinear optimization problems with binary variables}
+      \field{title}{An algorithm for nonlinear optimization problems with binary variables.}
       \field{year}{2010}
       \verb{urlraw}
       \verb https://link.springer.com/article/10.1007/s10589-008-9218-1
@@ -232,7 +403,7 @@
       \field{labeltitlesource}{title}
       \field{eprintclass}{cs.CV}
       \field{eprinttype}{arXiv}
-      \field{title}{Faster gaze prediction with dense networks and Fisher pruning}
+      \field{title}{Faster gaze prediction with dense networks and Fisher pruning.}
       \field{year}{2018}
       \verb{eprint}
       \verb 1801.05787

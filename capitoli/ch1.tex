@@ -1,1 +1,30 @@
 \chapter{Stato dell'arte}
+Gran parte dell'intelligenza artificiale moderna si fonda sull'utilizzo del \textbf{Deep Learning} \cite{lecun2015DeepLearning}, grazie alla sua capacità intrinseca di estrarre le \textit{features} dai dati, superando i limiti del \textit{Machine Learning} tradizionale. Ad oggi, il DL viene utilizzato in una grande varietà di domini, come l'elaborazione del linguaggio naturale, oppure la visione artificiale, o ancora la robotica. Tuttavia, le reti neurali \textit{feed-forward} presentano una grave limitazione, ovvero l'assenza di uno stato interno, che non ne permette l'utilizzo con dati in sequenza, come i video, gli audio o il testo. Al fine di ovviare a questa mancanza, sono state introdotte le \textbf{Reti Neurali Ricorrenti}, specificatamente pensate per l'elaborazione di dati sequenziali di qualsiasi tipologia.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/SOTA/rnn.png}
+    \caption{Rete Neurale Ricorrente e \textit{unfolding}. Fonte: \url{https://commons.wikimedia.org/w/index.php?curid=60109157} }
+\end{figure}
+Nonostante la capacità teorica delle RNN di processare sequenze di lunghezza arbitraria, la loro applicazione pratica è limitata a causa di una serie di problematiche molto note. Come dimostrato matematicamente da Bengio et al. \cite{bengio1994learning}, l'addestramento di questi modelli è ostacolato dal fenomeno della scomparsa o dell'esplosione del gradiente. Questa criticità rende estremamente difficile per il modello correlare informazioni distanti all'interno della sequenza temporale. Al fine di contrastare questi fenomeni nascono le reti \textbf{Long Short Term Memory} (LSTM) \cite{lstm} e \textbf{Gated Recurrent Units} (GRU) \cite{DBLP:journals/corr/ChoMGBSB14}, che introducono il concetto di \textit{gating} per contrastare le problematiche legate al gradiente. Per anni questa tipologia di modelli ha costituito lo stato dell'arte per i dati sequenziali, nonostante delle limitazioni note, ad esempio la necessità di elaborare i dati in modo sequenziale (parola per parola nel caso di elaborazione del linguaggio naturale) rendendo impossibile la parallelizzazione del calcolo tramite hardware moderno (GPU), oppure la difficoltà con le dipendenze a lungo termine all'interno delle sequenze. 
+\section{I modelli Transformer}
+I modelli \textit{Transformer} trovano le loro origini nel meccanismo di \textbf{Attenzione}, nato anni prima nell'ambito dei modelli \textit{encoder-decoder}, in particolare con le reti \textit{seq2seq} \cite{seq2seq}, utilizzate nell'ambito della traduzione automatica. In questa tipologia di modelli il \textit{decoder}, tipicamente costituito da una RNN, utilizza un unico vettore, lo stato finale dell'\textit{encoder} (anche in questo caso si trattava solitamente di una RNN), che riassume la sequenza di input per poi generare l'output.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/SOTA/seq2seq.png}
+    \caption{Inferenza con modelli \textit{seq2seq}. Fonte: \url{https://github.com/d2l-ai/d2l-en} }
+\end{figure}
+La grande limitazione di questi modelli risiede proprio nell'utilizzo di un singolo vettore statico per la fase di decodifica, che non risulta sufficiente a riassumere adeguatamente la sequenza in input. Inoltre, se quest'ultima risulta particolarmente lunga, dato l'utilizzo di modelli RNN o LSTM, le informazioni legate ai primi dati in ingresso potevano essere perdute a causa della grande distanza dallo stato finale. Allo scopo di superare i limiti del vettore di contesto e migliorare quindi le prestazioni dei modelli \textit{seq2seq} viene introdotto per la prima volta un meccanismo di attenzione da Bahdanau et al. \cite{bahdanau2016neuralmachinetranslationjointly}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/SOTA/attn.png}
+    \caption{Meccanismo di attenzione nei modelli \textit{seq2seq}. Fonte: \url{https://lena-voita.github.io/nlp_course/seq2seq_and_attention.html} }
+\end{figure}
+ Questo meccanismo rende dinamico il vettore di contesto, che viene calcolato per ogni iterazione di decodifica pesando i contributi di tutti gli stati intermedi ottenuti dall'\textit{encoder}. In questo modo è possibile fornire in input al modello \textit{decoder} un vettore che riassume adeguatamente la sequenza in ingresso, dando maggiore importanza alle porzioni realmente rilevanti per l'output e migliorando nettamente le prestazioni dei modelli \textit{seq2seq}. \par
+ Nonostante l'introduzione dell'attenzione abbia rappresentato una svolta nel superamento del limite costituito dal vettore di contesto statico, queste architetture rimanevano ancora profondamente legate alla natura sequenziale delle RNN o LSTM. In tale configurazione, l'attenzione agisce solo come un meccanismo ausiliario tra l'\textit{encoder} e il \textit{decoder}, e l'elaborazione dei dati avviene un passo alla volta, impedendo qualsiasi tipo di parallelizzazione dei calcoli.
+ La vera rivoluzione si verifica con l'introduzione dell'architettura \textbf{Transformer} \cite{AttentionIsAllYouNeed}, che abbandona interamente l'approccio sequenziale delle reti ricorrenti per passare a quello delle reti \textit{feed-forward}, utilizzando la \textbf{Multi-Head Self Attention}.
+\section{Vision Transformer}
+\section{Tecniche di compressione dei modelli neurali}
+\subsection{Quantizzazione}
+\subsection{Knowledge Distillation}
+\subsection{Pruning}
+\subsection{Neural Architecture Search}

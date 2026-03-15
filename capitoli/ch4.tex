@@ -107,11 +107,11 @@ parametri. \newline
     \begin{tabular}{@{} l r r r r r @{}}
         \toprule
         \textbf{Modello} & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
-        Baseline           & 21.67 \hphantom{(-00.0\%)}        & 90.42\% \hphantom{(-0.00\%)}        & 9.20 \hphantom{(-00.00\%)}        & 1137.5 \hphantom{(+00.00\%)}        & 112.5 \hphantom{(-00.00\%)}       \\
+        Baseline           & 21.67 \hphantom{(-00.0\%)}        & 90.42\% \hphantom{(-0.00\%)}        & 4.60 \hphantom{(-00.00\%)}        & 1137.5 \hphantom{(+00.00\%)}        & 112.5 \hphantom{(-00.00\%)}       \\
         \midrule
-        \textbf{Pruned}    & 15.93 (-26.6\%) & 89.59\% (-0.83\%) & 6.85 (-25.51\%) & 1405.5 (+23.56\%) & 91.1 (-19.02\%) \\
+        \textbf{Pruned}    & 15.93 (-26.6\%) & 89.59\% (-0.83\%) & 3.42 (-25.51\%) & 1405.5 (+23.56\%) & 91.1 (-19.02\%) \\
         \midrule
-        \textbf{Pruned+KD} & 15.78 (-27.3\%) & 89.86\% (-0.56\%) & 6.79 (-26.19\%) & 1406.0 (+23.60\%) & 91.0 (-19.11\%) \\
+        \textbf{Pruned+KD} & 15.78 (-27.3\%) & 89.86\% (-0.56\%) & 3.39 (-26.19\%) & 1406.0 (+23.60\%) & 91.0 (-19.11\%) \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -134,13 +134,13 @@ Di seguito i risultati: \newline
     \begin{tabular}{@{} l r r r r r @{}}
         \toprule
         \textbf{Modello} & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
-        Baseline           & 21.67 \hphantom{(-00.0\%)}        & 90.42\% \hphantom{(-0.00\%)}        & 9.20 \hphantom{(-00.00\%)}        & 1137.5 \hphantom{(+00.00\%)}        & 112.5 \hphantom{(-00.00\%)}       \\
+        Baseline           & 21.67 \hphantom{(-00.0\%)}        & 90.42\% \hphantom{(-0.00\%)}        & 4.60 \hphantom{(-00.00\%)}        & 1137.5 \hphantom{(+00.00\%)}        & 112.5 \hphantom{(-00.00\%)}       \\
         \midrule
-        \textbf{ViT-S Pruned (No KD)}    & 15.93 (-26.6\%) & 89.59\% (-0.83\%) & 6.85 (-25.51\%) & 1405.5 (+23.56\%) & 91.1 (-19.02\%) \\
+        \textbf{ViT-S Pruned (No KD)}    & 15.93 (-26.6\%) & 89.59\% (-0.83\%) & 3.43 (-25.51\%) & 1405.5 (+23.56\%) & 91.1 (-19.02\%) \\
         \midrule
-        \textbf{Ricerca Disattivata} & 12.28 (-43.4\%) & 81.17\% (-9.25\%) & 5.27 (-42.66\%) & 1679.9 (+47.68\%) & 76.2 (-32.27\%) \\
+        \textbf{Ricerca Disattivata} & 12.28 (-43.4\%) & 81.17\% (-9.25\%) & 2.64 (-42.66\%) & 1679.9 (+47.68\%) & 76.2 (-32.27\%) \\
         \midrule
-        \textbf{Metrica Disattivata} & 19.38 (-10.7\%) & 89.07\% (-1.35\%) & 8.18 (-11.09\%) & 1147.9 (+00.09\%) & 111.5 (-00.09\%) \\
+        \textbf{Metrica Disattivata} & 19.38 (-10.7\%) & 89.07\% (-1.35\%) & 4.09 (-11.09\%) & 1147.9 (+00.09\%) & 111.5 (-00.09\%) \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
