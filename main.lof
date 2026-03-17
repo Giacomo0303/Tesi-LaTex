@@ -7,14 +7,22 @@
 \contentsline {figure}{\numberline {1.4}{\ignorespaces Architettura Transformer originaria proposta da Vaswani et al. Fonte: \blx@tocontentsinit {0}\cite {AttentionIsAllYouNeed} }}{8}{figure.caption.7}%
 \contentsline {figure}{\numberline {1.5}{\ignorespaces Visualizzazione dell'operazione di \textit {Scaled-Dot-Product Attention}. Fonte: \blx@tocontentsinit {0}\cite {AttentionIsAllYouNeed} }}{10}{figure.caption.8}%
 \contentsline {figure}{\numberline {1.6}{\ignorespaces \textit {Multi Head Self Attention}. Fonte: \blx@tocontentsinit {0}\cite {AttentionIsAllYouNeed} }}{11}{figure.caption.9}%
+\contentsline {figure}{\numberline {1.7}{\ignorespaces Architettura del Vision Transformer (ViT). Fonte: \blx@tocontentsinit {0}\cite {dosovitskiy2021imageworth16x16words} }}{12}{figure.caption.10}%
+\contentsline {figure}{\numberline {1.8}{\ignorespaces Struttura della \textit {Multi Head Attention}.}}{13}{figure.caption.11}%
+\contentsline {figure}{\numberline {1.9}{\ignorespaces Struttura del \textit {Multi Layer Perceptron} nei blocchi Transformer del ViT.}}{13}{figure.caption.12}%
+\contentsline {figure}{\numberline {1.10}{\ignorespaces Architettura del Data-efficient Image Transformer (DeiT). Fonte: \blx@tocontentsinit {0}\cite {touvron2021trainingdataefficientimagetransformers}}}{14}{figure.caption.13}%
+\contentsline {figure}{\numberline {1.11}{\ignorespaces Architettura di \textit {Swin Transformer}. Fonte: \blx@tocontentsinit {0}\cite {liu2021swintransformerhierarchicalvision}}}{15}{figure.caption.14}%
+\contentsline {figure}{\numberline {1.12}{\ignorespaces Meccaniscmo di Shifted Window. Fonte: \blx@tocontentsinit {0}\cite {liu2021swintransformerhierarchicalvision}}}{15}{figure.caption.15}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{18}{figure.caption.10}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{19}{figure.caption.11}%
-\contentsline {figure}{\numberline {2.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{20}{figure.caption.12}%
-\contentsline {figure}{\numberline {2.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{21}{figure.caption.13}%
-\contentsline {figure}{\numberline {2.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{22}{figure.caption.14}%
-\contentsline {figure}{\numberline {2.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{22}{figure.caption.15}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{23}{figure.caption.16}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{24}{figure.caption.17}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{25}{figure.caption.18}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{26}{figure.caption.19}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{27}{figure.caption.20}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{27}{figure.caption.21}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{35}{figure.caption.17}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{40}{figure.caption.23}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{41}{figure.caption.24}%
 \addvspace {10\p@ }

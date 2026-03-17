@@ -22,13 +22,21 @@ mantiene dimensioni ridotte e quindi permette una ottima rapidità di
 ottenere un \textbf{Train Set} finale di \textbf{45.000} immagini e un
 \textbf{Held-Out Set} di \textbf{5.000} immagini, quest'ultimo utilizzato per
 il monitoraggio del processo di compressione. \newline
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{images/cifar100_examples.png}
     \caption{Esempio di immagini dal dataset CIFAR100.}
     \label{fig:cifar100_examples}
 \end{figure}
 
+\subsection{ImageNet-1K}
+Il secondo dataset preso in considerazione per testare il metodo è \textbf{ImageNet-1K}, utilizzatissimo in letteratura e molto più complesso rispetto al CIFAR-100. Si tratta di un \textit{benchmark} utilizzato fin dalle prime reti convoluzionali, come \textit{Alex-Net}, per valutare su task di \textit{Image Classification} e \textit{Object Detection}. Il dataset in questione risulta molto più ampio rispetto al precedente, poiché contiene circa 1.300.000 immagini di addestramento, e 50.000 immagini di validazione, tutte di tipo \textbf{RGB} ma con risoluzione variabile. \newline
+Per quanto concerne i test su \textit{Imagenet-1K}, il set di addestramento è stato suddiviso con rapporto \textbf{97/3} al fine di ottenere un \textbf{Held-Out Set} di circa 38.000 immagini, per la validazione del processo di compressione ed eventuale \textit{Early Stop}. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/imagenet_examples.png}
+    \caption{Esempio di immagini del dataset ImageNet-1K.}
+\end{figure}
 \section{Data Augmentation}
 Data la la grande capacità dei modelli \textit{Vision Transformer}, per
 scongiurare il rischio di \textit{overfitting}, sono state adottate delle
@@ -116,6 +124,27 @@ parametri. \newline
     \end{tabular}
     \vspace{10pt}
     \caption{Nella tabella sono presentati i risultati comparativi utilizzando il \textit{ViT-Small} e il dataset \textit{CIFAR100}, in particolare vengono evidenziati i valori delle metriche e le variazioni rispetto al modello \textit{Baseline}.}
+\end{table}
+
+\section{Test sul dataset ImageNet-1K}
+Per questi test è stato utilizzato un modello \textbf{ViT-Small} da 22 Mln di parametri. In particolare è stata aggiunta una testa di classificazione da 1000 unità, che è stata sottoposta a \textit{fine tuning} sul \textit{train set} con la \textit{backbone} del modello \textit{ViT-Small} bloccata. I parametri del framework, per tutti i test, sono stati configurati a \textbf{15 iterazioni} di compressione, la \textbf{profondità} dell'albero di ricerca è stata limitata a
+\textbf{6}, la \textbf{soglia di tolleranza} della fase di
+\textit{Bound} pari a \textbf{0.005}, la \textbf{funzione obiettivo} con \textbf{$\lambda$} pari a \textbf{1.0} per i parametri. \newline 
+\begin{table}[ht]
+    \centering
+    \label{tab:risultati-cifar100}
+    \footnotesize 
+    \setlength{\tabcolsep}{3pt} 
+    \begin{tabular}{@{} l r r r r r @{}}
+        \toprule
+        \textbf{Modello} & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
+        Baseline           & 22.05 \hphantom{(-00.0\%)}        & 81.20\% \hphantom{(-0.00\%)}        & 4.60 \hphantom{(-00.00\%)}        & 1142.6 \hphantom{(+00.00\%)}        & 112.0 \hphantom{(-00.00\%)}       \\
+        \midrule
+        \textbf{Pruned}    & 18.77 (-14.88\%) & 79.17\% (-2.03\%) & 3.90 (-15.13\%) & 1270.5 (+11.20\%) & 100.7 (-10.07\%) \\
+        \bottomrule
+    \end{tabular}
+    \vspace{10pt}
+    \caption{Nella tabella sono presentati i risultati comparativi utilizzando il \textit{ViT-Small} e il dataset \textit{ImageNet-1K}, in particolare vengono evidenziati i valori delle metriche e le variazioni rispetto al modello \textit{Baseline}.}
 \end{table}
 
 \section{Analisi dell'algoritmo di ricerca}
