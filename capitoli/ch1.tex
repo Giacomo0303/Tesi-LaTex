@@ -1,6 +1,58 @@
 \chapter{Stato dell'arte}
-\section{Tecniche di compressione dei modelli neurali}
+Data la rapida evoluzione nel campo della visione artificiale, l'analisi dello
+stato dell'arte risulta fondamentale per identificare le metodologie più
+promettenti volte a coniugare elevate prestazioni e sostenibilità
+computazionale. In questo capitolo verrà esaminato il panorama delle soluzioni
+atte a rendere i \textbf{Vision Transformer} (ViT) applicabili in scenari
+reali, caratterizzati da vincoli di latenza, memoria e consumo energetico.
+Notare che nessuna soluzione esclude automaticamente le altre, spesso molti di
+questi approcci vengono integrati e combinati per ottenere risultati migliori.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/SOTA/tassonomia.pdf}
+    \caption{Tassonomia delle principali metodologie per l'efficientamento dei modelli di visione artificiale.}
+\end{figure}
+La trattazione si articolerà su due fronti principali:
+\begin{itemize}
+    \item \textbf{Ottimizzazione Architetturale:} l'analisi di modelli e architetture appositamente progettate per ridurre la complessità computazionale, i costi di memoria o anche i consumi energetici dell'inferenza.
+          \begin{itemize}
+              \item \textbf{Architetture Ibride:} si tratta di architetture che integrano elementi tipici dei modelli \textit{Transformer} con elementi tipici delle reti convoluzionali, al fine di sfruttare i punti di forza di entrambe le tipologie di modelli e ottenere un buon compromesso tra prestazioni e efficienza;
+              \item \textbf{Architetture Edge-Optimized}: modelli progettati specificamente per essere eseguiti su dispositivi con risorse limitate, come smartphone o dispositivi IoT, con l'obiettivo di massimizzare le prestazioni mantenendo un basso consumo energetico e ridotti requisiti computazionali.
+              \item \textbf{Neural Architecture Search (NAS):} ovvero l'automazione del processo di design di architetture ottimali in termini di costi e prestazioni.
+          \end{itemize}
+    \item \textbf{Tecniche di Compressione dei modelli:} lo studio di metodologie applicabili a reti pre-esistenti al fine di ridurne la dimensione e migliorarne l'efficienza, tra cui:
+          \begin{itemize}
+              \item \textbf{Pruning:} ovvero la rimozione di pesi, teste di attenzione o interi blocchi ridondanti dall'architettura per snellire il modello senza compromettere significativamente le prestazioni;
+              \item \textbf{Quantizzazione:} cioé la riduzione della precisione numerica della rappresentazione dei parametri, ottenendo modelli molto più compatti in termini di memoria e veloci da eseguire su hardware specializzato;
+              \item \textbf{Knowledge Distillation:} il trasferimento di conoscenza da modelli \textit{teacher} grandi e complessi a modelli \textit{student} più piccoli e leggeri, aumentando in modo importante le prestazioni ottenibili da questi ultimi;
+
+          \end{itemize}
+\end{itemize}
+\section{Architetture efficienti di ViT}
+\subsection{Architetture Ibride}
+A partire dall'introduzione dei \textit{Vision Transformer} (ViT) da parte di Dosovitskiy et al.\cite{dosovitskiy2021imageworth16x16words}, numerosi sforzi sono stati fatti per sviluppare architetture che potessero mantenere le prestazioni elevate dei ViT, ma con una complessità computazionale ridotta. Tra queste, le architetture ibride rappresentano una delle direzioni più promettenti ed esplorate. Uno dei primi approcci è stato quello presentato da Srinivas et al.\cite{srinivas2021bottlenecktransformersvisualrecognition}, nel quale è stata modificata una architettura ResNet \cite{he2015deepresiduallearningimage} sostituendo le convoluzioni spaziali $(3x3)$ negli ultimi 3 blocchi (definiti \textit{bottleneck}) con delle Multi-Head Self-Attention.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/SOTA/BoTNet.pdf}
+    \caption{Confronto tra il blocco ResNet e il blocco BoTNet. Fonte: \cite{srinivas2021bottlenecktransformersvisualrecognition}.}
+\end{figure}
+In particolare questa architettura ha dimostrato delle performance migliori rispetto alla ResNet-50, con un numero di parametri simile, ma con una complessità computazionale più elevata, data dall'introduzione dell'attenzione. Questo lavoro ha dimostrato che l'integrazione delle due architetture è una direzione di ricerca promettente, ma è necessario trovare un compromesso tra prestazioni e complessità computazionale. I pionieri dell'applicazione delle convoluzioni ad un ViT sono stati Wu et. al\cite{wu2021cvtintroducingconvolutionsvision}, con il loro \textbf{Convolutional Vision Transformer}, che ha introdotto delle convoluzioni per produrre le query, key e value all'interno di nuovi \textit{Convolutional Transformer Block}, integrando profondamente le due architetture. Questo tipo di approccio ha eliminato la necessità del \textit{Positional Encoding} tramite le proprietà delle convoluzioni.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/SOTA/cvt.pdf}
+    \caption{A sinistra l'architettura CvT, a destra la struttura del blocco \textit{Convolutional Transformer}. Fonte: \cite{wu2021cvtintroducingconvolutionsvision}.}
+\end{figure}
+Questo tipo di soluzione ha permesso di raggiungere ottime performance su vari task, mantenendo contenuto il numero di parametri.
+Un ulteriore pilastro di questo approccio ibrido è quello di Dai et al.\cite{dai2021coatnetmarryingconvolutionattention}, i quali hanno proposto un'architettura CNN-\textit{Transformer} definita \textbf{Co-AtNet}, con l'obiettivo di sfruttare i punti di forza delle due architetture. In particolare, gli autori hanno combinato blocchi convoluzionali \textit{Depthwise} e moduli di \textit{Self-Attention} organizzandoli in stadi successivi, con l'obiettivo di ridurre la complessità computazionale mantenendo elevate prestazioni. \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/SOTA/coatnet_arch.pdf}
+    \caption{L'architettura di CoAtNet.Fonte: \cite{dai2021coatnetmarryingconvolutionattention}.}
+\end{figure}
+Gli autori hanno dimostrato che questo approccio permette di raggiungere prestazioni superiori rispetto a molte architetture CNN e ViT, con un numero di parametri e un numero di operazioni in virgola mobile inferiori.
+FastViT e FasterVit
+\subsection{Architetture Edge-Optimized}
+\subsection{Neural Architecture Search}
+\section{Tecniche di compressione dei modelli}
 \subsection{Quantizzazione}
 \subsection{Knowledge Distillation}
 \subsection{Pruning}
-\subsection{Neural Architecture Search}

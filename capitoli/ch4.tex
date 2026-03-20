@@ -125,6 +125,7 @@ parametri. \newline
     \vspace{10pt}
     \caption{Nella tabella sono presentati i risultati comparativi utilizzando il \textit{ViT-Small} e il dataset \textit{CIFAR100}, in particolare vengono evidenziati i valori delle metriche e le variazioni rispetto al modello \textit{Baseline}.}
 \end{table}
+Questi risultati rispecchiano chiaramente la sovraparametrizzazione del modello, con una grande quantità di parametri che possono essere rimossi, senza intaccare in maniera significativa le prestazioni. Il framework è riuscito a comprimere il modello di circa il \textbf{27\%} dei parametri, con una perdita di accuratezza inferiore di circa il \textbf{0.5\%}, e un aumento del throughput superiore al \textbf{23\%}. L'aggiunta della \textit{Knowledge Distillation} ha permesso di recuperare parte dell'accuratezza perduta durante la fase di compressione, con un risultato superiore di circa \textbf{0.3\%} rispetto al test senza KD, a fronte di un numero di parametri molto simile.
 
 \section{Test sul dataset ImageNet-1K}
 Per questi test è stato utilizzato un modello \textbf{ViT-Small} da 22 Mln di parametri. In particolare è stata aggiunta una testa di classificazione da 1000 unità, che è stata sottoposta a \textit{fine tuning} sul \textit{train set} con la \textit{backbone} del modello \textit{ViT-Small} bloccata. I parametri del framework, per tutti i test, sono stati configurati a \textbf{15 iterazioni} di compressione, la \textbf{profondità} dell'albero di ricerca è stata limitata a
@@ -146,6 +147,7 @@ Per questi test è stato utilizzato un modello \textbf{ViT-Small} da 22 Mln di p
     \vspace{10pt}
     \caption{Nella tabella sono presentati i risultati comparativi utilizzando il \textit{ViT-Small} e il dataset \textit{ImageNet-1K}, in particolare vengono evidenziati i valori delle metriche e le variazioni rispetto al modello \textit{Baseline}.}
 \end{table}
+Come è possibile notare, i risultati ottenuti con il dataset \textit{ImageNet-1K} rispecchiano la maggiore complessità del dataset, con una diminuzione più marcata dell'accuratezza, a fronte di una minore percentuale di compressione. Nonostante ciò, il framework è riuscito a mantenere un buon livello di prestazioni, con una perdita di accuratezza contenuta e un aumento rilevante del throughput.
 
 \section{Analisi dell'algoritmo di ricerca}
 Fare test con la loss nella funzione obbiettivo, poi un altro senza la soglia

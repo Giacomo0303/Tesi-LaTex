@@ -14,15 +14,19 @@
 \contentsline {figure}{\numberline {1.11}{\ignorespaces Architettura di \textit {Swin Transformer}. Fonte: \blx@tocontentsinit {0}\cite {liu2021swintransformerhierarchicalvision}}}{15}{figure.caption.14}%
 \contentsline {figure}{\numberline {1.12}{\ignorespaces Meccaniscmo di Shifted Window. Fonte: \blx@tocontentsinit {0}\cite {liu2021swintransformerhierarchicalvision}}}{15}{figure.caption.15}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Tassonomia delle principali metodologie per l'efficientamento dei modelli di visione artificiale.}}{17}{figure.caption.16}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Confronto tra il blocco ResNet e il blocco BoTNet. Fonte: \blx@tocontentsinit {0}\cite {srinivas2021bottlenecktransformersvisualrecognition}.}}{19}{figure.caption.17}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces A sinistra l'architettura CvT, a destra la struttura del blocco \textit {Convolutional Transformer}. Fonte: \blx@tocontentsinit {0}\cite {wu2021cvtintroducingconvolutionsvision}.}}{20}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces L'architettura di CoAtNet.Fonte: \blx@tocontentsinit {0}\cite {dai2021coatnetmarryingconvolutionattention}.}}{20}{figure.caption.19}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{23}{figure.caption.16}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{24}{figure.caption.17}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{25}{figure.caption.18}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{26}{figure.caption.19}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{27}{figure.caption.20}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{27}{figure.caption.21}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{27}{figure.caption.20}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{28}{figure.caption.21}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{29}{figure.caption.22}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{30}{figure.caption.23}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{31}{figure.caption.24}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{31}{figure.caption.25}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{40}{figure.caption.23}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{41}{figure.caption.24}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{44}{figure.caption.27}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{45}{figure.caption.28}%
 \addvspace {10\p@ }
