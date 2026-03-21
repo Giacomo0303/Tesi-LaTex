@@ -30,7 +30,17 @@ La trattazione si articolerà su due fronti principali:
 \end{itemize}
 \section{Architetture efficienti di ViT}
 \subsection{Architetture Ibride}
-A partire dall'introduzione dei \textit{Vision Transformer} (ViT) da parte di Dosovitskiy et al.\cite{dosovitskiy2021imageworth16x16words}, numerosi sforzi sono stati fatti per sviluppare architetture che potessero mantenere le prestazioni elevate dei ViT, ma con una complessità computazionale ridotta. Tra queste, le architetture ibride rappresentano una delle direzioni più promettenti ed esplorate. Uno dei primi approcci è stato quello presentato da Srinivas et al.\cite{srinivas2021bottlenecktransformersvisualrecognition}, nel quale è stata modificata una architettura ResNet \cite{he2015deepresiduallearningimage} sostituendo le convoluzioni spaziali $(3x3)$ negli ultimi 3 blocchi (definiti \textit{bottleneck}) con delle Multi-Head Self-Attention.
+A partire dall'introduzione dei \textit{Vision Transformer} (ViT) da parte di
+Dosovitskiy et al.\cite{dosovitskiy2021imageworth16x16words}, numerosi sforzi
+sono stati fatti per sviluppare architetture che potessero mantenere le
+prestazioni elevate dei ViT, ma con una complessità computazionale ridotta. Tra
+queste, le architetture ibride rappresentano una delle direzioni più
+promettenti ed esplorate. Uno dei primi approcci è stato quello presentato da
+Srinivas et al.\cite{srinivas2021bottlenecktransformersvisualrecognition}, nel
+quale è stata modificata una architettura ResNet
+\cite{he2015deepresiduallearningimage} sostituendo le convoluzioni spaziali
+$(3x3)$ negli ultimi 3 blocchi (definiti \textit{bottleneck}) con delle
+Multi-Head Self-Attention.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{images/SOTA/BoTNet.pdf}
@@ -43,13 +53,42 @@ In particolare questa architettura ha dimostrato delle performance migliori risp
     \caption{A sinistra l'architettura CvT, a destra la struttura del blocco \textit{Convolutional Transformer}. Fonte: \cite{wu2021cvtintroducingconvolutionsvision}.}
 \end{figure}
 Questo tipo di soluzione ha permesso di raggiungere ottime performance su vari task, mantenendo contenuto il numero di parametri.
-Un ulteriore pilastro di questo approccio ibrido è quello di Dai et al.\cite{dai2021coatnetmarryingconvolutionattention}, i quali hanno proposto un'architettura CNN-\textit{Transformer} definita \textbf{Co-AtNet}, con l'obiettivo di sfruttare i punti di forza delle due architetture. In particolare, gli autori hanno combinato blocchi convoluzionali \textit{Depthwise} e moduli di \textit{Self-Attention} organizzandoli in stadi successivi, con l'obiettivo di ridurre la complessità computazionale mantenendo elevate prestazioni. \begin{figure}[H]
+Un ulteriore pilastro di questo approccio ibrido è quello di Dai et al.\cite{dai2021coatnetmarryingconvolutionattention}, i quali hanno proposto un'architettura CNN-\textit{Transformer} definita \textbf{Co-AtNet}, con l'obiettivo di sfruttare i punti di forza delle due architetture. In particolare, gli autori hanno combinato blocchi convoluzionali \textit{Depthwise} e moduli di \textit{Self-Attention} organizzandoli in stadi successivi, con l'obiettivo di ridurre la complessità computazionale mantenendo elevate prestazioni.
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{images/SOTA/coatnet_arch.pdf}
     \caption{L'architettura di CoAtNet.Fonte: \cite{dai2021coatnetmarryingconvolutionattention}.}
 \end{figure}
 Gli autori hanno dimostrato che questo approccio permette di raggiungere prestazioni superiori rispetto a molte architetture CNN e ViT, con un numero di parametri e un numero di operazioni in virgola mobile inferiori.
-FastViT e FasterVit
+Di recente, ulteriori sviluppi sono stati presentati da Vasu et al. \cite{vasu2023fastvitfasthybridvision} con l'architettura \textbf{FastViT}, nella quale si affronta il problema della latenza causata dai frequenti accessi in memoria necessari durante l'inferenza. In particolare, le connessioni residuali, seppur fondamentali per evitare la scomparsa del gradiente, contribuiscono pesantemente a questo problema, richiedendo di recuperare continuamente dalla memoria i valori sui quali eseguire la somma.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/SOTA/fastvit_arch.pdf}
+    \caption{L'architettura del modello FastViT. Fonte: \cite{vasu2023fastvitfasthybridvision}.}
+\end{figure}
+Gli autori risolvono questo problema applicando una \textbf{riparametrizzazione strutturale post-addestramento} all'interno di un modulo proprietario denominato \textbf{RepMixer}. Durante il \textit{training}, la rete sfrutta connessioni residuali e convoluzioni su rami paralleli per massimizzare la capacità di apprendimento; in fase di inferenza, queste strutture parallele vengono fuse matematicamente in un'unica convoluzione di tipo \textit{depthwise}. Questo approccio permette di eliminare del tutto le operazioni di somma e i relativi accessi in memoria, mantenendo inalterate le elevate prestazioni predittive.
+Infine, sebbene l'architettura di \textit{FastViT} affidi i primi tre stadi interamente a operazioni convoluzionali per abbattere rapidamente la risoluzione, nell'ultimo stadio viene introdotta la \textit{Self-Attention}. Questa scelta strategica permette di ampliare il \textit{receptive-field} e catturare le dipendenze globali solo quando la mappa delle \textit{feature} è sufficientemente ridotta, evitando un aumento eccessivo della complessità computazionale. Grazie a queste soluzioni, il modello raggiunge prestazioni uguali o superiori alle architetture ibride di riferimento, ma con latenza e operazioni in virgola mobile (FLOPs) drasticamente inferiori.
+Una ulteriore direzione di ricerca è quella di modificare il meccanismo di attenzione, al fine di introdurlo in una architettura basata su CNN, per limitare i costi introdotti. In questo senso Hatamizadeh et al. \cite{hatamizadeh2024fastervitfastvisiontransformers} propongono l'architettura \textbf{FasterViT}, nella quale viene introdotto un nuovo meccanismo di attenzione, denominato \textbf{Hierarchical Attention}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/SOTA/fastervit_arch_horizontal.pdf}
+    \caption{L'architettura del modello FasterViT. Fonte: \cite{hatamizadeh2024fastervitfastvisiontransformers}.}
+\end{figure}
+L'approccio proposto risulta particolarmente efficace nei casi in cui vengono elaborati input ad alta risoluzione, in queste situazioni il calcolo della \textit{Self-Attention} globale diventa rapidamente proibitivo a causa del suo costo computazionale quadratico. D'altra parte, limitare l'attenzione a finestre spaziali isolate (come avviene nello \textit{Swin Transformer}) comporta la perdita cruciale del contesto globale. Per superare questo ostacolo, gli autori propongono una macro-architettura ibrida strutturata in quattro stadi sequenziali. I primi due stadi operano esclusivamente tramite blocchi residui convoluzionali, i quali estraggono le \textit{feature} locali ed eseguono un sottocampionamento spaziale. Soltanto nel terzo e quarto stadio, dove la risoluzione delle \textit{feature map} risulta notevolmente ridotta, intervengono i moduli \textit{Transformer}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{images/SOTA/fastervit_HAT.pdf}
+    \caption{Mappa di attenzione del meccanismo di \textit{Hierarchical Attention}. Fonte: \cite{hatamizadeh2024fastervitfastvisiontransformers}.}
+\end{figure} 
+La vera innovazione di \textit{FasterViT} risiede nel nuovo meccanismo di \textbf{Hierarchical Attention (HAT)} utilizzato in questi ultimi stadi. Il modello introduce dei \textit{Carrier Tokens} (token portatori) che agiscono come ponte informativo: questi speciali \textit{token} riassumono prima le informazioni all'interno delle singole finestre locali, interagiscono poi tra di loro a livello globale scambiandosi il contesto generale dell'immagine e, infine, ritrasmettono l'informazione globale aggiornata ai \textit{token} delle rispettive finestre locali. Questo approccio si avvicina ad un concetto di un \textit{receptive-field} globale ma con una frazione del costo computazionale originale. Utilizzando queste novità \textit{FasterViT} riesce a stabilire nuovi standard di velocità ed efficienza, dimostrando che l'uso sinergico di convoluzioni iniziali e attenzione negli ultimi stadi è una strategia molto efficace per ottenere ottime prestazioni con costi computazionali contenuti.
+Infine, negli ultimissimi anni, il concetto di ibridazione si è spinto oltre la combinazione di CNN e \textit{Transformer} classici. Per far fronte alla necessità di elaborare sequenze visive o immagini ad altissima risoluzione con complessità strettamente lineare $\mathcal{O}(N)$, la ricerca più recente ha iniziato a sostituire i moduli di attenzione globale con i Modelli a Spazio di Stato (SSM), in particolare la loro declinazione denominata \textbf{Mamba} \cite{gu2024mambalineartimesequencemodeling}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/SOTA/vision_mamba.pdf}
+    \caption{Architettura di Vision Mamba. Fonte: \cite{zhu2024visionmambaefficientvisual}.}
+\end{figure} 
+Architetture ibride emergenti, come le varianti convoluzionali di \textbf{Vision Mamba (Vim)} \cite{zhu2024visionmambaefficientvisual}, integrano l'estrazione di \textit{feature} locali tipica delle CNN con il ragionamento sequenziale bidirezionale degli SSM. Sebbene i ViT ibridi rimangano lo standard di fatto nell'industria odierna, questa nuova frontiera CNN-SSM rappresenta la naturale evoluzione per abbattere definitivamente il costo quadratico dell'attenzione.
+
 \subsection{Architetture Edge-Optimized}
 \subsection{Neural Architecture Search}
 \section{Tecniche di compressione dei modelli}
