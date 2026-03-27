@@ -142,12 +142,13 @@ L'introduzione dei modelli \textit{Transformer} ha portato alla nascita dei \tex
     \caption{Struttura del \textit{Multi Layer Perceptron} nei blocchi Transformer del ViT.}
 \end{figure}
 Sfruttando il meccanismo di attenzione, i ViT permettono alle regioni dell'immagine di interagire tra loro, catturando relazioni a lungo raggio molto più facilmente rispetto alle CNN. Nonostante i ViT abbiano dimostrato prestazioni competitive rispetto alle CNN, soprattutto su dataset di grandi dimensioni, presentano ancora alcune limitazioni, come la necessità di grandi quantità di dati per l'addestramento \cite{steiner2022trainvitdataaugmentation} e la complessità computazionale elevata, dovuta alla natura quadratica del meccanismo di attenzione. Tuttavia, l'utilizzo di questi modelli sta crescendo rapidamente (soprattutto come \textit{backbone} o \textit{Vision Encoder} all'interno di architetture modulari \cite{kirillov2023segment}\cite{radford2021learningtransferablevisualmodels}), portando a numerose varianti e miglioramenti che cercano di mitigare queste criticità, come l'introduzione di meccanismi di attenzione più efficienti o l'adozione di approcci ibridi che combinano le CNN con i ViT. \par
+\section{Evoluzioni principali del Vision Transformer}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{images/SOTA/DeiT.pdf}
     \caption{Architettura del Data-efficient Image Transformer (DeiT). Fonte: \cite{touvron2021trainingdataefficientimagetransformers}}
 \end{figure}
-Una delle prime varianti che hanno migliorato il ViT originale è stata il \textbf{Data-efficient Image Transformer} (DeiT) \cite{touvron2021trainingdataefficientimagetransformers}, che ha introdotto un nuovo metodo di addestramento chiamato \textit{knowledge distillation}, in cui un modello ("student") viene addestrato a imitare le predizioni di un modello pre-addestrato ("teacher"), ottenendo prestazioni competitive anche con dataset di dimensioni ridotte. Questa tecnica, applicata ad uno speciale \textit{token} di distillazione, ha permesso al DeiT di raggiungere risultati paragonabili a quelli del ViT originale, ma con un minor quantitativo di dati.
+Una delle prime varianti che ha migliorato il ViT originale è stata il \textbf{Data-efficient Image Transformer} (DeiT) \cite{touvron2021trainingdataefficientimagetransformers}, che ha introdotto un nuovo metodo di addestramento chiamato \textit{knowledge distillation}, in cui un modello ("student") viene addestrato a imitare le predizioni di un modello pre-addestrato ("teacher"), ottenendo prestazioni competitive anche con dataset di dimensioni ridotte. Questa tecnica, applicata ad uno speciale \textit{token} di distillazione, ha permesso al DeiT di raggiungere risultati paragonabili a quelli del ViT originale, ma con un minor quantitativo di dati.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{images/SOTA/SWIN_arch.pdf}

@@ -1,14 +1,14 @@
 \chapter{Formulazione matematica del problema}
 \label{cap:teoria}
-Un problema di Neural Architecture Search (NAS) consiste in una ricerca in uno
-spazio degli stati, a partire da una architettura di partenza, detta
+Il problema si può definire come una ricerca in uno
+spazio degli stati, a partire da una architettura iniziale, detta
 \textbf{Supernet}, per identificare, tra tutte le possibili \textbf{Subnet},
 quella che massimizza una determinata funzione obiettivo. In questo caso, al
 fine di ottenere una compressione di modelli \textit{Transformer}, la ricerca
 si configura come un problema di \textbf{ottimizzazione multi-obiettivo},
 tramite il quale vengono ottimizzate sia la performance del modello (attraverso
 l'accuratezza) sia la dimensione (attraverso il numero di parametri). \newline
-Uno dei problemi principali nell'ambito NAS è proprio la dimensione dello
+Uno dei problemi principali nell'ambito è proprio la dimensione dello
 spazio degli stati, che risulta elevatissima, poiché il numero di possibili
 configurazioni cresce in maniera combinatoria rispetto al numero di componenti
 del modello. Nei Vision Transformer, ogni blocco Transformer presenta

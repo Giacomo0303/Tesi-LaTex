@@ -15,22 +15,28 @@
 \contentsline {figure}{\numberline {1.12}{\ignorespaces Meccaniscmo di Shifted Window. Fonte: \blx@tocontentsinit {0}\cite {liu2021swintransformerhierarchicalvision}}}{15}{figure.caption.15}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Tassonomia delle principali metodologie per l'efficientamento dei modelli di visione artificiale.}}{17}{figure.caption.16}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Confronto tra il blocco ResNet e il blocco BoTNet. Fonte: \blx@tocontentsinit {0}\cite {srinivas2021bottlenecktransformersvisualrecognition}.}}{19}{figure.caption.17}%
-\contentsline {figure}{\numberline {2.3}{\ignorespaces A sinistra l'architettura CvT, a destra la struttura del blocco \textit {Convolutional Transformer}. Fonte: \blx@tocontentsinit {0}\cite {wu2021cvtintroducingconvolutionsvision}.}}{20}{figure.caption.18}%
-\contentsline {figure}{\numberline {2.4}{\ignorespaces L'architettura di CoAtNet.Fonte: \blx@tocontentsinit {0}\cite {dai2021coatnetmarryingconvolutionattention}.}}{20}{figure.caption.19}%
-\contentsline {figure}{\numberline {2.5}{\ignorespaces L'architettura del modello FastViT. Fonte: \blx@tocontentsinit {0}\cite {vasu2023fastvitfasthybridvision}.}}{21}{figure.caption.20}%
-\contentsline {figure}{\numberline {2.6}{\ignorespaces L'architettura del modello FasterViT. Fonte: \blx@tocontentsinit {0}\cite {hatamizadeh2024fastervitfastvisiontransformers}.}}{22}{figure.caption.21}%
-\contentsline {figure}{\numberline {2.7}{\ignorespaces Mappa di attenzione del meccanismo di \textit {Hierarchical Attention}. Fonte: \blx@tocontentsinit {0}\cite {hatamizadeh2024fastervitfastvisiontransformers}.}}{22}{figure.caption.22}%
-\contentsline {figure}{\numberline {2.8}{\ignorespaces Architettura di Vision Mamba. Fonte: \blx@tocontentsinit {0}\cite {zhu2024visionmambaefficientvisual}.}}{23}{figure.caption.23}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Confronto tra il blocco ResNet e il blocco BoTNet. Fonte: \blx@tocontentsinit {0}\cite {srinivas2021bottlenecktransformersvisualrecognition}.}}{19}{figure.caption.18}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces A sinistra l'architettura CvT, a destra la struttura del blocco \textit {Convolutional Transformer}. Fonte: \blx@tocontentsinit {0}\cite {wu2021cvtintroducingconvolutionsvision}.}}{20}{figure.caption.20}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces L'architettura di CoAtNet.Fonte: \blx@tocontentsinit {0}\cite {dai2021coatnetmarryingconvolutionattention}.}}{20}{figure.caption.22}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces L'architettura del modello FastViT. Fonte: \blx@tocontentsinit {0}\cite {vasu2023fastvitfasthybridvision}.}}{21}{figure.caption.24}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces L'architettura del modello FasterViT. Fonte: \blx@tocontentsinit {0}\cite {hatamizadeh2024fastervitfastvisiontransformers}.}}{22}{figure.caption.26}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Mappa di attenzione del meccanismo di \textit {Hierarchical Attention}. Fonte: \blx@tocontentsinit {0}\cite {hatamizadeh2024fastervitfastvisiontransformers}.}}{23}{figure.caption.27}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Architettura di Vision Mamba. Fonte: \blx@tocontentsinit {0}\cite {zhu2024visionmambaefficientvisual}.}}{24}{figure.caption.29}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Architettura di MobileViT. Fonte: \blx@tocontentsinit {0}\cite {mehta2022mobilevitlightweightgeneralpurposemobilefriendly}.}}{25}{figure.caption.31}%
+\contentsline {figure}{\numberline {2.10}{\ignorespaces Meccanismo di attenzione di MobileViT. Fonte: \blx@tocontentsinit {0}\cite {mehta2022mobilevitlightweightgeneralpurposemobilefriendly}.}}{25}{figure.caption.32}%
+\contentsline {figure}{\numberline {2.11}{\ignorespaces Mobile-Former Block. Fonte: \blx@tocontentsinit {0}\cite {chen2022mobileformerbridgingmobilenettransformer}.}}{26}{figure.caption.34}%
+\contentsline {figure}{\numberline {2.12}{\ignorespaces Architettura complessiva di Mobile-Former. Fonte: \blx@tocontentsinit {0}\cite {chen2022mobileformerbridgingmobilenettransformer}.}}{27}{figure.caption.35}%
+\contentsline {figure}{\numberline {2.13}{\ignorespaces Architettura di EdgeViT. Fonte: \blx@tocontentsinit {0}\cite {pan2022edgevitscompetinglightweightcnns}.}}{28}{figure.caption.37}%
+\contentsline {figure}{\numberline {2.14}{\ignorespaces Meccanismo di \textit {Local-Global-Local Bottleneck} applicato ad un esempio. Fonte: \blx@tocontentsinit {0}\cite {pan2022edgevitscompetinglightweightcnns}.}}{29}{figure.caption.38}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{29}{figure.caption.24}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{30}{figure.caption.25}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{31}{figure.caption.26}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{32}{figure.caption.27}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{33}{figure.caption.28}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{33}{figure.caption.29}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{35}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{36}{figure.caption.40}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{37}{figure.caption.41}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{38}{figure.caption.42}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{39}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{39}{figure.caption.44}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{46}{figure.caption.31}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{47}{figure.caption.32}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{52}{figure.caption.46}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{53}{figure.caption.47}%
 \addvspace {10\p@ }

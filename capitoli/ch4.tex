@@ -133,7 +133,7 @@ Per questi test è stato utilizzato un modello \textbf{ViT-Small} da 22 Mln di p
 \textit{Bound} pari a \textbf{0.005}, la \textbf{funzione obiettivo} con \textbf{$\lambda$} pari a \textbf{1.0} per i parametri. \newline 
 \begin{table}[ht]
     \centering
-    \label{tab:risultati-cifar100}
+    \label{tab:risultati-ImageNet}
     \footnotesize 
     \setlength{\tabcolsep}{3pt} 
     \begin{tabular}{@{} l r r r r r @{}}
@@ -142,6 +142,8 @@ Per questi test è stato utilizzato un modello \textbf{ViT-Small} da 22 Mln di p
         Baseline           & 22.05 \hphantom{(-00.0\%)}        & 81.20\% \hphantom{(-0.00\%)}        & 4.60 \hphantom{(-00.00\%)}        & 1142.6 \hphantom{(+00.00\%)}        & 112.0 \hphantom{(-00.00\%)}       \\
         \midrule
         \textbf{Pruned}    & 18.77 (-14.88\%) & 79.17\% (-2.03\%) & 3.90 (-15.13\%) & 1270.5 (+11.20\%) & 100.7 (-10.07\%) \\
+        \midrule
+        \textbf{Pruned+KD}    & 17.18 (-22.11\%) & 81.12\% (-0.08\%) & 3.58 (-22.26\%) & 1321.9 (+15.70\%) & 96.8 (-13.57\%) \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -182,4 +184,25 @@ Come è possibile notare, entrambi i test di ablazione hanno dato risultati pegg
 Nel secondo test invece, la \textbf{metrica di importanza} è stata disattivata, di conseguenza per ogni azione selezionata dall'algoritmo di ricerca, viene prima selezionato casualmente il blocco \textit{Encoder} su cui agire, e successivamente vengono campionate casualmente le dimensioni da tagliare delle specifiche componenti (QK, MLP, \dots) di quel blocco (tranne per la dimensione di \textit{Embedding}, per il quale non è necessario selezionare prima il blocco su cui agire). I risultati indicano chiaramente una difficoltà dell'algoritmo di ricerca nell'esplorare lo spazio degli stati, causata proprio dalla mancanza dell'azione della metrica di importanza. Selezionando in maniera casuale le dimensioni da tagliare, la maggioranza degli stati (\textit{subnet}) che vengono esplorati risultano poco promettenti e peggiorano il valore della funzione obbiettivo, con un conseguente aumento del numero di nodi esplorati, ed una grande fatica a comprimere il modello. Durante i test che fanno uso della metrica di importanza, si assiste invece ad una progressione stabile e rapida del valore della funzione obbiettivo, che si dimostra quindi molto efficace nel guidare le azioni di \textit{pruning} e la ricerca. \newline 
 In questo secondo test è importante notare come le prestazioni del modello si sono mantenute elevate, a conferma del grande lavoro di filtraggio eseguito dal processo di ricerca, che evita di selezionare quegli stati, la cui selezione casuale dei tagli, ha danneggiato gravemente il modello. 
 
-
+\section{Tabella comparativa ImageNet-1K}
+\begin{table}[ht]
+    \centering
+    \label{tab:comparativa}
+    \footnotesize 
+    \setlength{\tabcolsep}{4pt} % Spazio tra le colonne
+    \begin{tabular}{l rr rr r c r}
+        \toprule
+        \textbf{Modello} & \multicolumn{2}{c}{\textbf{Parametri (M)}} & \multicolumn{2}{c}{\textbf{Top-1 Acc.}} & \textbf{GFLOPs} & \textbf{Throughput} & \textbf{Latency} \\ 
+        \midrule
+        DEIT-B-distil          & 86.00 &             & 83.36\% &          & 17.60 & 292.3 & NA \\
+        DEIT-B          & 86.00 &             & 81.80\% &          & 17.60 & 290.9 & NA \\
+        \midrule
+        \textbf{NVIT-B} & 34.00 & (2.57x)     & 83.29\% &          & 6.80  & 1.75x--1.86x & NA \\
+        \textbf{MDP}    & 40.00 & (2.15x)     & 83.47\% &          & NA    & 1.87x & NA \\
+        \textbf{UVC}    & NA    &             & 80.57\% &          & 8.00  & NA    & NA \\
+        \textbf{VBP}    & 55.40 & (1.55x)     & 80.67\% &          & 11.44 & 1.44x & NA \\
+        \textbf{VTP}    & 48.00 & (1.80x)     & 80.70\% &          & 10.00 & NA    & NA \\
+        \textbf{WDP}    & 55.30 & (1.55x)     & 80.76\% &          & 9.90  & 1.18x & 1.33x \\
+        \bottomrule
+    \end{tabular}
+\end{table}
