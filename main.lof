@@ -29,14 +29,15 @@
 \contentsline {figure}{\numberline {2.13}{\ignorespaces Architettura di EdgeViT. Fonte: \blx@tocontentsinit {0}\cite {pan2022edgevitscompetinglightweightcnns}.}}{28}{figure.caption.37}%
 \contentsline {figure}{\numberline {2.14}{\ignorespaces Meccanismo di \textit {Local-Global-Local Bottleneck} applicato ad un esempio. Fonte: \blx@tocontentsinit {0}\cite {pan2022edgevitscompetinglightweightcnns}.}}{29}{figure.caption.38}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{35}{figure.caption.39}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{36}{figure.caption.40}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{37}{figure.caption.41}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{38}{figure.caption.42}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{39}{figure.caption.43}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{39}{figure.caption.44}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Rappresentazione schematica dell'albero di ricerca generato dalle azioni di \textit {Branching}.}}{33}{figure.caption.39}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{36}{figure.caption.40}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{37}{figure.caption.41}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{38}{figure.caption.42}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{38}{figure.caption.43}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{39}{figure.caption.44}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{39}{figure.caption.45}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{52}{figure.caption.46}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{53}{figure.caption.47}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{52}{figure.caption.47}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{53}{figure.caption.48}%
 \addvspace {10\p@ }
