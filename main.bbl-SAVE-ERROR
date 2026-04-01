@@ -183,6 +183,121 @@
       \endverb
       \keyw{Recurrent neural networks;Production;Delay effects;Intelligent networks;Neural networks;Discrete transforms;Computer networks;Cost function;Neurofeedback;Displays}
     \endentry
+    \entry{chen2021autoformersearchingtransformersvisual}{misc}{}{}
+      \name{author}{4}{}{%
+        {{hash=4eb022d312c2cc874773c6135382d780}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Minghao},
+           giveni={M\bibinitperiod}}}%
+        {{hash=195e1728bb598264a7a3e15c5b1f612f}{%
+           family={Peng},
+           familyi={P\bibinitperiod},
+           given={Houwen},
+           giveni={H\bibinitperiod}}}%
+        {{hash=145599e554d3bdc4b21bab4b5d1cce69}{%
+           family={Fu},
+           familyi={F\bibinitperiod},
+           given={Jianlong},
+           giveni={J\bibinitperiod}}}%
+        {{hash=bc86801edf24b9379fb947d2c2116b4b}{%
+           family={Ling},
+           familyi={L\bibinitperiod},
+           given={Haibin},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{92bb170264dd70077ed5d4107257a1d9}
+      \strng{fullhash}{b14082296254d2e2d4c8f3da2b047b48}
+      \strng{fullhashraw}{b14082296254d2e2d4c8f3da2b047b48}
+      \strng{bibnamehash}{b14082296254d2e2d4c8f3da2b047b48}
+      \strng{authorbibnamehash}{b14082296254d2e2d4c8f3da2b047b48}
+      \strng{authornamehash}{92bb170264dd70077ed5d4107257a1d9}
+      \strng{authorfullhash}{b14082296254d2e2d4c8f3da2b047b48}
+      \strng{authorfullhashraw}{b14082296254d2e2d4c8f3da2b047b48}
+      \field{extraname}{1}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CV}
+      \field{eprinttype}{arXiv}
+      \field{title}{AutoFormer: Searching Transformers for Visual Recognition}
+      \field{year}{2021}
+      \verb{eprint}
+      \verb 2107.00651
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2107.00651
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2107.00651
+      \endverb
+    \endentry
+    \entry{chen2022mobileformerbridgingmobilenettransformer}{misc}{}{}
+      \name{author}{7}{}{%
+        {{hash=80c08351834cbbd901091ac1dbe40402}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Yinpeng},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=2a2fde7dc8bfb2012c1f37c5e5e35fba}{%
+           family={Dai},
+           familyi={D\bibinitperiod},
+           given={Xiyang},
+           giveni={X\bibinitperiod}}}%
+        {{hash=39514946b0dee6d6951aebcc32dc767e}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Dongdong},
+           giveni={D\bibinitperiod}}}%
+        {{hash=1abb7f4e37e5ea4c1296b92783437793}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Mengchen},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ff8f93242313a7123c9d1eef92f2bae9}{%
+           family={Dong},
+           familyi={D\bibinitperiod},
+           given={Xiaoyi},
+           giveni={X\bibinitperiod}}}%
+        {{hash=7ed744adcf585a5b4419133e7134732a}{%
+           family={Yuan},
+           familyi={Y\bibinitperiod},
+           given={Lu},
+           giveni={L\bibinitperiod}}}%
+        {{hash=aaf82b828c51f08749f4d70b2a2f681a}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Zicheng},
+           giveni={Z\bibinitperiod}}}%
+      }
+      \strng{namehash}{4621bd4ab58e7ad8b3be42bac5c63079}
+      \strng{fullhash}{1c7d6e972e094f8ec4b911e146d58971}
+      \strng{fullhashraw}{1c7d6e972e094f8ec4b911e146d58971}
+      \strng{bibnamehash}{1c7d6e972e094f8ec4b911e146d58971}
+      \strng{authorbibnamehash}{1c7d6e972e094f8ec4b911e146d58971}
+      \strng{authornamehash}{4621bd4ab58e7ad8b3be42bac5c63079}
+      \strng{authorfullhash}{1c7d6e972e094f8ec4b911e146d58971}
+      \strng{authorfullhashraw}{1c7d6e972e094f8ec4b911e146d58971}
+      \field{extraname}{2}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CV}
+      \field{eprinttype}{arXiv}
+      \field{title}{Mobile-Former: Bridging MobileNet and Transformer}
+      \field{year}{2022}
+      \verb{eprint}
+      \verb 2108.05895
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2108.05895
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2108.05895
+      \endverb
+    \endentry
     \entry{DBLP:journals/corr/ChoMGBSB14}{article}{}{}
       \name{author}{6}{}{%
         {{hash=3da7501a79d9346572c7fd6e41b615df}{%
@@ -381,6 +496,32 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/2010.11929
+      \endverb
+    \endentry
+    \entry{BnBOptim}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=95c5da5739e6be25fa170706e84878c7}{%
+           family={E.\bibnamedelimi L.\bibnamedelimi Lawler},
+           familyi={E\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={D.\bibnamedelimi E.\bibnamedelimi Wood},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{95c5da5739e6be25fa170706e84878c7}
+      \strng{fullhash}{95c5da5739e6be25fa170706e84878c7}
+      \strng{fullhashraw}{95c5da5739e6be25fa170706e84878c7}
+      \strng{bibnamehash}{95c5da5739e6be25fa170706e84878c7}
+      \strng{authorbibnamehash}{95c5da5739e6be25fa170706e84878c7}
+      \strng{authornamehash}{95c5da5739e6be25fa170706e84878c7}
+      \strng{authorfullhash}{95c5da5739e6be25fa170706e84878c7}
+      \strng{authorfullhashraw}{95c5da5739e6be25fa170706e84878c7}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Branch-and-Bound Methods: A Survey.}
+      \field{year}{1966}
+      \verb{eprint}
+      \verb https://doi.org/10.1287/opre.14.4.699
       \endverb
     \endentry
     \entry{gu2024mambalineartimesequencemodeling}{misc}{}{}
@@ -818,6 +959,64 @@
       \verb https://doi.org/10.1038/nature14539
       \endverb
     \endentry
+    \entry{BranchAndBound}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=d08572c62f0d23fe6ab1aa7998419177}{%
+           family={Little},
+           familyi={L\bibinitperiod},
+           given={John\bibnamedelimb D.\bibnamedelimi C.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=20b08bd1decaf6030c54dd0bb0529e4d}{%
+           family={Murty},
+           familyi={M\bibinitperiod},
+           given={Katta\bibnamedelima G.},
+           giveni={K\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=6a23cc1d7a5ee81b6214312e241dff6b}{%
+           family={Sweeney},
+           familyi={S\bibinitperiod},
+           given={Dura\bibnamedelima W.},
+           giveni={D\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=84e9a97a4f098d4344d006a1d66a3609}{%
+           family={Karel},
+           familyi={K\bibinitperiod},
+           given={Caroline},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {INFORMS}%
+      }
+      \strng{namehash}{241c6c61abc532543ca1c5d3ab17aad0}
+      \strng{fullhash}{5ed443f80363b9d3672618bb42ffd200}
+      \strng{fullhashraw}{5ed443f80363b9d3672618bb42ffd200}
+      \strng{bibnamehash}{5ed443f80363b9d3672618bb42ffd200}
+      \strng{authorbibnamehash}{5ed443f80363b9d3672618bb42ffd200}
+      \strng{authornamehash}{241c6c61abc532543ca1c5d3ab17aad0}
+      \strng{authorfullhash}{5ed443f80363b9d3672618bb42ffd200}
+      \strng{authorfullhashraw}{5ed443f80363b9d3672618bb42ffd200}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A 'branch and bound' algorithm is presented for solving the traveling salesman problem. The set of all tours (feasible solutions) is broken up into increasingly small subsets by a procedure called branching. For each subset a lower bound on the length of the tours therein is calculated. Eventually, a subset is found that contains a single tour whose length is less than or equal to some lower bound for every tour. The motivation of the branching and the calculation of the lower bounds are based on ideas frequently used in solving assignment problems. Computationally, the algorithm extends the size of problem that can reasonably be solved without using methods special to the particular problem.}
+      \field{issn}{0030364X, 15265463}
+      \field{journaltitle}{Operations Research}
+      \field{number}{6}
+      \field{title}{An Algorithm for the Traveling Salesman Problem}
+      \field{urlday}{29}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{11}
+      \field{year}{1963}
+      \field{urldateera}{ce}
+      \field{pages}{972\bibrangedash 989}
+      \range{pages}{18}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/167836
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/167836
+      \endverb
+    \endentry
     \entry{liu2021swintransformerhierarchicalvision}{misc}{}{}
       \name{author}{8}{}{%
         {{hash=19aabf2deb737584450693431af51cc3}{%
@@ -1063,6 +1262,126 @@
       \verb https://link.springer.com/article/10.1007/s10589-008-9218-1
       \endverb
     \endentry
+    \entry{pan2022edgevitscompetinglightweightcnns}{misc}{}{}
+      \name{author}{8}{}{%
+        {{hash=6156d68b681040705ec43c7902c9f197}{%
+           family={Pan},
+           familyi={P\bibinitperiod},
+           given={Junting},
+           giveni={J\bibinitperiod}}}%
+        {{hash=040ff59e64537b9fa54fa42020ae5498}{%
+           family={Bulat},
+           familyi={B\bibinitperiod},
+           given={Adrian},
+           giveni={A\bibinitperiod}}}%
+        {{hash=eed08a09e49cfdfb8d7be6fd745109ea}{%
+           family={Tan},
+           familyi={T\bibinitperiod},
+           given={Fuwen},
+           giveni={F\bibinitperiod}}}%
+        {{hash=85a19af2f26cfc94baaf68bc687ae367}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Xiatian},
+           giveni={X\bibinitperiod}}}%
+        {{hash=52fdc3d537b646c5fd30947b2baea7d8}{%
+           family={Dudziak},
+           familyi={D\bibinitperiod},
+           given={Lukasz},
+           giveni={L\bibinitperiod}}}%
+        {{hash=c727733707a60b57a65c544b07a9825e}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Hongsheng},
+           giveni={H\bibinitperiod}}}%
+        {{hash=7eed88a09c3d85c8ba72dee1c5d18503}{%
+           family={Tzimiropoulos},
+           familyi={T\bibinitperiod},
+           given={Georgios},
+           giveni={G\bibinitperiod}}}%
+        {{hash=56c0ca92aad33aa72b6cb92e19ea25b9}{%
+           family={Martinez},
+           familyi={M\bibinitperiod},
+           given={Brais},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{e26d59843f8d7a916bc028bb340fd47b}
+      \strng{fullhash}{fc39ae901af29509e8d2bd39f73f8250}
+      \strng{fullhashraw}{fc39ae901af29509e8d2bd39f73f8250}
+      \strng{bibnamehash}{fc39ae901af29509e8d2bd39f73f8250}
+      \strng{authorbibnamehash}{fc39ae901af29509e8d2bd39f73f8250}
+      \strng{authornamehash}{e26d59843f8d7a916bc028bb340fd47b}
+      \strng{authorfullhash}{fc39ae901af29509e8d2bd39f73f8250}
+      \strng{authorfullhashraw}{fc39ae901af29509e8d2bd39f73f8250}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CV}
+      \field{eprinttype}{arXiv}
+      \field{title}{EdgeViTs: Competing Light-weight CNNs on Mobile Devices with Vision Transformers}
+      \field{year}{2022}
+      \verb{eprint}
+      \verb 2205.03436
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2205.03436
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2205.03436
+      \endverb
+    \endentry
+    \entry{Metrics}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=1d58f511ae6a856724b7a846876c6125}{%
+           family={Persand},
+           familyi={P\bibinitperiod},
+           given={Kaveena},
+           giveni={K\bibinitperiod}}}%
+        {{hash=5b6d10f6b5d3cdce8802a1044b53edd8}{%
+           family={Anderson},
+           familyi={A\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+        {{hash=3c5843659365f6b136433b6b30f20afb}{%
+           family={Gregg},
+           familyi={G\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Institute of Electrical}%
+        {Electronics Engineers (IEEE)}%
+      }
+      \strng{namehash}{87c5e91f64980dc8748731045b768e66}
+      \strng{fullhash}{87c5e91f64980dc8748731045b768e66}
+      \strng{fullhashraw}{87c5e91f64980dc8748731045b768e66}
+      \strng{bibnamehash}{87c5e91f64980dc8748731045b768e66}
+      \strng{authorbibnamehash}{87c5e91f64980dc8748731045b768e66}
+      \strng{authornamehash}{87c5e91f64980dc8748731045b768e66}
+      \strng{authorfullhash}{87c5e91f64980dc8748731045b768e66}
+      \strng{authorfullhashraw}{87c5e91f64980dc8748731045b768e66}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{2169-3536}
+      \field{journaltitle}{IEEE Access}
+      \field{title}{Taxonomy of Saliency Metrics for Channel Pruning}
+      \field{volume}{9}
+      \field{year}{2021}
+      \field{pages}{120110\bibrangedash 120126}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1109/access.2021.3108545
+      \endverb
+      \verb{urlraw}
+      \verb http://dx.doi.org/10.1109/ACCESS.2021.3108545
+      \endverb
+      \verb{url}
+      \verb http://dx.doi.org/10.1109/ACCESS.2021.3108545
+      \endverb
+    \endentry
     \entry{radford2021learningtransferablevisualmodels}{misc}{}{}
       \name{author}{12}{}{%
         {{hash=a812c46caad94fc8701be37871f303ba}{%
@@ -1150,6 +1469,60 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/2103.00020
+      \endverb
+    \endentry
+    \entry{sandler2019mobilenetv2invertedresidualslinear}{misc}{}{}
+      \name{author}{5}{}{%
+        {{hash=8f90fd131c2bbfde4d0e9fdd7ed4ea8b}{%
+           family={Sandler},
+           familyi={S\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=315c4166fc1f7cb66324a7f0d82827cd}{%
+           family={Howard},
+           familyi={H\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+        {{hash=d767e8e4d733bcf728bcdf2c193462f7}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Menglong},
+           giveni={M\bibinitperiod}}}%
+        {{hash=48f4090a93cf9f445057a9d6defe7973}{%
+           family={Zhmoginov},
+           familyi={Z\bibinitperiod},
+           given={Andrey},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9dddfcfd529634a150ee38ee5c0203d7}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Liang-Chieh},
+           giveni={L\bibinithyphendelim C\bibinitperiod}}}%
+      }
+      \strng{namehash}{70179dd377b16c4cfcc0748ef0bd028a}
+      \strng{fullhash}{8d58d04315a5e1c06300772330b235d7}
+      \strng{fullhashraw}{8d58d04315a5e1c06300772330b235d7}
+      \strng{bibnamehash}{8d58d04315a5e1c06300772330b235d7}
+      \strng{authorbibnamehash}{8d58d04315a5e1c06300772330b235d7}
+      \strng{authornamehash}{70179dd377b16c4cfcc0748ef0bd028a}
+      \strng{authorfullhash}{8d58d04315a5e1c06300772330b235d7}
+      \strng{authorfullhashraw}{8d58d04315a5e1c06300772330b235d7}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CV}
+      \field{eprinttype}{arXiv}
+      \field{title}{MobileNetV2: Inverted Residuals and Linear Bottlenecks}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1801.04381
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1801.04381
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1801.04381
       \endverb
     \endentry
     \entry{shaw2018selfattentionrelativepositionrepresentations}{misc}{}{}
@@ -1648,6 +2021,60 @@
       \endverb
       \verb{url}
       \verb http://arxiv.org/abs/1706.03762
+      \endverb
+    \endentry
+    \entry{wang2024repvitrevisitingmobilecnn}{misc}{}{}
+      \name{author}{5}{}{%
+        {{hash=5ad96cdc79afedb1090746b0eb414b5e}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Ao},
+           giveni={A\bibinitperiod}}}%
+        {{hash=92f386b2333cf6bddfa01a270cab627d}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Hui},
+           giveni={H\bibinitperiod}}}%
+        {{hash=adccb9cbf5120207a2a19b1d478c125d}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Zijia},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=e0bc4abfcb63924731a1bc3bc0dbb02b}{%
+           family={Han},
+           familyi={H\bibinitperiod},
+           given={Jungong},
+           giveni={J\bibinitperiod}}}%
+        {{hash=1d0a50fb618dfd81312befab2291abf1}{%
+           family={Ding},
+           familyi={D\bibinitperiod},
+           given={Guiguang},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{f4c3d40b447d6081c16d37684b88f737}
+      \strng{fullhash}{59ee46c8369c17a929d2d149cf69cb20}
+      \strng{fullhashraw}{59ee46c8369c17a929d2d149cf69cb20}
+      \strng{bibnamehash}{59ee46c8369c17a929d2d149cf69cb20}
+      \strng{authorbibnamehash}{59ee46c8369c17a929d2d149cf69cb20}
+      \strng{authornamehash}{f4c3d40b447d6081c16d37684b88f737}
+      \strng{authorfullhash}{59ee46c8369c17a929d2d149cf69cb20}
+      \strng{authorfullhashraw}{59ee46c8369c17a929d2d149cf69cb20}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CV}
+      \field{eprinttype}{arXiv}
+      \field{title}{RepViT: Revisiting Mobile CNN From ViT Perspective}
+      \field{year}{2024}
+      \verb{eprint}
+      \verb 2307.09283
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2307.09283
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2307.09283
       \endverb
     \endentry
     \entry{wu2021cvtintroducingconvolutionsvision}{misc}{}{}

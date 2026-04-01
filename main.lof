@@ -21,27 +21,30 @@
 \contentsline {figure}{\numberline {2.5}{\ignorespaces L'architettura del modello FastViT. Fonte: \blx@tocontentsinit {0}\cite {vasu2023fastvitfasthybridvision}.}}{21}{figure.caption.24}%
 \contentsline {figure}{\numberline {2.6}{\ignorespaces L'architettura del modello FasterViT. Fonte: \blx@tocontentsinit {0}\cite {hatamizadeh2024fastervitfastvisiontransformers}.}}{22}{figure.caption.26}%
 \contentsline {figure}{\numberline {2.7}{\ignorespaces Mappa di attenzione del meccanismo di \textit {Hierarchical Attention}. Fonte: \blx@tocontentsinit {0}\cite {hatamizadeh2024fastervitfastvisiontransformers}.}}{23}{figure.caption.27}%
-\contentsline {figure}{\numberline {2.8}{\ignorespaces Architettura di Vision Mamba. Fonte: \blx@tocontentsinit {0}\cite {zhu2024visionmambaefficientvisual}.}}{24}{figure.caption.29}%
-\contentsline {figure}{\numberline {2.9}{\ignorespaces Architettura di MobileViT. Fonte: \blx@tocontentsinit {0}\cite {mehta2022mobilevitlightweightgeneralpurposemobilefriendly}.}}{25}{figure.caption.31}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Architettura di Vision Mamba. Fonte: \blx@tocontentsinit {0}\cite {zhu2024visionmambaefficientvisual}.}}{23}{figure.caption.29}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Architettura di MobileViT. Fonte: \blx@tocontentsinit {0}\cite {mehta2022mobilevitlightweightgeneralpurposemobilefriendly}.}}{24}{figure.caption.31}%
 \contentsline {figure}{\numberline {2.10}{\ignorespaces Meccanismo di attenzione di MobileViT. Fonte: \blx@tocontentsinit {0}\cite {mehta2022mobilevitlightweightgeneralpurposemobilefriendly}.}}{25}{figure.caption.32}%
 \contentsline {figure}{\numberline {2.11}{\ignorespaces Mobile-Former Block. Fonte: \blx@tocontentsinit {0}\cite {chen2022mobileformerbridgingmobilenettransformer}.}}{26}{figure.caption.34}%
 \contentsline {figure}{\numberline {2.12}{\ignorespaces Architettura complessiva di Mobile-Former. Fonte: \blx@tocontentsinit {0}\cite {chen2022mobileformerbridgingmobilenettransformer}.}}{27}{figure.caption.35}%
 \contentsline {figure}{\numberline {2.13}{\ignorespaces Architettura di EdgeViT. Fonte: \blx@tocontentsinit {0}\cite {pan2022edgevitscompetinglightweightcnns}.}}{28}{figure.caption.37}%
 \contentsline {figure}{\numberline {2.14}{\ignorespaces Meccanismo di \textit {Local-Global-Local Bottleneck} applicato ad un esempio. Fonte: \blx@tocontentsinit {0}\cite {pan2022edgevitscompetinglightweightcnns}.}}{29}{figure.caption.38}%
-\contentsline {figure}{\numberline {2.15}{\ignorespaces Confronto tra il blocco di MobileNetV3 e il blocco RepViT. Fonte: \blx@tocontentsinit {0}\cite {wang2024repvitrevisitingmobilecnn}.}}{30}{figure.caption.40}%
+\contentsline {figure}{\numberline {2.15}{\ignorespaces Confronto tra il blocco di MobileNetV3 e il blocco RepViT. Fonte: \blx@tocontentsinit {0}\cite {wang2024repvitrevisitingmobilecnn}.}}{29}{figure.caption.40}%
 \contentsline {figure}{\numberline {2.16}{\ignorespaces Evoluzione dell'architettura MobileViT in RepViT da destra a sinistra. Fonte: \blx@tocontentsinit {0}\cite {wang2024repvitrevisitingmobilecnn}.}}{30}{figure.caption.41}%
 \contentsline {figure}{\numberline {2.17}{\ignorespaces Differenza tra \textit {Weight Sharing} e \textit {Weight Entanglement}. Fonte: \blx@tocontentsinit {0}\cite {chen2021autoformersearchingtransformersvisual}.}}{31}{figure.caption.43}%
 \contentsline {figure}{\numberline {2.18}{\ignorespaces Visualizzazione della \textit {Supernet} di AutoFormer (A sinistra la rete complessiva, a destra il singolo blocco). Fonte: \blx@tocontentsinit {0}\cite {chen2021autoformersearchingtransformersvisual}.}}{32}{figure.caption.44}%
+\contentsline {figure}{\numberline {2.19}{\ignorespaces Confronto tra le forme di \textit {weight sharing}. Fonte: \blx@tocontentsinit {0}\cite {su2021vitasvisiontransformerarchitecture}.}}{33}{figure.caption.46}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Rappresentazione schematica dell'albero di ricerca generato dalle azioni di \textit {Branching}.}}{38}{figure.caption.46}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{41}{figure.caption.47}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{42}{figure.caption.48}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{43}{figure.caption.49}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{43}{figure.caption.50}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{44}{figure.caption.51}%
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{44}{figure.caption.52}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Rappresentazione schematica dell'albero di ricerca generato dalle azioni di \textit {Branching}.}}{38}{figure.caption.47}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{41}{figure.caption.48}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{42}{figure.caption.49}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{43}{figure.caption.50}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{43}{figure.caption.51}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{44}{figure.caption.52}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{44}{figure.caption.53}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Processo di suddivisione del dataset adottato.}}{51}{figure.caption.55}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagramma di flusso del processo di compressione iterativo.}}{52}{figure.caption.56}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{57}{figure.caption.54}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{58}{figure.caption.55}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{57}{figure.caption.57}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{58}{figure.caption.58}%
 \addvspace {10\p@ }

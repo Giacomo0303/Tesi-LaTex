@@ -184,8 +184,8 @@ Come è possibile notare, entrambi i test di ablazione hanno dato risultati pegg
 Nel secondo test invece, la \textbf{metrica di importanza} è stata disattivata, di conseguenza per ogni azione selezionata dall'algoritmo di ricerca, viene prima selezionato casualmente il blocco \textit{Encoder} su cui agire, e successivamente vengono campionate casualmente le dimensioni da tagliare delle specifiche componenti (QK, MLP, \dots) di quel blocco (tranne per la dimensione di \textit{Embedding}, per il quale non è necessario selezionare prima il blocco su cui agire). I risultati indicano chiaramente una difficoltà dell'algoritmo di ricerca nell'esplorare lo spazio degli stati, causata proprio dalla mancanza dell'azione della metrica di importanza. Selezionando in maniera casuale le dimensioni da tagliare, la maggioranza degli stati (\textit{subnet}) che vengono esplorati risultano poco promettenti e peggiorano il valore della funzione obbiettivo, con un conseguente aumento del numero di nodi esplorati, ed una grande fatica a comprimere il modello. Durante i test che fanno uso della metrica di importanza, si assiste invece ad una progressione stabile e rapida del valore della funzione obbiettivo, che si dimostra quindi molto efficace nel guidare le azioni di \textit{pruning} e la ricerca. \newline 
 In questo secondo test è importante notare come le prestazioni del modello si sono mantenute elevate, a conferma del grande lavoro di filtraggio eseguito dal processo di ricerca, che evita di selezionare quegli stati, la cui selezione casuale dei tagli, ha danneggiato gravemente il modello. 
 
-\section{Tabella comparativa ImageNet-1K}
-\begin{table}[ht]
+\section{Tabella comparativa ImageNet-1K - DeiT-B}
+\begin{table}[H]
     \centering
     \label{tab:comparativa}
     \footnotesize 
@@ -194,11 +194,11 @@ In questo secondo test è importante notare come le prestazioni del modello si s
         \toprule
         \textbf{Modello} & \multicolumn{2}{c}{\textbf{Parametri (M)}} & \multicolumn{2}{c}{\textbf{Top-1 Acc.}} & \textbf{GFLOPs} & \textbf{Throughput} & \textbf{Latency} \\ 
         \midrule
-        DEIT-B-distil          & 86.00 &             & 83.36\% &          & 17.60 & 292.3 & NA \\
+        DEIT-B-distil*         & 86.00 &             & 83.36\% &          & 17.60 & 292.3 & NA \\
         DEIT-B          & 86.00 &             & 81.80\% &          & 17.60 & 290.9 & NA \\
         \midrule
-        \textbf{NVIT-B} & 34.00 & (2.57x)     & 83.29\% &          & 6.80  & 1.75x--1.86x & NA \\
-        \textbf{MDP}    & 40.00 & (2.15x)     & 83.47\% &          & NA    & 1.87x & NA \\
+        \textbf{NVIT-B*} & 34.00 & (2.57x)     & 83.29\% &          & 6.80  & 1.75x--1.86x & NA \\
+        \textbf{MDP*}    & 40.00 & (2.15x)     & 83.47\% &          & NA    & 1.87x & NA \\
         \textbf{UVC}    & NA    &             & 80.57\% &          & 8.00  & NA    & NA \\
         \textbf{VBP}    & 55.40 & (1.55x)     & 80.67\% &          & 11.44 & 1.44x & NA \\
         \textbf{VTP}    & 48.00 & (1.80x)     & 80.70\% &          & 10.00 & NA    & NA \\
@@ -206,3 +206,32 @@ In questo secondo test è importante notare come le prestazioni del modello si s
         \bottomrule
     \end{tabular}
 \end{table}
+
+
+
+\section{Tabella comparativa ImageNet-1K - DeiT-S}
+\begin{table}[H]
+    \centering
+    \footnotesize 
+    \setlength{\tabcolsep}{3pt} % Ridotto leggermente per far entrare 11 colonne
+    \begin{tabular}{l rr rr rr rr rr}
+        \toprule
+        \textbf{Modello} & \multicolumn{2}{c}{\textbf{Parametri (M)}} & \multicolumn{2}{c}{\textbf{Top-1 Acc.}} & \multicolumn{2}{c}{\textbf{GFLOPs}} & \multicolumn{2}{c}{\textbf{Throughput}} & \multicolumn{2}{c}{\textbf{Latency}} \\ 
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9} \cmidrule(lr){10-11}
+        & Valore & $\Delta\%$ & Valore & $\Delta\%$ & Valore & $\Delta\%$ & Valore & $\Delta\%$ & Valore & $\Delta\%$ \\
+        \midrule
+        DEIT-S-distil* & 22.00 & -- & 81.20\% & -- & 4.6 & -- & 292.3 & -- & NA & -- \\
+        DEIT-S          & 22.00 & -- & 79.80\% & -- & 4.6 & -- & 290.9 & -- & NA & -- \\
+        \midrule
+        \textbf{WDP}    & 15.00 & (-31.81\%) & 78.55\% & (-1.25\%) & 3.1 & (-32.60\%) & -- & (+10.7\%) & -- & (-11.2\%) \\
+        \textbf{CAIT}   & 18.40 & (-16.36\%) & 80.20\% & (+0.40\%) & 2.1 & (-54.35\%) & -- & (NA) & -- & (NA) \\
+        \textbf{ToaSt????}   & NA & (NA) & 83.40\% & (+3.60\%) & 2.5 & (-45.65\%) & -- & (+106.782\%) & -- & (NA) \\
+        \textbf{S2ViTE}   & 14.60 & (-33.63\%) & 79.22\% & (-0.58\%) & NA & (-31.63\%) & -- & (NA) & -- & (-22.65\%) \\
+        \textbf{GOHSP}   & 14.40 & (-35.00\%) & 79.98\% & (+0.18\%) & NA & (-35.00\%) & -- & (NA) & -- & (-24.61\%) \\
+        \textbf{COMCAT}   & 13.24 & (-40.11\%) & 79.92\% & (+0.12\%) & NA & (-41.15\%) & -- & (NA) & -- & (NA) \\
+        \textbf{X-Pruner} & NA & (NA\%) & 78.93\% & (-0.87\%) & 2.4 & (-47.90\%) & -- & (NA) & -- & (NA) \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:comparativa_imagenet}
+\end{table}
+
