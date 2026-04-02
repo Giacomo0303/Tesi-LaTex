@@ -271,25 +271,42 @@ Infine, l'algoritmo di ricerca selezionato dagli autori è di tipo evolutivo ed 
 Grazie a questo approccio, gli autori riescono a identificare architetture che raggiungono prestazioni superiori rispetto a modelli di riferimento come DeiT e ViT, con un numero di parametri e operazioni in virgola mobile (FLOPs) inferiori. 
 
 \subsubsection{ViTAS}
-Un approccio radicalmente diverso è quello proposto da Su et al. con \textbf{ViTAS} \cite{su2021vitasvisiontransformerarchitecture}, un framework nato dalla considerazione che l'applicazione diretta del NAS classico ai \textit{Vision Transformer} produce spesso risultati instabili o fallimenti catastrofici durante l'addestramento del \textit{SuperFormer}. Secondo gli autori, la causa risiede principalmente nell'addestramento sbilanciato dei vari canali preposti nella macro-architettura, in modo tale da danneggiare il meccanismo di \textit{weight sharing}. Per stabilizzare questo processo, gli autori introducono due contributi principali:
+Un approccio radicalmente diverso è quello proposto da Su et al. con \textbf{ViTAS} \cite{su2021vitasvisiontransformerarchitecture}, un framework nato dalla considerazione che l'applicazione diretta del NAS classico ai \textit{Vision Transformer} produce spesso risultati instabili durante l'addestramento del \textit{SuperFormer}. Secondo gli autori, la causa risiede principalmente nell'addestramento sbilanciato dei vari canali preposti nella macro-architettura, in modo tale da danneggiare il meccanismo di \textit{weight sharing}. Per stabilizzare questo processo, gli autori introducono due contributi principali:
 \begin{itemize}
     \item Un nuovo meccanismo di \textbf{Cyclic Weight-Sharing} che garantisce un addestramento equo di tutti i canali, indipendentemente dalla dimensione delle sottoreti campionate in fase di training.
     \item Una strategia di \textbf{Identity Shifting} che elimina le ridondanze e le ambiguità all'interno dello spazio di ricerca, obbligando le operazioni di identità a collocarsi solo nei livelli più profondi di ogni stadio.
 \end{itemize}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/SOTA/ViTAS_1.pdf}
-    \caption{Confronto tra le forme di \textit{weight sharing}. Fonte: \cite{su2021vitasvisiontransformerarchitecture}.}
+    \includegraphics[width=0.9\textwidth]{images/SOTA/ViTAS_1.pdf}
+    \caption{Confronto tra le forme di \textit{weight sharing}. Da sinistra: Ordinale, Bilaterale e Ciclico. Fonte:~\cite{su2021vitasvisiontransformerarchitecture}.}
 \end{figure}
-Il problema principale riscontrato nel NAS tradizionale è il cosiddetto bias di addestramento dei canali. Nelle tecniche comuni, si utilizza un meccanismo ordinale: se una sottorete necessita di $i$ canali, durante il campionamento delle sottoret
- in fase di training, vengono presi i primi $i$ canali da sinistra. Ciò significa che i canali posizionati all'inizio della matrice vengono addestrati molto più spesso di quelli finali, creando una disparità enorme nella loro ottimizzazione.
-\textit{ViTAS} risolve questo problema con il \textit{Cyclic Weight-Sharing} che punta ad una uniformità dell'addestramento: ogni canale deve ricevere lo stesso numero di aggiornamenti indipendentemente dalla dimensione della sottorete campionata. Oltre a questa l'obbiettivo Uniformità dell'influenza: ogni canale deve avere un impatto equivalente sul gradiente totale.
-Questo bilanciamento viene formulato come un problema di ottimizzazione matematica complessa (QCQP - Quadratically Constrained Quadratic Program), garantendo che ogni "fetta" della rete sia addestrata con la stessa dignità.La Strategia di Identity ShiftingUn altro ostacolo rimosso da ViTAS è il problema del mapping molti-a-uno. In uno spazio di ricerca standard, percorsi diversi all'interno del Superformer possono corrispondere alla stessa architettura finale (ad esempio, scambiare l'ordine di due blocchi identità non cambia il modello). Questa ambiguità confonde l'algoritmo di ricerca.
-Con l'Identity Shifting, gli autori obbligano le operazioni di identità a collocarsi solo nei livelli più profondi di ogni stadio, eliminando le ridondanze e riducendo drasticamente lo spazio di ricerca (in un esempio citato, da $3^{12}$ a $2^{13}-1$ combinazioni possibili).Spazio di Ricerca e RisultatiLo spazio di ricerca di ViTAS è tra i più vasti della letteratura, arrivando a coprire fino a $1.1 \times 10^{54}$ combinazioni. Esso permette di variare:Numero di teste, dimensione dei patch, tipo di operazione, dimensione di output di ogni layer e profondità complessiva.
-La ricerca viene guidata dall'algoritmo evolutivo multi-obiettivo NSGA-II, capace di ottimizzare contemporaneamente l'accuratezza e i vincoli hardware come i FLOPs o il throughput della GPU.I risultati confermano la validità di questa rigorosa impostazione: con un budget di soli 3.0G FLOPs, ViTAS raggiunge un'accuratezza dell'82,0% su ImageNet-1k, superando del 2,4% altri modelli ViT di riferimento a parità di costo computazionale.
+Il problema principale riscontrato nel \textit{weight sharing} tradizionale è il cosiddetto bias di addestramento dei canali. Nelle tecniche comuni, si utilizza un meccanismo ordinale: se una sottorete necessita di $i$ canali, durante il campionamento delle sottoreti in fase di training, vengono selezionati i primi $i$ canali da sinistra. Ciò significa che i canali posizionati all'inizio della matrice vengono addestrati molto più spesso di quelli finali, creando una disparità enorme nella loro ottimizzazione.
+Lo stesso fenomeno occorre nel caso di meccanismo bilaterale, in cui i canali vengono selezionati simmetricamente a partire da entrambi i lati della matrice. In questo caso, i canali centrali vengono addestrati più spesso di quelli periferici. \par
+\textit{ViTAS} risolve questo problema introducendo il \textit{Cyclic Weight-Sharing} che punta ad una uniformità dell'addestramento: ogni canale deve ricevere lo stesso numero di aggiornamenti indipendentemente dalla dimensione della sottorete campionata. Un ulteriore obbiettivo è l'uniformità dell'influenza: ogni canale deve avere un impatto equivalente sul gradiente totale. 
+Al fine di ottenere questo bilanciamento viene formulato un problema di ottimizzazione (\textit{Quadratically Constrained Quadratic Program}) (QCQP).
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{images/SOTA/ViTAS_2.pdf}
+    \caption{Problema della ridondanza dello spazio di ricerca, e tecnica di \textit{Identity Shifting}. Fonte:~\cite{su2021vitasvisiontransformerarchitecture}.}
+    \label{figure:vitas_2}
+\end{figure}
+La Strategia di \textit{Identity Shifting} viene introdotta dagli autori al fine di risolvere la ridondanza degli spazi di ricerca NAS, osservabile in Figura \ref{figure:vitas_2}. In uno spazio di ricerca è possibile che percorsi diversi all'interno del \textit{Superformer} possano corrispondere alla stessa architettura finale (ad esempio, scambiare l'ordine di due blocchi identità non cambia il modello). Questa ambiguità arricchisce lo spazio di ricerca ma di architetture duplicate, complicando il processo e prolungando il tempo necessario.
+Con l'\textit{Identity Shifting}, gli autori predispongono le operazioni di identità solo nei livelli più profondi di ogni stadio, eliminando le ridondanze e riducendo drasticamente lo spazio di ricerca (in un esempio citato, da $3^{12}$ a $2^{13}-1$ combinazioni possibili~\cite{su2021vitasvisiontransformerarchitecture}).\par
+La ricerca viene guidata dall'algoritmo evolutivo multi-obiettivo NSGA-II \cite{Deb2002fastelitistmultiobjective}, capace di ottimizzare contemporaneamente l'accuratezza e i vincoli hardware come i FLOPs. I risultati confermano la validità di questa rigorosa impostazione: con un budget di soli 3.0G FLOPs, ViTAS raggiunge un'accuratezza dell'82,0\% sul dataset ImageNet-1k, superando anche le prestazioni di \textit{AutoFormer}.
 
-
-
+\subsubsection{NASViT}
+Un ulteriore contributo in questo ambito è quello di Gong et al. \cite{gong2021nasvit} con il loro modello \textbf{NASViT}. Gli autori osservano che, provando ad addestrare una \textit{SuperNet} (ViT) che contiene tutte le possibili architetture candidate, si riscontra un problema di instabilità e scarse prestazioni. La causa di queste difficoltà può essere individuata nel conflitto tra i gradienti delle \textit{SubNet} e quelli della \textit{SuperNet}. Questo fenomeno implica che, addestrando la \textit{SuperNet} campionando le varie \textit{SubNet}, si ottengono risultati inferiori dalla rete complessiva. \par
+Gli autori risolvono il problema proiettando i gradienti della \textit{SuperNet} lungo la direzione ortogonale a quelli delle \textit{SubNet} esclusivamente quando la similarità coseno tra i due è negativa, in modo da evitare interferenze e garantire un addestramento più stabile e performante. L'unico svantaggio di questo approccio risulta il bias dei gradienti verso le \textit{SubNet}, il quale ha avuto un impatto negativo sui tempi di convergenza. \par
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/SOTA/NASViT.png}
+    \caption{Switchable Scaling Layer introdotti all'interno dei blocchi \textit{Transformer}. Fonte:~\cite{su2021vitasvisiontransformerarchitecture}.}
+    \label{figure:nasvit}
+\end{figure}
+Viene introdotto inoltre lo \textbf{Switchable Scaling Layer} che permette di scalare dinamicamente le feature in uscita dalle componenti dei blocchi \textit{Transformer} che vengono selezionati in fase di ricerca, come è possibile notare dalla Figura \ref{figure:nasvit}. In particolare ognuno di questi layer apprende una matrice di pesi $W_{\text{scale}}$ che viene utilizzata per proiettare l'output ($x$) della \textit{Self-Attention} o del MLP, fornendo in output $W_{\text{scale}} \cdot x$. Questo meccanismo si è dimostrato efficace per aumentare la capacità e la flessibilità delle \textit{SubNet}. \par
+Risulta importante notare che gli autori hanno osservato un aumento del fenomeno dei gradienti in conflitto tra le \textit{SubNet} e la \textit{SuperNet} quando si adottano tecniche di \textit{Augmentation} e \textit{Regularization} aggressive. \par
+Per quanto concerne i risultati, gli autori utilizzano le tecniche di cui sopra con un algoritmo evolutivo per esplorare lo spazio di ricerca, guidato da una funzione obiettivo che bilancia accuratezza e FLOPs. Grazie a questo approccio, i modelli NASViT riescono a raggiungere e superare le prestazioni delle reti convoluzionali (ad esempio ResNet \cite{he2015deepresiduallearningimage}) a parità di FLOPs.
 
 \section{Metodi di Compressione}
 \subsection{Pruning}
