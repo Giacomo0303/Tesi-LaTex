@@ -35,18 +35,20 @@
 \contentsline {figure}{\numberline {2.19}{\ignorespaces Confronto tra le forme di \textit {weight sharing}. Da sinistra: Ordinale, Bilaterale e Ciclico. Fonte:~\blx@tocontentsinit {0}\cite {su2021vitasvisiontransformerarchitecture}.}}{33}{figure.caption.46}%
 \contentsline {figure}{\numberline {2.20}{\ignorespaces Problema della ridondanza dello spazio di ricerca, e tecnica di \textit {Identity Shifting}. Fonte:~\blx@tocontentsinit {0}\cite {su2021vitasvisiontransformerarchitecture}.}}{34}{figure.caption.47}%
 \contentsline {figure}{\numberline {2.21}{\ignorespaces Switchable Scaling Layer introdotti all'interno dei blocchi \textit {Transformer}. Fonte:~\blx@tocontentsinit {0}\cite {su2021vitasvisiontransformerarchitecture}.}}{35}{figure.caption.49}%
+\contentsline {figure}{\numberline {2.22}{\ignorespaces Visualizzazione delle politiche di condivisione dei parametri in MDL-NAS: \textit {Sequential Sharing} e \textit {Mask Sharing}. Fonte:~\blx@tocontentsinit {0}\cite {wang2023mdlnas}.}}{37}{figure.caption.51}%
+\contentsline {figure}{\numberline {2.23}{\ignorespaces Rappresentazione dello spazio di ricerca continuo in DASViT tramite Grafo Aciclico Diretto (DAG) e selezione finale dell'architettura. Fonte:~\blx@tocontentsinit {0}\cite {wu2025dasvitdifferentiablearchitecturesearch}.}}{38}{figure.caption.53}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Rappresentazione schematica dell'albero di ricerca generato dalle azioni di \textit {Branching}.}}{40}{figure.caption.50}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{44}{figure.caption.51}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{45}{figure.caption.52}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{45}{figure.caption.53}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{46}{figure.caption.54}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{47}{figure.caption.55}%
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{47}{figure.caption.56}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Rappresentazione schematica dell'albero di ricerca generato dalle azioni di \textit {Branching}.}}{45}{figure.caption.60}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{49}{figure.caption.61}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{50}{figure.caption.62}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{50}{figure.caption.63}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{51}{figure.caption.64}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{52}{figure.caption.65}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{52}{figure.caption.66}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Processo di suddivisione del dataset adottato.}}{54}{figure.caption.58}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagramma di flusso del processo di compressione iterativo.}}{55}{figure.caption.59}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Processo di suddivisione del dataset adottato.}}{59}{figure.caption.68}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagramma di flusso del processo di compressione iterativo.}}{60}{figure.caption.69}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{60}{figure.caption.60}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{61}{figure.caption.61}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{65}{figure.caption.70}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{66}{figure.caption.71}%
 \addvspace {10\p@ }

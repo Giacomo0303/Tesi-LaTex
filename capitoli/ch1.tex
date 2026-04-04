@@ -5,8 +5,9 @@ promettenti volte a coniugare elevate prestazioni e sostenibilità
 computazionale. In questo capitolo verrà esaminato il panorama delle soluzioni
 atte a rendere i \textbf{Vision Transformer} (ViT) applicabili in scenari
 reali, caratterizzati da vincoli di latenza, memoria e consumo energetico.
-Occorre notare che nessuna soluzione esclude automaticamente le altre, spesso molti di
-questi approcci vengono integrati e combinati per ottenere risultati migliori.
+Occorre notare che nessuna soluzione esclude automaticamente le altre, spesso
+molti di questi approcci vengono integrati e combinati per ottenere risultati
+migliori.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{images/SOTA/tassonomia.pdf}
@@ -18,7 +19,7 @@ La trattazione si articolerà su due fronti principali:
           \begin{itemize}
               \item \textbf{Architetture Ibride:} architetture che integrano elementi tipici dei modelli \textit{Transformer} con elementi tipici delle reti convoluzionali, al fine di sfruttare i punti di forza di entrambe le tipologie di modelli e ottenere un buon compromesso tra prestazioni e efficienza;
               \item \textbf{Architetture Edge-Optimized:} modelli progettati specificamente per essere eseguiti su dispositivi con risorse limitate, come smartphone o dispositivi IoT, con l'obiettivo di massimizzare le prestazioni mantenendo un basso consumo energetico e ridotti requisiti computazionali;
-              \item \textbf{Neural Architecture Search (NAS):} ovvero l'automazione del processo di design di architetture, attraverso procedure di ricerca e ottimizzazione automatica. Questi metodi permettono di esplorare in modo efficiente un ampio spazio di architetture candidate, identificando le migliori secondo criteri di prestazioni e efficienza, eliminando la necessità di una progettazione manuale estensiva. 
+              \item \textbf{Neural Architecture Search (NAS):} ovvero l'automazione del processo di design di architetture, attraverso procedure di ricerca e ottimizzazione automatica. Questi metodi permettono di esplorare in modo efficiente un ampio spazio di architetture candidate, identificando le migliori secondo criteri di prestazioni e efficienza, eliminando la necessità di una progettazione manuale estensiva.
           \end{itemize}
     \item \textbf{Tecniche di Compressione dei modelli:} lo studio di metodologie applicabili a reti pre-esistenti al fine di ridurne la dimensione e migliorarne l'efficienza, tra cui:
           \begin{itemize}
@@ -28,10 +29,13 @@ La trattazione si articolerà su due fronti principali:
           \end{itemize}
 \end{itemize}
 \section{Architetture efficienti di ViT}
-Di seguito verranno analizzate le principali architetture efficienti di ViT, spaziando dai primi approcci applicati a seguito dell'introduzione dei ViT, fino alle soluzioni più recenti e innovative.
+Di seguito verranno analizzate le principali architetture efficienti di ViT,
+spaziando dai primi approcci applicati a seguito dell'introduzione dei ViT,
+fino alle soluzioni più recenti e innovative.
 \subsection{Architetture Ibride}
 A partire dall'introduzione dei \textit{Vision Transformer} (ViT) da parte di
-Dosovitskiy et al.~\cite{dosovitskiy2021imageworth16x16words}, la comunità ha compiuto numerosi sforzi per sviluppare architetture che potessero mantenere le
+Dosovitskiy et al.~\cite{dosovitskiy2021imageworth16x16words}, la comunità ha
+compiuto numerosi sforzi per sviluppare architetture che potessero mantenere le
 prestazioni elevate dei ViT, ma con una complessità computazionale ridotta. Tra
 queste, le architetture ibride rappresentano una delle direzioni più
 promettenti ed esplorate.
@@ -39,8 +43,8 @@ promettenti ed esplorate.
 Uno dei primi approcci è stato quello presentato da Srinivas et
 al.~\cite{srinivas2021bottlenecktransformersvisualrecognition}, nel quale è
 stata modificata una architettura ResNet \cite{he2015deepresiduallearningimage}
-sostituendo le convoluzioni spaziali $(3\times3)$ negli ultimi 3 blocchi (definiti
-\textit{bottleneck}) con dei blocchi Multi-Head Self-Attention.
+sostituendo le convoluzioni spaziali $(3\times3)$ negli ultimi 3 blocchi
+(definiti \textit{bottleneck}) con dei blocchi Multi-Head Self-Attention.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{images/SOTA/BoTNet.pdf}
@@ -78,19 +82,28 @@ elevate prestazioni.
 Gli autori hanno dimostrato che questo approccio permette di raggiungere prestazioni superiori rispetto a molte architetture CNN e ViT, con un numero di parametri e un numero di operazioni in virgola mobile (FLOPs) inferiori.
 \subsubsection{FastViT}
 Di recente, ulteriori sviluppi sono stati presentati da Vasu et al.
-\cite{vasu2023fastvitfasthybridvision} con l'architettura \mbox{\textbf{FastViT}},
-nella quale si affronta il problema della latenza causata dai frequenti accessi
-in memoria necessari durante l'inferenza. In particolare, le connessioni
-residuali, seppur fondamentali per evitare la scomparsa del gradiente,
-contribuiscono pesantemente a questo problema, richiedendo di recuperare
-continuamente dalla memoria i valori sui quali eseguire la somma.
+\cite{vasu2023fastvitfasthybridvision} con l'architettura
+\mbox{\textbf{FastViT}}, nella quale si affronta il problema della latenza
+causata dai frequenti accessi in memoria necessari durante l'inferenza. In
+particolare, le connessioni residuali, seppur fondamentali per evitare la
+scomparsa del gradiente, contribuiscono pesantemente a questo problema,
+richiedendo di recuperare continuamente dalla memoria i valori sui quali
+eseguire la somma.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{images/SOTA/fastvit_arch.pdf}
     \caption{L'architettura del modello FastViT. Fonte: \cite{vasu2023fastvitfasthybridvision}.}
 \end{figure}
 Gli autori risolvono questo problema applicando una \textbf{riparametrizzazione strutturale post-addestramento} all'interno di un modulo proprietario denominato \textbf{RepMixer}. Durante il \textit{training}, la rete sfrutta connessioni residuali e convoluzioni su rami paralleli per massimizzare la capacità di apprendimento; in fase di inferenza, queste strutture parallele vengono fuse matematicamente in un'unica convoluzione di tipo \textit{depthwise}. Questo approccio permette di eliminare del tutto le operazioni di somma e i relativi accessi in memoria, mantenendo inalterate le elevate prestazioni predittive. \par
-L'architettura di \textit{FastViT} affida ai primi tre stadi, composti da blocchi convoluzionali, il compito di abbattere rapidamente la risoluzione. L'ultimo stadio introduce strategicamente un blocco di \textit{Self-Attention}, che permette di ampliare il \textit{receptive-field} e catturare le dipendenze globali solo quando la mappa delle \textit{feature} è sufficientemente ridotta, evitando un aumento eccessivo della complessità computazionale. Grazie a queste soluzioni, il modello raggiunge prestazioni uguali o superiori alle architetture ibride di riferimento, ma con latenza e operazioni in virgola mobile (FLOPs) drasticamente inferiori.
+L'architettura di \textit{FastViT} affida ai primi tre stadi, composti da
+blocchi convoluzionali, il compito di abbattere rapidamente la risoluzione.
+L'ultimo stadio introduce strategicamente un blocco di \textit{Self-Attention},
+che permette di ampliare il \textit{receptive-field} e catturare le dipendenze
+globali solo quando la mappa delle \textit{feature} è sufficientemente ridotta,
+evitando un aumento eccessivo della complessità computazionale. Grazie a queste
+soluzioni, il modello raggiunge prestazioni uguali o superiori alle
+architetture ibride di riferimento, ma con latenza e operazioni in virgola
+mobile (FLOPs) drasticamente inferiori.
 \subsubsection{FasterViT}
 Una ulteriore direzione di ricerca è quella di modificare il meccanismo di
 attenzione, al fine di introdurlo in una architettura basata su CNN, per
@@ -109,15 +122,18 @@ L'approccio proposto risulta particolarmente efficace nei casi in cui vengono el
     \includegraphics[width=0.15\textwidth]{images/SOTA/fastervit_HAT.pdf}
     \caption{Mappa di attenzione del meccanismo di \textit{Hierarchical Attention}. Fonte: \cite{hatamizadeh2024fastervitfastvisiontransformers}.}
 \end{figure}
-La vera innovazione di \textit{FasterViT} risiede nel nuovo meccanismo di \textbf{Hierarchical Attention (HAT)} utilizzato in questi ultimi stadi. Il modello introduce dei \textit{Carrier Tokens} (token portatori) che agiscono come ponte informativo: questi speciali \textit{token} riassumono prima le informazioni all'interno delle singole finestre locali, interagiscono poi tra di loro a livello globale scambiandosi il contesto generale dell'immagine e, infine, ritrasmettono l'informazione globale aggiornata ai \textit{token} delle rispettive finestre locali. Questo approccio si avvicina ad un concetto di un \textit{receptive-field} globale ma con una frazione del costo computazionale originale. \par 
-Utilizzando queste novità \textit{FasterViT} riesce a stabilire nuovi standard di velocità ed efficienza, dimostrando che l'uso sinergico di convoluzioni iniziali e attenzione negli ultimi stadi è una strategia molto efficace per ottenere ottime prestazioni con costi computazionali contenuti.
+La vera innovazione di \textit{FasterViT} risiede nel nuovo meccanismo di \textbf{Hierarchical Attention (HAT)} utilizzato in questi ultimi stadi. Il modello introduce dei \textit{Carrier Tokens} (token portatori) che agiscono come ponte informativo: questi speciali \textit{token} riassumono prima le informazioni all'interno delle singole finestre locali, interagiscono poi tra di loro a livello globale scambiandosi il contesto generale dell'immagine e, infine, ritrasmettono l'informazione globale aggiornata ai \textit{token} delle rispettive finestre locali. Questo approccio si avvicina ad un concetto di un \textit{receptive-field} globale ma con una frazione del costo computazionale originale. \par
+Utilizzando queste novità \textit{FasterViT} riesce a stabilire nuovi standard
+di velocità ed efficienza, dimostrando che l'uso sinergico di convoluzioni
+iniziali e attenzione negli ultimi stadi è una strategia molto efficace per
+ottenere ottime prestazioni con costi computazionali contenuti.
 \subsubsection{Vision Mamba}
 Infine, di recente, il concetto di ibridazione si è spinto oltre la
 combinazione di CNN e \textit{Transformer} classici. Per far fronte alla
 necessità di elaborare sequenze visive o immagini ad altissima risoluzione con
-complessità strettamente lineare $O(N)$, la ricerca più recente ha
-iniziato a sostituire i moduli di attenzione globale con i Modelli a Spazio di
-Stato (SSM), in particolare la loro declinazione denominata \textbf{Mamba}
+complessità strettamente lineare $O(N)$, la ricerca più recente ha iniziato a
+sostituire i moduli di attenzione globale con i Modelli a Spazio di Stato
+(SSM), in particolare la loro declinazione denominata \textbf{Mamba}
 \cite{gu2024mambalineartimesequencemodeling}.
 \begin{figure}[H]
     \centering
@@ -134,10 +150,11 @@ implementando acceleratori specializzati per l'esecuzione di modelli neurali
 (NPU, \textit{Neural Processing Unit}), sia in ambito architetturale,
 progettando modelli specificamente ottimizzati per i dispositivi \textit{edge}.
 \subsubsection{MobileViT}
-Uno dei primi lavori in questo senso è stato quello di Mehta et al.~\cite{mehta2022mobilevitlightweightgeneralpurposemobilefriendly}, con il famoso
-\textbf{MobileViT} che utilizza un approccio ibrido per coniugare l'efficienza
-computazionale delle CNN con la capacità di catturare dipendenze globali dei
-ViT.
+Uno dei primi lavori in questo senso è stato quello di Mehta et
+al.~\cite{mehta2022mobilevitlightweightgeneralpurposemobilefriendly}, con il
+famoso \textbf{MobileViT} che utilizza un approccio ibrido per coniugare
+l'efficienza computazionale delle CNN con la capacità di catturare dipendenze
+globali dei ViT.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{images/SOTA/mobilevit_arch.png}
@@ -164,11 +181,13 @@ reale prezzo computazionale. Infatti, calcolare un'attenzione globale su tutti
 i pixel dell'immagine contemporaneamente comporterebbe un costo elevatissimo, insostenibile per un dispositivo mobile; svolgendo invece il calcolo in parallelo su
 queste specifiche sotto-sequenze posizionali, il costo totale viene abbattuto
 drasticamente. \par
-Terminato il calcolo dell'attenzione, viene effettuata l'operazione inversa, definita \textit{folding} (ripiegamento). I pixel appena
-aggiornati dal \textit{Transformer} vengono ricollocati nelle
-loro coordinate 2D di origine, restituendo in uscita una mappa spaziale intatta
-e pronta per le elaborazioni successive.
-Tramite questo approccio, MobileViT raggiunge e supera le prestazioni sia delle CNN sia dei ViT tradizionali, risultando più efficiente di questi ultimi ma non delle prime.
+Terminato il calcolo dell'attenzione, viene effettuata l'operazione inversa,
+definita \textit{folding} (ripiegamento). I pixel appena aggiornati dal
+\textit{Transformer} vengono ricollocati nelle loro coordinate 2D di origine,
+restituendo in uscita una mappa spaziale intatta e pronta per le elaborazioni
+successive. Tramite questo approccio, MobileViT raggiunge e supera le
+prestazioni sia delle CNN sia dei ViT tradizionali, risultando più efficiente
+di questi ultimi ma non delle prime.
 \subsubsection{Mobile-Former}
 In \cite{chen2022mobileformerbridgingmobilenettransformer}, Chen et al.
 propongono una soluzione innovativa che integra le due architetture
@@ -191,7 +210,7 @@ Inoltre, i token utilizzati nel ramo di attenzione non sono estratti dall'immagi
     \caption{Architettura complessiva di Mobile-Former. Fonte: \cite{chen2022mobileformerbridgingmobilenettransformer}.}
 \end{figure}
 A valle dei blocchi \textit{Mobile-Former}, le \textit{feature map} in uscita dalla porzione convoluzionale vengono sottoposte ad una operazione di global average pooling ottenendo un vettore a cui vengono concatenati i token del ramo di attenzione. Questa nuova sequenza viene
- poi essere processata da un classificatore finale.
+poi essere processata da un classificatore finale.
 Grazie a questa architettura, Mobile-Former riesce a raggiungere prestazioni competitive rispetto sia ai classici modelli ViT, Swin e DeiT sia rispetto ad altre architetture basate su convoluzioni, con un numero di operazioni matematiche di moltiplicazione e somma (\textit{MAdds}) estremamente ridotto (circa 3-4 volte inferiori rispetto ai modelli \textit{Transformer} di riferimento), rendendolo particolarmente adatto per l'esecuzione su dispositivi mobili.
 \subsubsection{EdgeViT}
 Un altro esempio rilevante di architettura \textit{edge-optimized} è quello di
@@ -246,8 +265,8 @@ processo, sono stati sviluppati metodi di \textbf{Neural Architecture Search
     (NAS)}, che automatizzano il processo di ricerca di architetture ottimali in
 termini di costi e prestazioni.
 \subsubsection{AutoFormer}
-Per quanto riguarda i
-\textit{Vision Transformer}, uno dei primi lavori ad affrontare il problema  è stato quello di Chen et al.
+Per quanto riguarda i \textit{Vision Transformer}, uno dei primi lavori ad
+affrontare il problema è stato quello di Chen et al.
 \cite{chen2021autoformersearchingtransformersvisual} con i loro modelli
 \textbf{AutoFormer}. Gli autori formulano il problema di ricerca secondo una
 tecnica \textit{One Shot}, ovvero non creano molteplici reti che vengono
@@ -267,14 +286,35 @@ La grande introduzione di questo lavoro è proprio il meccanismo di \textbf{Weig
     \caption{Visualizzazione della \textit{Supernet} di AutoFormer (A sinistra la rete complessiva, a destra il singolo blocco). Fonte: \cite{chen2021autoformersearchingtransformersvisual}.}
 \end{figure}
 Lo spazio di ricerca definito dagli autori, contenuto all'interno della \textit{SuperNet}, prevede la possibilità di variare la dimensione dell'\textit{embedding}, la dimensione di \textit{query-key-value}, il numero di teste di attenzione, la dimensione del feed-forward network e il numero di blocchi. In uno spazio di questo tipo una \textit{Subnet} è definita da una specifica combinazione di valori discreti, selezionati in fase di ricerca all'interno di intervalli predefiniti, per ognuno di questi parametri. \par
-Infine, l'algoritmo di ricerca selezionato dagli autori è di tipo evolutivo ed utilizza operazioni di mutazione ed incrocio tra reti candidate per esplorare in maniera efficiente lo spazio di ricerca, guidato da una funzione obiettivo che bilancia accuratezza e numero di parametri. Notare inoltre che, a valle del processo di ricerca, non è necessario eseguire un ulteriore processo di addestramento, in quanto le \textit{Subnet} condividono i pesi addestrati della \textit{SuperNet} e sono già in grado di raggiungere prestazioni elevate.
-Grazie a questo approccio, gli autori riescono a identificare architetture che raggiungono prestazioni superiori rispetto a modelli di riferimento come DeiT e ViT, con un numero di parametri e operazioni in virgola mobile (FLOPs) inferiori. 
+Infine, l'algoritmo di ricerca selezionato dagli autori è di tipo evolutivo ed
+utilizza operazioni di mutazione ed incrocio tra reti candidate per esplorare
+in maniera efficiente lo spazio di ricerca, guidato da una funzione obiettivo
+che bilancia accuratezza e numero di parametri. Notare inoltre che, a valle del
+processo di ricerca, non è necessario eseguire un ulteriore processo di
+addestramento, in quanto le \textit{Subnet} condividono i pesi addestrati della
+\textit{SuperNet} e sono già in grado di raggiungere prestazioni elevate.
+Grazie a questo approccio, gli autori riescono a identificare architetture che
+raggiungono prestazioni superiori rispetto a modelli di riferimento come DeiT e
+ViT, con un numero di parametri e operazioni in virgola mobile (FLOPs)
+inferiori.
 
 \subsubsection{ViTAS}
-Un approccio radicalmente diverso è quello proposto da Su et al. con \textbf{ViTAS} \cite{su2021vitasvisiontransformerarchitecture}, un framework nato dalla considerazione che l'applicazione diretta del NAS classico ai \textit{Vision Transformer} produce spesso risultati instabili durante l'addestramento del \textit{SuperFormer}. Secondo gli autori, la causa risiede principalmente nell'addestramento sbilanciato dei vari canali preposti nella macro-architettura, in modo tale da danneggiare il meccanismo di \textit{weight sharing}. Per stabilizzare questo processo, gli autori introducono due contributi principali:
+Un approccio radicalmente diverso è quello proposto da Su et al. con
+\textbf{ViTAS} \cite{su2021vitasvisiontransformerarchitecture}, un framework
+nato dalla considerazione che l'applicazione diretta del NAS classico ai
+\textit{Vision Transformer} produce spesso risultati instabili durante
+l'addestramento del \textit{SuperFormer}. Secondo gli autori, la causa risiede
+principalmente nell'addestramento sbilanciato dei vari canali preposti nella
+macro-architettura, in modo tale da danneggiare il meccanismo di \textit{weight
+    sharing}. Per stabilizzare questo processo, gli autori introducono due
+contributi principali:
 \begin{itemize}
-    \item Un nuovo meccanismo di \textbf{Cyclic Weight-Sharing} che garantisce un addestramento equo di tutti i canali, indipendentemente dalla dimensione delle sottoreti campionate in fase di training.
-    \item Una strategia di \textbf{Identity Shifting} che elimina le ridondanze e le ambiguità all'interno dello spazio di ricerca, obbligando le operazioni di identità a collocarsi solo nei livelli più profondi di ogni stadio.
+    \item Un nuovo meccanismo di \textbf{Cyclic Weight-Sharing} che garantisce un
+          addestramento equo di tutti i canali, indipendentemente dalla dimensione delle
+          sottoreti campionate in fase di training.
+    \item Una strategia di \textbf{Identity Shifting} che elimina le ridondanze e le
+          ambiguità all'interno dello spazio di ricerca, obbligando le operazioni di
+          identità a collocarsi solo nei livelli più profondi di ogni stadio.
 \end{itemize}
 \begin{figure}[H]
     \centering
@@ -283,7 +323,7 @@ Un approccio radicalmente diverso è quello proposto da Su et al. con \textbf{Vi
 \end{figure}
 Il problema principale riscontrato nel \textit{weight sharing} tradizionale è il cosiddetto bias di addestramento dei canali. Nelle tecniche comuni, si utilizza un meccanismo ordinale: se una sottorete necessita di $i$ canali, durante il campionamento delle sottoreti in fase di training, vengono selezionati i primi $i$ canali da sinistra. Ciò significa che i canali posizionati all'inizio della matrice vengono addestrati molto più spesso di quelli finali, creando una disparità enorme nella loro ottimizzazione.
 Lo stesso fenomeno occorre nel caso di meccanismo bilaterale, in cui i canali vengono selezionati simmetricamente a partire da entrambi i lati della matrice. In questo caso, i canali centrali vengono addestrati più spesso di quelli periferici. \par
-\textit{ViTAS} risolve questo problema introducendo il \textit{Cyclic Weight-Sharing} che punta ad una uniformità dell'addestramento: ogni canale deve ricevere lo stesso numero di aggiornamenti indipendentemente dalla dimensione della sottorete campionata. Un ulteriore obbiettivo è l'uniformità dell'influenza: ogni canale deve avere un impatto equivalente sul gradiente totale. 
+\textit{ViTAS} risolve questo problema introducendo il \textit{Cyclic Weight-Sharing} che punta ad una uniformità dell'addestramento: ogni canale deve ricevere lo stesso numero di aggiornamenti indipendentemente dalla dimensione della sottorete campionata. Un ulteriore obbiettivo è l'uniformità dell'influenza: ogni canale deve avere un impatto equivalente sul gradiente totale.
 Al fine di ottenere questo bilanciamento viene formulato un problema di ottimizzazione (\textit{Quadratically Constrained Quadratic Program}) (QCQP).
 \begin{figure}[H]
     \centering
@@ -293,11 +333,30 @@ Al fine di ottenere questo bilanciamento viene formulato un problema di ottimizz
 \end{figure}
 La Strategia di \textit{Identity Shifting} viene introdotta dagli autori al fine di risolvere la ridondanza degli spazi di ricerca NAS, osservabile in Figura \ref{figure:vitas_2}. In uno spazio di ricerca è possibile che percorsi diversi all'interno del \textit{Superformer} possano corrispondere alla stessa architettura finale (ad esempio, scambiare l'ordine di due blocchi identità non cambia il modello). Questa ambiguità arricchisce lo spazio di ricerca ma di architetture duplicate, complicando il processo e prolungando il tempo necessario.
 Con l'\textit{Identity Shifting}, gli autori predispongono le operazioni di identità solo nei livelli più profondi di ogni stadio, eliminando le ridondanze e riducendo drasticamente lo spazio di ricerca (in un esempio citato, da $3^{12}$ a $2^{13}-1$ combinazioni possibili~\cite{su2021vitasvisiontransformerarchitecture}).\par
-La ricerca viene guidata dall'algoritmo evolutivo multi-obiettivo NSGA-II \cite{Deb2002fastelitistmultiobjective}, capace di ottimizzare contemporaneamente l'accuratezza e i vincoli hardware come i FLOPs. I risultati confermano la validità di questa rigorosa impostazione: con un budget di soli 3.0G FLOPs, ViTAS raggiunge un'accuratezza dell'82,0\% sul dataset ImageNet-1k, superando anche le prestazioni di \textit{AutoFormer}.
+La ricerca viene guidata dall'algoritmo evolutivo multi-obiettivo NSGA-II
+\cite{Deb2002fastelitistmultiobjective}, capace di ottimizzare
+contemporaneamente l'accuratezza e i vincoli hardware come i FLOPs. I risultati
+confermano la validità di questa rigorosa impostazione: con un budget di soli
+3.0G FLOPs, ViTAS raggiunge un'accuratezza dell'82,0\% sul dataset ImageNet-1k,
+superando anche le prestazioni di \textit{AutoFormer}.
 
 \subsubsection{NASViT}
-Un ulteriore contributo in questo ambito è quello di Gong et al. \cite{gong2021nasvit} con il loro modello \textbf{NASViT}. Gli autori osservano che, provando ad addestrare una \textit{SuperNet} (ViT) che contiene tutte le possibili architetture candidate, si riscontra un problema di instabilità e scarse prestazioni. La causa di queste difficoltà può essere individuata nel conflitto tra i gradienti delle \textit{SubNet} e quelli della \textit{SuperNet}. Questo fenomeno implica che, addestrando la \textit{SuperNet} campionando le varie \textit{SubNet}, si ottengono risultati inferiori dalla rete complessiva. \par
-Gli autori risolvono il problema proiettando i gradienti della \textit{SuperNet} lungo la direzione ortogonale a quelli delle \textit{SubNet} esclusivamente quando la similarità coseno tra i due è negativa, in modo da evitare interferenze e garantire un addestramento più stabile e performante. L'unico svantaggio di questo approccio risulta il bias dei gradienti verso le \textit{SubNet}, il quale ha avuto un impatto negativo sui tempi di convergenza. \par
+Un ulteriore contributo in questo ambito è quello di Gong et al.
+\cite{gong2021nasvit} con il loro modello \textbf{NASViT}. Gli autori osservano
+che, provando ad addestrare una \textit{SuperNet} (ViT) che contiene tutte le
+possibili architetture candidate, si riscontra un problema di instabilità e
+scarse prestazioni. La causa di queste difficoltà può essere individuata nel
+conflitto tra i gradienti delle \textit{SubNet} e quelli della
+\textit{SuperNet}. Questo fenomeno implica che, addestrando la
+\textit{SuperNet} campionando le varie \textit{SubNet}, si ottengono risultati
+inferiori dalla rete complessiva. \par
+Gli autori risolvono il problema proiettando i gradienti della
+\textit{SuperNet} lungo la direzione ortogonale a quelli delle \textit{SubNet}
+esclusivamente quando la similarità coseno tra i due è negativa, in modo da
+evitare interferenze e garantire un addestramento più stabile e performante.
+L'unico svantaggio di questo approccio risulta il bias dei gradienti verso le
+\textit{SubNet}, il quale ha avuto un impatto negativo sui tempi di
+convergenza. \par
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3\textwidth]{images/SOTA/NASViT.png}
@@ -305,10 +364,106 @@ Gli autori risolvono il problema proiettando i gradienti della \textit{SuperNet}
     \label{figure:nasvit}
 \end{figure}
 Viene introdotto inoltre lo \textbf{Switchable Scaling Layer} che permette di scalare dinamicamente le feature in uscita dalle componenti dei blocchi \textit{Transformer} che vengono selezionati in fase di ricerca, come è possibile notare dalla Figura \ref{figure:nasvit}. In particolare ognuno di questi layer apprende una matrice di pesi $W_{\text{scale}}$ che viene utilizzata per proiettare l'output ($x$) della \textit{Self-Attention} o del MLP, fornendo in output $W_{\text{scale}} \cdot x$. Questo meccanismo si è dimostrato efficace per aumentare la capacità e la flessibilità delle \textit{SubNet}. \par
-Risulta importante notare che gli autori hanno osservato un aumento del fenomeno dei gradienti in conflitto tra le \textit{SubNet} e la \textit{SuperNet} quando si adottano tecniche di \textit{Augmentation} e \textit{Regularization} aggressive. \par
-Per quanto concerne i risultati, gli autori utilizzano le tecniche di cui sopra con un algoritmo evolutivo per esplorare lo spazio di ricerca, guidato da una funzione obiettivo che bilancia accuratezza e FLOPs. Grazie a questo approccio, i modelli NASViT riescono a raggiungere e superare le prestazioni delle reti convoluzionali (ad esempio ResNet \cite{he2015deepresiduallearningimage}) a parità di FLOPs.
+Risulta importante notare che gli autori hanno osservato un aumento del
+fenomeno dei gradienti in conflitto tra le \textit{SubNet} e la
+\textit{SuperNet} quando si adottano tecniche di \textit{Augmentation} e
+\textit{Regularization} aggressive. \par
+Per quanto concerne i risultati, gli autori utilizzano le tecniche di cui sopra
+con un algoritmo evolutivo per esplorare lo spazio di ricerca, guidato da una
+funzione obiettivo che bilancia accuratezza e FLOPs. Grazie a questo approccio,
+i modelli NASViT riescono a raggiungere e superare le prestazioni delle reti
+convoluzionali (ad esempio ResNet \cite{he2015deepresiduallearningimage}) a
+parità di FLOPs.
+
+\subsubsection{MDL-NAS}
+Un'ulteriore prospettiva della NAS applicata ai ViT, focalizzata
+sull'efficienza e sull'apprendimento multi-dominio, è stato proposto da Wang et
+al. \cite{wang2023mdlnas} con il framework \textbf{MDL-NAS}. Gli autori
+osservano che, per il \textit{deploy} su dispositivi con risorse limitate
+(\textit{Edge Computing}), addestrare i modelli per ogni specifico dominio
+visivo risulta estremamente inefficiente. D'altra parte, il semplice
+addestramento multi-dominio (\textit{Multi-Domain Learning}, MDL) di un'unica
+rete incontra spesso due gravi ostacoli: il cosiddetto \textit{catastrophic
+    forgetting} (totale discostamento dal dominio originale per lasciare spazio al
+nuovo) e l'interferenza tra domini (\textit{negative transfer}), i quali
+provocano delle prestazioni limitate. \par
+Per risolvere questi problemi, gli autori introducono un framework unificato
+che integra molteplici task visivi all'interno di un'unica \textit{SuperNet}.
+L'esplorazione avviene tramite uno spazio di ricerca \textit{coarse-to-fine}
+(da macro a micro). A livello macroscopico, l'algoritmo seleziona
+l'architettura di base per i diversi task, determinando iperparametri
+strutturali quali la profondità della rete, il numero di teste di attenzione e
+le dimensioni dell'embedding. \par
+La vera innovazione si concretizza nello spazio di ricerca a livello micro,
+ideato per implementare una condivisione dei parametri definita
+\textit{fine-grained}. L'obiettivo è decidere in modo mirato quali pesi della
+rete debbano essere condivisi tra tutti i domini (per massimizzare l'efficienza
+in termini di memoria) e quali debbano rimanere indipendenti (per evitare che i
+task interferiscano negativamente tra loro). Come illustrato nella Figura
+\ref{figure:mdlnas}, vengono proposte due politiche per la gestione dei pesi
+all'interno dei singoli layer:
+\begin{itemize}
+    \item \textbf{Sequential Sharing Policy}: la matrice dei pesi viene suddivisa in blocchi adiacenti (sequenziali). L'algoritmo decide se intere porzioni della matrice debbano essere condivise globalmente o allocate unicamente a uno specifico task.
+    \item \textbf{Mask Sharing Policy}: un approccio ancora più flessibile. Al posto di usare blocchi sequenziali, viene introdotta una maschera binaria apprendibile, avente la stessa dimensionalità della matrice dei pesi. Questa maschera agisce a livello di singolo parametro, determinando dinamicamente se debba essere globale o specializzato per il singolo task.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/SOTA/MDLNAS.png}
+    \caption{Visualizzazione delle politiche di condivisione dei parametri in MDL-NAS: \textit{Sequential Sharing} e \textit{Mask Sharing}. Fonte:~\cite{wang2023mdlnas}.}
+    \label{figure:mdlnas}
+\end{figure}
+Nel trovare una soluzione a questo problema di ottimizzazione emerge un ostacolo tecnico: decidere se un parametro debba essere condiviso o meno (scelta binaria), così come scegliere il numero di layer, sono operazioni di natura \textit{discreta} e, di conseguenza, non differenziabili. Per aggirare questo ostacolo e permettere l'addestramento della rete tramite la discesa del gradiente, MDL-NAS sostituisce l'utilizzo degli algoritmi evolutivi, visti di frequente in precedenza, con una ricerca differenziabile basata sul \textit{Gumbel-Softmax trick} \cite{jang2016categorical, maddison2016concrete}. \par
+Grazie a ciò, è possibile effettuare un'ottimizzazione alternata
+(\textit{alternating optimization}): ad ogni iterazione, l'algoritmo aggiorna
+prima i pesi effettivi della \textit{SuperNet} tramite i dati di
+training, e successivamente aggiorna i parametri architetturali
+(ovvero le probabilità che gestiscono le maschere di condivisione e la struttura
+macro) tramite i dati di validazione. I risultati dimostrano che MDL-NAS riesce
+a ottenere prestazioni all'avanguardia su benchmark multi-dominio, generando
+modelli altamente efficienti in termini di memoria
+che abbattono drasticamente il numero di parametri totali rispetto all'utilizzo
+di reti ViT indipendenti.
+
+\subsubsection{DASViT}
+Un recente e rilevante contributo nell'ambito dell'ottimizzazione architetturale tramite ricerca differenziabile per i Vision Transformer è stato proposto da Wu et al. \cite{wu2025dasvitdifferentiablearchitecturesearch}. Gli autori introducono \textbf{DASViT} (\textit{Differentiable Architecture Search for Vision Transformer}), con l'obiettivo di superare i requisiti computazionali e le tempistiche proibitive associati ai tradizionali algoritmi di ricerca evolutiva. \par
+
+Gli autori osservano che l'applicazione diretta del noto algoritmo differenziabile DARTS \cite{liu2019dartsdifferentiablearchitecturesearch} ai modelli ViT comporta due criticità fondamentali. La prima riguarda l'insostenibile consumo di memoria GPU, causato dalla necessità di istanziare e calcolare simultaneamente tutte le operazioni candidate per ogni blocco, limite ulteriormente aggravato dalla complessità quadratica della \textit{Self-Attention}. La seconda criticità risiede in un intrinseco sbilanciamento generato dalla funzione \textit{softmax} durante la selezione delle operazioni (\textit{operation unfairness}). Nelle fasi iniziali dell'addestramento, le operazioni prive di parametri, come le \textit{skip-connection} (\textit{Identity}), risultano più facili da ottimizzare poiché offrono minor resistenza al flusso dei gradienti. La funzione \textit{softmax} tende quindi a massimizzare prematuramente i pesi di queste operazioni a discapito di moduli complessi, come la \textit{Self-Attention} e il MLP, i quali sono però fondamentali per la capacità rappresentativa della rete. Questo fenomeno conduce a reti dalle scarse prestazioni, in cui l'architettura degenera in una rete quasi interamente composta da connessioni dirette. \par
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/SOTA/DASViT.png}
+    \caption{Rappresentazione dello spazio di ricerca continuo in DASViT tramite Grafo Aciclico Diretto (DAG) e selezione finale dell'architettura. Fonte:~\cite{wu2025dasvitdifferentiablearchitecturesearch}.}
+    \label{figure:dasvit}
+\end{figure}
+Per formulare la ricerca in modo efficiente e superare il problema della non differenziabilità delle scelte discrete, DASViT modella l'architettura dell'encoder \textit{Transformer} come un Grafo Aciclico Diretto (DAG) (Figura \ref{figure:dasvit}). All'interno di questo grafo, i nodi rappresentano gli stati delle \textit{features}, mentre gli archi orientati che li collegano definiscono le trasformazioni matematiche da applicare a queste. Negli approcci standard, la scelta dell'operazione da assegnare a un arco è esclusiva e rigida. Al fine di rendere il problema ottimizzabile, DASViT applica il principio del rilassamento continuo dello spazio di ricerca (\textit{continuous relaxation}): su ogni arco non viene posta una singola operazione, bensì una combinazione parallela di \textit{tutte} le operazioni candidate (es. MSA, MLP, \textit{Identity}, \textit{Zero}), i cui output vengono fusi tramite una somma pesata. 
+
+I coefficienti di questa somma pesata costituiscono i parametri architetturali continui, che vengono appresi attivamente dalla rete. In questo modo, l'algoritmo valuta simultaneamente l'impatto di tutte le alternative su un singolo arco e, attraverso la \textit{backpropagation}, impara ad assegnare pesi maggiori alle operazioni che minimizzano la funzione di perdita. Al termine della fase di ricerca, viene mantenuta esclusivamente l'operazione con il peso maggiore, discretizzando nuovamente il DAG in un'architettura definitiva.
+
+Per risolvere i due limiti operativi evidenziati in precedenza (memoria e sbilanciamento) e stabilizzare questo processo per i ViT, gli autori introducono due meccanismi specifici:
+\begin{itemize}
+    \item \textbf{Attention-based Partial Token Selection}: per contenere l'eccessivo consumo di memoria durante la ricerca, questo modulo riduce il numero di token elaborati. Basandosi sui punteggi calcolati dalla \textit{Self-Attention}, il sistema seleziona dinamicamente e propaga solo i token più informativi (top-$k$), escludendo quelli ridondanti dal calcolo simultaneo delle operazioni candidate.
+    \item \textbf{Operation Fairness Regularization}: per contrastare il dominio delle \textit{skip-connection}, viene introdotta una regolarizzazione sulla distribuzione dei pesi architetturali. Attraverso l'imposizione di soglie e penalità calibrate per le diverse tipologie di operazioni, il framework garantisce che moduli complessi come MSA e MLP abbiano eque probabilità di essere selezionati e addestrati, garantendo un'esplorazione stabile dello spazio degli stati.
+\end{itemize}
+
+L'algoritmo viene infine integrato in una strategia di ricerca progressiva, in cui la profondità della rete viene gradualmente incrementata per ridurre la discrepanza strutturale tra la fase di ricerca e la successiva fase di addestramento (\textit{retraining}). I risultati sperimentali confermano la validità del metodo: DASViT scopre architetture innovative che si discostano dai rigidi design tradizionali. Nelle valutazioni sui dataset CIFAR-10, CIFAR-100 e ImageNet-100, i modelli generati superano le prestazioni di un ViT-B/16 standard addestrato da zero, conseguendo al contempo una riduzione del 41\% del numero di parametri e un abbattimento significativo del costo computazionale (FLOPs).
 
 \section{Metodi di Compressione}
+In questa sezione vengono presentati i principali metodi di compressione dei modelli, che mirano a ridurre la complessità computazionale e la memoria richiesta per l'esecuzione dei modelli \textit{Transformer}, rendendoli più adatti per l'edge computing. A differenza di quanto visto nella sezione precedente, questi metodi non si basano sulla costruzione di architetture, bensì sulla riduzione e semplificazione di architetture pre-esistenti ed in alcuni casi anche pre-addestrate.
 \subsection{Pruning}
+Una delle possibili tecniche di compressione è il \textbf{Pruning}, che consiste nell'identificare e rimuovere i parametri ridondanti e meno importanti di un modello, come neuroni, canali o intere unità di attenzione. Il fine di questa tecnica è la riduzione dello spazio in memoria e del costo computazionale richiesti dal modello, senza compromettere significativamente le prestazioni. Esistono due tipologie principali di pruning:
+\begin{itemize}
+    \item \textbf{Pruning Strutturato}: rimuove intere unità strutturali, come neuroni, canali o interi blocchi. Questo tipo di \textit{Pruning} risulta in incrementi di velocità tipicamente importanti, in quanto le matrici dei parametri vengono effettivamente ridotte, ma è più complesso mantenere invariate le prestazioni dei modelli, in quanto vengono rimosse intere strutture e non singoli parametri.
+    \item \textbf{Pruning Non Strutturato}: rimuove singoli parametri, portando tipicamente a matrici sparse dei pesi. Questo tipo di \textit{Pruning} può mantenere prestazioni comparabili a quelle originali, ma spesso non porta a miglioramenti significativi in termini di latenza, in quanto le operazioni sparse non sono sempre supportate in modo efficiente dagli hardware e le dimensioni dei modelli non vengono ridotte in modo significativo.
+\end{itemize}
+Nello specifico, per quanto riguarda i modelli \textit{Transformer}, un altra tecnica di \textit{Pruning} molto esplorata è quella del \textbf{Token Pruning}, che mira a ridurre il numero di token elaborati in fase di inferenza, eliminando quelli ritenuti meno informativi.
+Questa strategia risulta particolarmente efficace dato il suo diretto impatto sul meccanismo di attenzione. Quest'ultimo infatti è caratterizzato da una complessità computazionale quadratica rispetto al numero di token, di conseguenza, ridurre questo porta a significativi miglioramenti in termini di latenza. Di seguito una panoramica dei principali lavori in questo ambito.
+
+\subsubsection{SViTE}
+\subsubsection{WDPruning}
+\subsubsection{GOHSP}
+\subsubsection{X-Pruner}
+\subsubsection{COMCAT}
+\subsubsection{CAIT}
+
+
 \subsection{Quantizzazione}
 \subsection{Knowledge Distillation}

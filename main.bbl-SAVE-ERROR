@@ -183,6 +183,50 @@
       \endverb
       \keyw{Recurrent neural networks;Production;Delay effects;Intelligent networks;Neural networks;Discrete transforms;Computer networks;Cost function;Neurofeedback;Displays}
     \endentry
+    \entry{BOROS2002155}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=4012e3ad699d48a3c01790dc71667f78}{%
+           family={Boros},
+           familyi={B\bibinitperiod},
+           given={Endre},
+           giveni={E\bibinitperiod}}}%
+        {{hash=02dfd06dc8b63e8b8ed8bc430ec62897}{%
+           family={Hammer},
+           familyi={H\bibinitperiod},
+           given={Peter\bibnamedelima L.},
+           giveni={P\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{d75b1fa541d940944dd09267822b5709}
+      \strng{fullhash}{d75b1fa541d940944dd09267822b5709}
+      \strng{fullhashraw}{d75b1fa541d940944dd09267822b5709}
+      \strng{bibnamehash}{d75b1fa541d940944dd09267822b5709}
+      \strng{authorbibnamehash}{d75b1fa541d940944dd09267822b5709}
+      \strng{authornamehash}{d75b1fa541d940944dd09267822b5709}
+      \strng{authorfullhash}{d75b1fa541d940944dd09267822b5709}
+      \strng{authorfullhashraw}{d75b1fa541d940944dd09267822b5709}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This survey examines the state of the art of a variety of problems related to pseudo-Boolean optimization, i.e. to the optimization of set functions represented by closed algebraic expressions. The main parts of the survey examine general pseudo-Boolean optimization, the specially important case of quadratic pseudo-Boolean optimization (to which every pseudo-Boolean optimization can be reduced), several other important special classes, and approximation algorithms.}
+      \field{issn}{0166-218X}
+      \field{journaltitle}{Discrete Applied Mathematics}
+      \field{number}{1}
+      \field{title}{Pseudo-Boolean optimization}
+      \field{volume}{123}
+      \field{year}{2002}
+      \field{pages}{155\bibrangedash 225}
+      \range{pages}{71}
+      \verb{doi}
+      \verb https://doi.org/10.1016/S0166-218X(01)00341-9
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0166218X01003419
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0166218X01003419
+      \endverb
+    \endentry
     \entry{chen2021autoformersearchingtransformersvisual}{misc}{}{}
       \name{author}{4}{}{%
         {{hash=4eb022d312c2cc874773c6135382d780}{%
@@ -409,6 +453,98 @@
       \verb https://arxiv.org/abs/2106.04803
       \endverb
     \endentry
+    \entry{Deb2002fastelitistmultiobjective}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=b11d1da0cc2920eef235d484e6b858ef}{%
+           family={Deb},
+           familyi={D\bibinitperiod},
+           given={Kalyanmoy},
+           giveni={K\bibinitperiod}}}%
+        {{hash=9fbc80a7299653739376ff004f77fab1}{%
+           family={Pratap},
+           familyi={P\bibinitperiod},
+           given={Amrit},
+           giveni={A\bibinitperiod}}}%
+        {{hash=4e180088c2d397bb169dfb45679eba22}{%
+           family={Agarwal},
+           familyi={A\bibinitperiod},
+           given={Sameer},
+           giveni={S\bibinitperiod}}}%
+        {{hash=9661b0fa73eb1cbd0885c442a9870907}{%
+           family={Meyarivan},
+           familyi={M\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{6943967d389ec1de2e10e25fbdf3b2a0}
+      \strng{fullhash}{b08e5063396137513578f8d3ebd59c5d}
+      \strng{fullhashraw}{b08e5063396137513578f8d3ebd59c5d}
+      \strng{bibnamehash}{b08e5063396137513578f8d3ebd59c5d}
+      \strng{authorbibnamehash}{b08e5063396137513578f8d3ebd59c5d}
+      \strng{authornamehash}{6943967d389ec1de2e10e25fbdf3b2a0}
+      \strng{authorfullhash}{b08e5063396137513578f8d3ebd59c5d}
+      \strng{authorfullhashraw}{b08e5063396137513578f8d3ebd59c5d}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Evolutionary Computation}
+      \field{title}{A fast and elitist multiobjective genetic algorithm: NSGA-II}
+      \field{volume}{6}
+      \field{year}{2002}
+      \field{pages}{182\bibrangedash 197}
+      \range{pages}{16}
+      \keyw{imported}
+    \endentry
+    \entry{devlin2019bertpretrainingdeepbidirectional}{misc}{}{}
+      \name{author}{4}{}{%
+        {{hash=13202969e372bc82318f9629cbdd199b}{%
+           family={Devlin},
+           familyi={D\bibinitperiod},
+           given={Jacob},
+           giveni={J\bibinitperiod}}}%
+        {{hash=a45784fe7163b45f11d166564f5d24b6}{%
+           family={Chang},
+           familyi={C\bibinitperiod},
+           given={Ming-Wei},
+           giveni={M\bibinithyphendelim W\bibinitperiod}}}%
+        {{hash=8dde73b4194f5bc4230c4808f3fc1534}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Kenton},
+           giveni={K\bibinitperiod}}}%
+        {{hash=b92aa283415413bb8d2a1548716d0c7d}{%
+           family={Toutanova},
+           familyi={T\bibinitperiod},
+           given={Kristina},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{ad8e2e2a80d28ade21e86852b804fc9b}
+      \strng{fullhash}{e8bccd48302a14eeba57d9dce2f49ef4}
+      \strng{fullhashraw}{e8bccd48302a14eeba57d9dce2f49ef4}
+      \strng{bibnamehash}{e8bccd48302a14eeba57d9dce2f49ef4}
+      \strng{authorbibnamehash}{e8bccd48302a14eeba57d9dce2f49ef4}
+      \strng{authornamehash}{ad8e2e2a80d28ade21e86852b804fc9b}
+      \strng{authorfullhash}{e8bccd48302a14eeba57d9dce2f49ef4}
+      \strng{authorfullhashraw}{e8bccd48302a14eeba57d9dce2f49ef4}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CL}
+      \field{eprinttype}{arXiv}
+      \field{title}{BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1810.04805
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1810.04805
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1810.04805
+      \endverb
+    \endentry
     \entry{dosovitskiy2021imageworth16x16words}{misc}{}{}
       \name{author}{12}{}{%
         {{hash=72308762399d6ab62bbd9391c64c7bfd}{%
@@ -523,6 +659,62 @@
       \verb{eprint}
       \verb https://doi.org/10.1287/opre.14.4.699
       \endverb
+    \endentry
+    \entry{gong2021nasvit}{misc}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{7}{}{%
+        {{hash=d3ddc3e1609149b1fa06d3aef7f2c86d}{%
+           family={Gong},
+           familyi={G\bibinitperiod},
+           given={Chengyue},
+           giveni={C\bibinitperiod}}}%
+        {{hash=63d92a7422ae89c6fc92636092efb6cc}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Dilin},
+           giveni={D\bibinitperiod}}}%
+        {{hash=122748fbd1766f07a1685dde181113ca}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Meng},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ce10870c303bf2f78994acd2df305b39}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Xinlei},
+           giveni={X\bibinitperiod}}}%
+        {{hash=e78e44bfbf8cd0c655e0f62d1f6f1852}{%
+           family={Yan},
+           familyi={Y\bibinitperiod},
+           given={Zhicheng},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=074caf23cc82a3b80220324f240e9327}{%
+           family={Tian},
+           familyi={T\bibinitperiod},
+           given={Yuandong},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=e9719c90fd2fa1ca4ab4c18990a778c7}{%
+           family={Chandra},
+           familyi={C\bibinitperiod},
+           given={Vikas},
+           giveni={V\bibinitperiod}}}%
+      }
+      \strng{namehash}{4df3852da5d39a6c38548bb6db1b3e5a}
+      \strng{fullhash}{a58fcedbb18299fb5477a1ea4abea3ea}
+      \strng{fullhashraw}{a58fcedbb18299fb5477a1ea4abea3ea}
+      \strng{bibnamehash}{a58fcedbb18299fb5477a1ea4abea3ea}
+      \strng{authorbibnamehash}{a58fcedbb18299fb5477a1ea4abea3ea}
+      \strng{authornamehash}{4df3852da5d39a6c38548bb6db1b3e5a}
+      \strng{authorfullhash}{a58fcedbb18299fb5477a1ea4abea3ea}
+      \strng{authorfullhashraw}{a58fcedbb18299fb5477a1ea4abea3ea}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Conference on Learning Representations}
+      \field{title}{Nasvit: Neural architecture search for efficient vision transformers with gradient conflict aware supernet training}
+      \field{year}{2021}
     \endentry
     \entry{gu2024mambalineartimesequencemodeling}{misc}{}{}
       \name{author}{2}{}{%
@@ -1135,6 +1327,56 @@
       \verb https://arxiv.org/abs/1701.04128
       \endverb
     \endentry
+    \entry{TensorCores}{misc}{}{}
+      \name{author}{5}{}{%
+        {{hash=8578ec917372d89536147fc8e82e92d2}{%
+           family={Markidis},
+           familyi={M\bibinitperiod},
+           given={Stefano},
+           giveni={S\bibinitperiod}}}%
+        {{hash=e09e981c076cc8f025592c2ebf6d16b9}{%
+           family={Chien},
+           familyi={C\bibinitperiod},
+           given={Steven\bibnamedelimb Wei\bibnamedelima Der},
+           giveni={S\bibinitperiod\bibinitdelim W\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=ec17a112bddf9161115324ede2367682}{%
+           family={Laure},
+           familyi={L\bibinitperiod},
+           given={Erwin},
+           giveni={E\bibinitperiod}}}%
+        {{hash=389b73d79acaa7302bcb01f020972382}{%
+           family={Peng},
+           familyi={P\bibinitperiod},
+           given={Ivy\bibnamedelima Bo},
+           giveni={I\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=d6cb344ce6425a3bf60189d988c75127}{%
+           family={Vetter},
+           familyi={V\bibinitperiod},
+           given={Jeffrey\bibnamedelima S.},
+           giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \strng{namehash}{21c28e53865a89f25d34d0d7c0d0d800}
+      \strng{fullhash}{3b337e1110d491fe42f4b16ad9b0a0c7}
+      \strng{fullhashraw}{3b337e1110d491fe42f4b16ad9b0a0c7}
+      \strng{bibnamehash}{3b337e1110d491fe42f4b16ad9b0a0c7}
+      \strng{authorbibnamehash}{3b337e1110d491fe42f4b16ad9b0a0c7}
+      \strng{authornamehash}{21c28e53865a89f25d34d0d7c0d0d800}
+      \strng{authorfullhash}{3b337e1110d491fe42f4b16ad9b0a0c7}
+      \strng{authorfullhashraw}{3b337e1110d491fe42f4b16ad9b0a0c7}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2018 IEEE International Parallel and Distributed Processing Symposium Workshops (IPDPSW)}
+      \field{title}{NVIDIA Tensor Core Programmability, Performance \& Precision}
+      \field{year}{2018}
+      \field{pages}{522\bibrangedash 531}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/IPDPSW.2018.00091
+      \endverb
+      \keyw{Tensile stress;Graphics processing units;Neural networks;Programming;Computer architecture;Instruction sets;Hardware;NVIDIA Tensor Cores;GPU Programming;Mixed Precision;GEMM}
+    \endentry
     \entry{mehta2022mobilevitlightweightgeneralpurposemobilefriendly}{misc}{}{}
       \name{author}{2}{}{%
         {{hash=90feecf4f2f08ae7f3b8e33214091f72}{%
@@ -1728,6 +1970,7 @@
       \strng{authornamehash}{614a8a3ef11d5db640d9715c31aa0cbc}
       \strng{authorfullhash}{bfe6e68ea6156627cfa1e47ba309bbf6}
       \strng{authorfullhashraw}{bfe6e68ea6156627cfa1e47ba309bbf6}
+      \field{extraname}{1}
       \field{sortinit}{S}
       \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
       \field{labelnamesource}{author}
@@ -1744,6 +1987,81 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/2104.09864
+      \endverb
+    \endentry
+    \entry{su2021vitasvisiontransformerarchitecture}{misc}{}{}
+      \name{author}{9}{}{%
+        {{hash=5965ff5c181d882724a99b5b8da003a5}{%
+           family={Su},
+           familyi={S\bibinitperiod},
+           given={Xiu},
+           giveni={X\bibinitperiod}}}%
+        {{hash=204e2effcd765e1786a1981482dbbd76}{%
+           family={You},
+           familyi={Y\bibinitperiod},
+           given={Shan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=0a05f4ce7256a912d648b906297a9092}{%
+           family={Xie},
+           familyi={X\bibinitperiod},
+           given={Jiyang},
+           giveni={J\bibinitperiod}}}%
+        {{hash=1fafdec0cb8529f7dadf77f971090ac6}{%
+           family={Zheng},
+           familyi={Z\bibinitperiod},
+           given={Mingkai},
+           giveni={M\bibinitperiod}}}%
+        {{hash=60af9bc009f709103e587bb92cee1cda}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Fei},
+           giveni={F\bibinitperiod}}}%
+        {{hash=1ffd5ac527f73d08c2f438dc04a7623f}{%
+           family={Qian},
+           familyi={Q\bibinitperiod},
+           given={Chen},
+           giveni={C\bibinitperiod}}}%
+        {{hash=1cdb46d901af9706e5eedcaab5d6222e}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Changshui},
+           giveni={C\bibinitperiod}}}%
+        {{hash=e88500bd6ca50746707a22554761b61a}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Xiaogang},
+           giveni={X\bibinitperiod}}}%
+        {{hash=0fd89a7fb20b3d99368ee682085e4436}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Chang},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{ca4f11c88449a627922c1dbffa5e8387}
+      \strng{fullhash}{0f74f83d2ff455dfbb70b533aca4a052}
+      \strng{fullhashraw}{0f74f83d2ff455dfbb70b533aca4a052}
+      \strng{bibnamehash}{0f74f83d2ff455dfbb70b533aca4a052}
+      \strng{authorbibnamehash}{0f74f83d2ff455dfbb70b533aca4a052}
+      \strng{authornamehash}{ca4f11c88449a627922c1dbffa5e8387}
+      \strng{authorfullhash}{0f74f83d2ff455dfbb70b533aca4a052}
+      \strng{authorfullhashraw}{0f74f83d2ff455dfbb70b533aca4a052}
+      \field{extraname}{2}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.CV}
+      \field{eprinttype}{arXiv}
+      \field{title}{ViTAS: Vision Transformer Architecture Search}
+      \field{year}{2021}
+      \verb{eprint}
+      \verb 2106.13700
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2106.13700
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2106.13700
       \endverb
     \endentry
     \entry{seq2seq}{article}{}{}
