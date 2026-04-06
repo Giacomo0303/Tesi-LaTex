@@ -415,41 +415,92 @@ all'interno dei singoli layer:
 Nel trovare una soluzione a questo problema di ottimizzazione emerge un ostacolo tecnico: decidere se un parametro debba essere condiviso o meno (scelta binaria), così come scegliere il numero di layer, sono operazioni di natura \textit{discreta} e, di conseguenza, non differenziabili. Per aggirare questo ostacolo e permettere l'addestramento della rete tramite la discesa del gradiente, MDL-NAS sostituisce l'utilizzo degli algoritmi evolutivi, visti di frequente in precedenza, con una ricerca differenziabile basata sul \textit{Gumbel-Softmax trick} \cite{jang2016categorical, maddison2016concrete}. \par
 Grazie a ciò, è possibile effettuare un'ottimizzazione alternata
 (\textit{alternating optimization}): ad ogni iterazione, l'algoritmo aggiorna
-prima i pesi effettivi della \textit{SuperNet} tramite i dati di
-training, e successivamente aggiorna i parametri architetturali
-(ovvero le probabilità che gestiscono le maschere di condivisione e la struttura
-macro) tramite i dati di validazione. I risultati dimostrano che MDL-NAS riesce
-a ottenere prestazioni all'avanguardia su benchmark multi-dominio, generando
-modelli altamente efficienti in termini di memoria
-che abbattono drasticamente il numero di parametri totali rispetto all'utilizzo
-di reti ViT indipendenti.
+prima i pesi effettivi della \textit{SuperNet} tramite i dati di training, e
+successivamente aggiorna i parametri architetturali (ovvero le probabilità che
+gestiscono le maschere di condivisione e la struttura macro) tramite i dati di
+validazione. I risultati dimostrano che MDL-NAS riesce a ottenere prestazioni
+all'avanguardia su benchmark multi-dominio, generando modelli altamente
+efficienti in termini di memoria che abbattono drasticamente il numero di
+parametri totali rispetto all'utilizzo di reti ViT indipendenti.
 
 \subsubsection{DASViT}
-Un recente e rilevante contributo nell'ambito dell'ottimizzazione architetturale tramite ricerca differenziabile per i Vision Transformer è stato proposto da Wu et al. \cite{wu2025dasvitdifferentiablearchitecturesearch}. Gli autori introducono \textbf{DASViT} (\textit{Differentiable Architecture Search for Vision Transformer}), con l'obiettivo di superare i requisiti computazionali e le tempistiche proibitive associati ai tradizionali algoritmi di ricerca evolutiva. \par
+Un recente e rilevante contributo nell'ambito dell'ottimizzazione
+architetturale tramite ricerca differenziabile per i Vision Transformer è stato
+proposto da Wu et al. \cite{wu2025dasvitdifferentiablearchitecturesearch}. Gli
+autori introducono \textbf{DASViT} (\textit{Differentiable Architecture Search
+    for Vision Transformer}), con l'obiettivo di superare i requisiti
+computazionali e le tempistiche proibitive associati ai tradizionali algoritmi
+di ricerca evolutiva. \par
 
-Gli autori osservano che l'applicazione diretta del noto algoritmo differenziabile DARTS \cite{liu2019dartsdifferentiablearchitecturesearch} ai modelli ViT comporta due criticità fondamentali. La prima riguarda l'insostenibile consumo di memoria GPU, causato dalla necessità di istanziare e calcolare simultaneamente tutte le operazioni candidate per ogni blocco, limite ulteriormente aggravato dalla complessità quadratica della \textit{Self-Attention}. La seconda criticità risiede in un intrinseco sbilanciamento generato dalla funzione \textit{softmax} durante la selezione delle operazioni (\textit{operation unfairness}). Nelle fasi iniziali dell'addestramento, le operazioni prive di parametri, come le \textit{skip-connection} (\textit{Identity}), risultano più facili da ottimizzare poiché offrono minor resistenza al flusso dei gradienti. La funzione \textit{softmax} tende quindi a massimizzare prematuramente i pesi di queste operazioni a discapito di moduli complessi, come la \textit{Self-Attention} e il MLP, i quali sono però fondamentali per la capacità rappresentativa della rete. Questo fenomeno conduce a reti dalle scarse prestazioni, in cui l'architettura degenera in una rete quasi interamente composta da connessioni dirette. \par
+Gli autori osservano che l'applicazione diretta del noto algoritmo
+differenziabile DARTS \cite{liu2019dartsdifferentiablearchitecturesearch} ai
+modelli ViT comporta due criticità fondamentali. La prima riguarda
+l'insostenibile consumo di memoria GPU, causato dalla necessità di istanziare e
+calcolare simultaneamente tutte le operazioni candidate per ogni blocco, limite
+ulteriormente aggravato dalla complessità quadratica della
+\textit{Self-Attention}. La seconda criticità risiede in un intrinseco
+sbilanciamento generato dalla funzione \textit{softmax} durante la selezione
+delle operazioni (\textit{operation unfairness}). Nelle fasi iniziali
+dell'addestramento, le operazioni prive di parametri, come le
+\textit{skip-connection} (\textit{Identity}), risultano più facili da
+ottimizzare poiché offrono minor resistenza al flusso dei gradienti. La
+funzione \textit{softmax} tende quindi a massimizzare prematuramente i pesi di
+queste operazioni a discapito di moduli complessi, come la
+\textit{Self-Attention} e il MLP, i quali sono però fondamentali per la
+capacità rappresentativa della rete. Questo fenomeno conduce a reti dalle
+scarse prestazioni, in cui l'architettura degenera in una rete quasi
+interamente composta da connessioni dirette. \par
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{images/SOTA/DASViT.png}
     \caption{Rappresentazione dello spazio di ricerca continuo in DASViT tramite Grafo Aciclico Diretto (DAG) e selezione finale dell'architettura. Fonte:~\cite{wu2025dasvitdifferentiablearchitecturesearch}.}
     \label{figure:dasvit}
 \end{figure}
-Per formulare la ricerca in modo efficiente e superare il problema della non differenziabilità delle scelte discrete, DASViT modella l'architettura dell'encoder \textit{Transformer} come un Grafo Aciclico Diretto (DAG) (Figura \ref{figure:dasvit}). All'interno di questo grafo, i nodi rappresentano gli stati delle \textit{features}, mentre gli archi orientati che li collegano definiscono le trasformazioni matematiche da applicare a queste. Negli approcci standard, la scelta dell'operazione da assegnare a un arco è esclusiva e rigida. Al fine di rendere il problema ottimizzabile, DASViT applica il principio del rilassamento continuo dello spazio di ricerca (\textit{continuous relaxation}): su ogni arco non viene posta una singola operazione, bensì una combinazione parallela di \textit{tutte} le operazioni candidate (es. MSA, MLP, \textit{Identity}, \textit{Zero}), i cui output vengono fusi tramite una somma pesata. 
+Per formulare la ricerca in modo efficiente e superare il problema della non differenziabilità delle scelte discrete, DASViT modella l'architettura dell'encoder \textit{Transformer} come un Grafo Aciclico Diretto (DAG) (Figura \ref{figure:dasvit}). All'interno di questo grafo, i nodi rappresentano gli stati delle \textit{features}, mentre gli archi orientati che li collegano definiscono le trasformazioni matematiche da applicare a queste. Negli approcci standard, la scelta dell'operazione da assegnare a un arco è esclusiva e rigida. Al fine di rendere il problema ottimizzabile, DASViT applica il principio del rilassamento continuo dello spazio di ricerca (\textit{continuous relaxation}): su ogni arco non viene posta una singola operazione, bensì una combinazione parallela di \textit{tutte} le operazioni candidate (es. MSA, MLP, \textit{Identity}, \textit{Zero}), i cui output vengono fusi tramite una somma pesata.
 
-I coefficienti di questa somma pesata costituiscono i parametri architetturali continui, che vengono appresi attivamente dalla rete. In questo modo, l'algoritmo valuta simultaneamente l'impatto di tutte le alternative su un singolo arco e, attraverso la \textit{backpropagation}, impara ad assegnare pesi maggiori alle operazioni che minimizzano la funzione di perdita. Al termine della fase di ricerca, viene mantenuta esclusivamente l'operazione con il peso maggiore, discretizzando nuovamente il DAG in un'architettura definitiva.
+I coefficienti di questa somma pesata costituiscono i parametri architetturali
+continui, che vengono appresi attivamente dalla rete. In questo modo,
+l'algoritmo valuta simultaneamente l'impatto di tutte le alternative su un
+singolo arco e, attraverso la \textit{backpropagation}, impara ad assegnare
+pesi maggiori alle operazioni che minimizzano la funzione di perdita. Al
+termine della fase di ricerca, viene mantenuta esclusivamente l'operazione con
+il peso maggiore, discretizzando nuovamente il DAG in un'architettura
+definitiva.
 
-Per risolvere i due limiti operativi evidenziati in precedenza (memoria e sbilanciamento) e stabilizzare questo processo per i ViT, gli autori introducono due meccanismi specifici:
+Per risolvere i due limiti operativi evidenziati in precedenza (memoria e
+sbilanciamento) e stabilizzare questo processo per i ViT, gli autori
+introducono due meccanismi specifici:
 \begin{itemize}
     \item \textbf{Attention-based Partial Token Selection}: per contenere l'eccessivo consumo di memoria durante la ricerca, questo modulo riduce il numero di token elaborati. Basandosi sui punteggi calcolati dalla \textit{Self-Attention}, il sistema seleziona dinamicamente e propaga solo i token più informativi (top-$k$), escludendo quelli ridondanti dal calcolo simultaneo delle operazioni candidate.
     \item \textbf{Operation Fairness Regularization}: per contrastare il dominio delle \textit{skip-connection}, viene introdotta una regolarizzazione sulla distribuzione dei pesi architetturali. Attraverso l'imposizione di soglie e penalità calibrate per le diverse tipologie di operazioni, il framework garantisce che moduli complessi come MSA e MLP abbiano eque probabilità di essere selezionati e addestrati, garantendo un'esplorazione stabile dello spazio degli stati.
 \end{itemize}
 
-L'algoritmo viene infine integrato in una strategia di ricerca progressiva, in cui la profondità della rete viene gradualmente incrementata per ridurre la discrepanza strutturale tra la fase di ricerca e la successiva fase di addestramento (\textit{retraining}). I risultati sperimentali confermano la validità del metodo: DASViT scopre architetture innovative che si discostano dai rigidi design tradizionali. Nelle valutazioni sui dataset CIFAR-10, CIFAR-100 e ImageNet-100, i modelli generati superano le prestazioni di un ViT-B/16 standard addestrato da zero, conseguendo al contempo una riduzione del 41\% del numero di parametri e un abbattimento significativo del costo computazionale (FLOPs).
+L'algoritmo viene infine integrato in una strategia di ricerca progressiva, in
+cui la profondità della rete viene gradualmente incrementata per ridurre la
+discrepanza strutturale tra la fase di ricerca e la successiva fase di
+addestramento (\textit{retraining}). I risultati sperimentali confermano la
+validità del metodo: DASViT scopre architetture innovative che si discostano
+dai rigidi design tradizionali. Nelle valutazioni sui dataset CIFAR-10,
+CIFAR-100 e ImageNet-100, i modelli generati superano le prestazioni di un
+ViT-B/16 standard addestrato da zero, conseguendo al contempo una riduzione del
+41\% del numero di parametri e un abbattimento significativo del costo
+computazionale (FLOPs).
 
 \section{Metodi di Compressione}
-In questa sezione vengono presentati i principali metodi di compressione dei modelli, che mirano a ridurre la complessità computazionale e la memoria richiesta per l'esecuzione dei modelli \textit{Transformer}, rendendoli più adatti per l'edge computing. A differenza di quanto visto nella sezione precedente, questi metodi non si basano sulla costruzione di architetture, bensì sulla riduzione e semplificazione di architetture pre-esistenti ed in alcuni casi anche pre-addestrate.
+In questa sezione vengono presentati i principali metodi di compressione dei
+modelli, che mirano a ridurre la complessità computazionale e la memoria
+richiesta per l'esecuzione dei modelli \textit{Transformer}, rendendoli più
+adatti per l'edge computing. A differenza di quanto visto nella sezione
+precedente, questi metodi non si basano sulla costruzione di architetture,
+bensì sulla riduzione e semplificazione di architetture pre-esistenti ed in
+alcuni casi anche pre-addestrate.
 \subsection{Pruning}
-Una delle possibili tecniche di compressione è il \textbf{Pruning}, che consiste nell'identificare e rimuovere i parametri ridondanti e meno importanti di un modello, come neuroni, canali o intere unità di attenzione. Il fine di questa tecnica è la riduzione dello spazio in memoria e del costo computazionale richiesti dal modello, senza compromettere significativamente le prestazioni. Esistono due tipologie principali di pruning:
+Una delle possibili tecniche di compressione è il \textbf{Pruning}, che
+consiste nell'identificare e rimuovere i parametri ridondanti e meno importanti
+di un modello, come neuroni, canali o intere unità di attenzione. Il fine di
+questa tecnica è la riduzione dello spazio in memoria e del costo
+computazionale richiesti dal modello, senza compromettere significativamente le
+prestazioni. Esistono due tipologie principali di pruning:
 \begin{itemize}
     \item \textbf{Pruning Strutturato}: rimuove intere unità strutturali, come neuroni, canali o interi blocchi. Questo tipo di \textit{Pruning} risulta in incrementi di velocità tipicamente importanti, in quanto le matrici dei parametri vengono effettivamente ridotte, ma è più complesso mantenere invariate le prestazioni dei modelli, in quanto vengono rimosse intere strutture e non singoli parametri.
     \item \textbf{Pruning Non Strutturato}: rimuove singoli parametri, portando tipicamente a matrici sparse dei pesi. Questo tipo di \textit{Pruning} può mantenere prestazioni comparabili a quelle originali, ma spesso non porta a miglioramenti significativi in termini di latenza, in quanto le operazioni sparse non sono sempre supportate in modo efficiente dagli hardware e le dimensioni dei modelli non vengono ridotte in modo significativo.
@@ -464,6 +515,124 @@ Questa strategia risulta particolarmente efficace dato il suo diretto impatto su
 \subsubsection{COMCAT}
 \subsubsection{CAIT}
 
-
 \subsection{Quantizzazione}
+La quantizzazione consiste nel ridurre la precisione (il numero di bit) per
+rappresentare i pesi e/o le attivazioni di un modello, con l'obiettivo di
+ridurre la memoria e incrementare la velocità di inferenza, tipicamente
+sfruttando le capacità di hardware specializzato. Esistono diverse strategie di
+quantizzazione, tra cui:
+\begin{itemize}
+    \item \textbf{Quantizzazione Post-Addestramento (PTQ)}: trattasi di un operazione che avviene al termine del processo di addestramento del modello e che non prevede ulteriori fasi di \textit{training}. In questo caso, il modello viene quantizzato senza la possibilità di adattare i pesi alla nuova rappresentazione a bassa precisione, il che si traduce spesso in un maggiore degrado delle prestazioni, ma con il vantaggio della estrema semplicità e rapidità della procedura.
+    \item \textbf{Quantizzazione con Addestramento (QAT)}: strategia che prevede, dopo la quantizzazione di pesi e attivazioni, una fase di addestramento aggiuntiva volta al recupero delle prestazioni inevitabilmente perdute nel processo. In alternativa, è possibile integrare la quantizzazione durante la fase di addestramento principale, in modo da adattare il modello alla bassa risoluzione dei pesi fin dall'inizio. Questa strategia risulta più complessa e necessita di maggiore tempo, ma consente di mantenere (anche se spesso non completamente) le prestazioni del modello originale.
+    \item \textbf{Quantizzazione Statica}: viene utilizzato un set di dati di calibrazione per determinare gli spazi dei valori delle attivazioni attesi durante l'inferenza. Grazie a questo set è possibile quantizzare le attivazioni in anticipo, senza la necessità di calcoli \textit{on-the-fly}. Questa strategia garantisce la migliore velocità in fase di inferenza, ma può portare a un degrado delle prestazioni se il set di calibrazione non rappresenta adeguatamente la distribuzione dei dati reali.
+    \item \textbf{Quantizzazione Dinamica}: le attivazioni vengono quantizzate dinamicamente durante l'inferenza, adattando gli spazi dei valori in tempo reale. Questo approccio può migliorare le prestazioni rispetto alla quantizzazione statica, ma introduce un overhead computazionale aggiuntivo durante l'inferenza, che potrebbe non essere accettabile in scenari di \textit{edge computing} con risorse limitate.
+\end{itemize}
+A seguire una panoramica dei principali lavori in questo ambito, con un'attenzione particolare alla quantizzazione di modelli \textit{Vision Transformer}. Risulta importante notare come tutti i metodi presentati in questa sezione siano statici, ovvero non prevedano calcoli dinamici durante l'inferenza, al fine di massimizzare la velocità di inferenza, evitando la necessità di operazioni \textit{on-the-fly}.
+
+\subsubsection{Le origini della quantizzazione}
+Uno dei primi lavori a formalizzare il processo di quantizzazione come
+trasformazione dei parametri in virgola mobile in rappresentazioni intere è
+stato quello di Jacob et al.
+\cite{jacob2017quantizationtrainingneuralnetworks}. Fino a quel momento, i tentativi di quantizzazione si dividevano prevalentemente in due categorie. La prima comprendeva approcci che operavano solo sui pesi \cite{han2016deepcompressioncompressingdeep, gong2014compressingdeepconvolutionalnetworks}, i quali si concentravano sull'abbattimento della memoria di archiviazione ma, mantenendo le attivazioni in virgola mobile, vanificavano buona parte della reale accelerazione computazionale dell'hardware. La seconda categoria esplorava approcci estremi come le reti binarie (1-bit) \cite{rastegari2016xnornetimagenetclassificationusing}, che pur ottimizzando pesantemente l'inferenza, causavano un drastico degrado dell'accuratezza.
+Per risolvere questa problematica e garantire una concreta riduzione della
+latenza, gli autori
+introducono due contributi fondamentali:
+\begin{itemize}
+    \item Uno schema di quantizzazione \textbf{Integer-Only}, in cui pesi e attivazioni
+          sono rappresentati rigorosamente come interi a 8 bit (\textit{uint8} o
+          \textit{int8}), mentre le operazioni di accumulo e i bias utilizzano interi a
+          32 bit (\textit{int32}).
+    \item Un framework di addestramento basato sulla \textbf{Simulated Quantization}
+          (oggi noto come \textit{Quantization-Aware Training}, QAT), capace di modellare
+          l'errore di arrotondamento durante il \textit{forward pass} per preservare
+          l'accuratezza \textit{end-to-end} del modello.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/SOTA/jacob_simulated_quantization.png}
+    \caption{Confronto tra l'inferenza Integer-Only (sinistra) e l'addestramento con Simulated Quantization (destra). Fonte:~\cite{jacob2017quantizationtrainingneuralnetworks}.}
+    \label{figure:jacob_quantization}
+\end{figure}
+Il cuore matematico dello schema proposto si basa su una rigorosa mappatura
+affine tra il dominio dei numeri reali e quello degli interi. Ogni valore reale
+$r$ viene approssimato ad un valore quantizzato $q$ secondo la relazione:
+\begin{equation}
+    r = S(q - Z),
+\end{equation}
+dove $S$ è il fattore di scala (\textit{Scale}), ovvero un numero reale strettamente positivo, e $Z$, detto punto zero (\textit{Zero-point}), è un intero dello stesso tipo di $q$. La genialità di questa formulazione risiede nel parametro $Z$: esso garantisce che il valore reale $0$ sia sempre rappresentabile in modo esatto nello spazio quantizzato. Questa proprietà è cruciale per l'implementazione efficiente di operazioni come il \textit{zero-padding} nelle convoluzioni e le attivazioni ReLU \cite{agarap2019deeplearningusingrectified}. \par
+Applicando questa formulazione alla moltiplicazione tra matrici, gli autori dimostrano che il calcolo può essere eseguito interamente tramite somme e moltiplicazioni tra interi. L'unico fattore non intero risultante dall'equazione è il moltiplicatore $M = \frac{S_1 S_2}{S_3}$. Questo termine agisce come un fattore di riscalamento necessario per mappare il prodotto delle attivazioni e dei pesi (che possiede intrinsecamente una scala pari a $S_1 S_2$) nel dominio di quantizzazione del livello successivo, definito dalla scala $S_3$. \par
+Poiché $M$ è un valore costante determinato offline dai parametri di quantizzazione, esso può essere trattato senza ricorrere ad aritmetica a virgola mobile durante l'inferenza. Gli autori osservano empiricamente che $M$ ricade quasi sempre nell'intervallo $(0, 1)$ e propongono di decomporlo nella forma:
+\begin{equation}
+    M = 2^{-n} M_0,
+\end{equation}
+dove $M_0 \in [0.5, 1)$ è un moltiplicatore normalizzato e $n$ è un intero non negativo. In fase di implementazione hardware, $M_0$ viene approssimato come un intero a virgola fissa (ad esempio un valore a 32 bit), permettendo di sostituire l'operazione teorica con una moltiplicazione tra interi seguita da un'operazione di \textit{bit-shift} verso destra per applicare il fattore $2^{-n}$. Questo stratagemma consente di mantenere l'intera pipeline di calcolo nel dominio delle unità aritmetiche intere (ALU), garantendo un'efficienza estrema sui processori mobile. \par
+Per colmare il divario prestazionale causato dalla discretizzazione, il modello
+non viene quantizzato post-addestramento. Al contrario, il processo di addestramento
+viene modificato iniettando dei nodi di quantizzazione simulata (\textit{fake
+    quantization}) nel grafo computazionale. Durante il \textit{forward pass},
+questi nodi simulano l'effetto di troncamento e saturazione imposto dai limiti
+degli 8 bit; durante il \textit{backward pass}, i gradienti fluiscono attraverso i pesi in \textit{floating-point}, consentendo
+all'ottimizzatore di compensare l'errore indotto. Un'attenzione particolare
+viene inoltre posta nel fondere matematicamente i parametri di \textit{Batch
+    Normalization} all'interno dei pesi convoluzionali prima di applicare la
+quantizzazione simulata. \par
+Valutato su architetture hardware \textit{mobile-friendly} come MobileNet,
+questo framework dimostra un miglioramento drastico del trade-off tra latenza e
+accuratezza: il modello quantizzato garantisce uno \textit{speedup} fino al
+50\% e una riduzione di 4x dell'occupazione di memoria, registrando un degrado
+prestazionale minimo, spesso inferiore al 2\% rispetto alle controparti
+operanti in singola precisione.
+\subsubsection{Post-Training Quantization for Vision Transformer}
+L'applicazione diretta dei framework di \textit{Post-Training Quantization} (PTQ) tradizionali ai \textit{Vision Transformer} (ViT) ha rivelato limiti strutturali significativi. I metodi convenzionali, infatti, sono stati progettati primariamente per le reti convoluzionali (CNN) e non tengono conto delle peculiarità architetturali dei Transformer, primo fra tutti il meccanismo di \textit{Self-Attention}. Per colmare questa mancanza nella ricerca, Liu et al. propongono il primo approccio PTQ esplicitamente sviluppato e ottimizzato per i ViT~\cite{liu2021posttrainingquantizationvisiontransformer}.
+Per preservare un'accuratezza paragonabile alla \textit{baseline} in virgola mobile abbattendo i costi computazionali, gli autori strutturano il framework su tre contributi principali:
+\begin{itemize}
+    \item \textbf{Ranking-Aware Quantization}: Un meccanismo progettato per mantenere inalterata la gerarchia relativa dei valori all'interno delle mappe di attenzione.
+    \item \textbf{Similarity-Aware Quantization}: Un'ottimizzazione mirata degli intervalli di quantizzazione per massimizzare la somiglianza matematica tra le \textit{feature map} originali e quelle quantizzate.
+    \item \textbf{Mixed-Precision Quantization}: Un'allocazione dinamica dei bit guidata dalla \textit{Nuclear Norm} delle \textit{feature} per valutare la sensibilità intrinseca di ciascun layer alla compressione.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/SOTA/liu_vit_quantization.png}
+    \caption{Diagramma del framework di quantizzazione per Vision Transformer. Evidenzia l'uso della \textit{Similarity-Aware Quantization} per i moduli MLP e della \textit{Ranking-Aware} per la Self-Attention. Fonte:~\cite{liu2021posttrainingquantizationvisiontransformer}.}
+    \label{figure:liu_quantization}
+\end{figure}
+
+Il problema fondamentale riscontrato nello studio risiede nel modulo di \textit{Multi-Head Self-Attention} (MSA). Analizzando empiricamente il modello, gli autori osservano che l'applicazione di una discretizzazione uniforme altera gravemente il \textit{ranking} relativo dei punteggi calcolati nella mappa di attenzione (poiché, usando meno bit, la precisione si riduce). Poiché l'attenzione modella la rilevanza globale tra i vari \textit{token} di un'immagine, intaccare questo \textit{ranking} genera un drastico calo prestazionale. La soluzione individuata risiede in una \textit{Ranking Loss}: una funzione di costo che penalizza severamente le inversioni di ordine tra i pesi di attenzione originali e quelli quantizzati. Minimizzare questa funzione assicura che la gerarchia relazionale appresa dalla rete rimanga intatta. \par
+Parallelamente, per mitigare l'errore nelle operazioni lineari dei moduli MLP, viene formulato un problema di ottimizzazione iterativa per ricercare le soglie di \textit{clipping} ideali (ovvero i confini degli intervalli di quantizzazione). L'obiettivo matematico è la massimizzazione del coefficiente di correlazione di Pearson tra l'output originale e la sua controparte a bassa precisione. Questa scelta metodologica è strategica: essendo invariante a traslazioni e variazioni di scala uniformi, il coefficiente di Pearson quantifica esclusivamente la dipendenza lineare tra i tensori. Ciò garantisce che le \textit{feature map} vengano preservate fedelmente per i layer successivi. \par
+Infine, superando i limiti degli approcci a larghezza di bit uniforme, gli autori constatano che ogni blocco del Transformer esibisce una diversa tolleranza alla quantizzazione. Attraverso la decomposizione ai valori singolari (SVD), il framework calcola la \textit{Nuclear Norm} (ossia la somma dei valori singolari) delle mappe di attenzione e delle \textit{feature} di output per quantificarne la diversità e la ricchezza informativa. Questa misura guida un processo di ottimizzazione che assegna precisioni miste in modo asimmetrico: i layer più critici mantengono risoluzioni elevate, mentre quelli più robusti vengono compressi maggiormente. \par
+I risultati sperimentali confermano la solidità del framework: valutato su architetture all'avanguardia come DeiT-B sul dataset ImageNet, il modello riesce a mantenere un'accuratezza top-1 dell'81.29\% operando in un regime di quantizzazione approssimabile agli 8 bit. Tale risultato annulla quasi totalmente il divario con la \textit{baseline} ad alta precisione, garantendo allo stesso tempo un drastico abbattimento del peso in memoria e della latenza di inferenza.
+\subsubsection{FQ-ViT: Fully Quantized Vision Transformer}
+Nonostante i progressi ottenuti nell'adattamento della \textit{Post-Training Quantization} ai modelli basati sull'attenzione, i framework precedenti presentavano un limite rilevante: per evitare drastici crolli di accuratezza, mantenevano i moduli di \textit{LayerNorm} e \textit{Softmax} in virgola mobile. Questa scelta impediva di ottenere reti completamente quantizzate (\textit{Fully Quantized}), costringendo l'hardware a continui e onerosi passaggi di conversione dei dati tra interi e \textit{floating-point}, limitando di fatto il reale guadagno di velocità in fase di inferenza. Per risolvere questa problematica, Lin et al. hanno introdotto \textbf{FQ-ViT} \cite{lin2023fqvitposttrainingquantizationfully}, il primo approccio capace di operare una quantizzazione totale dei \textit{Vision Transformer} riducendo al minimo il degrado prestazionale (approssimabile a circa l'1\%).
+Gli autori individuano due cause fondamentali alla base del fallimento delle tecniche tradizionali su questi specifici moduli. \par 
+In primo luogo, gli input dei layer di normalizzazione (\textit{LayerNorm}) presentano una variabilità estrema tra i diversi canali, con fluttuazioni che possono superare di 40 volte il valore mediano. Applicare intervalli di quantizzazione uniformi a livello di intero layer in un contesto di così forte sbilanciamento genera errori importanti. Per risolvere questa criticità, \textit{FQ-ViT} introduce il \textbf{Power-of-Two Factor (PTF)}: per gestire le enormi differenze numeriche tra i canali della \textit{LayerNorm}, la soluzione teorica ideale sarebbe assegnare a ciascun canale un fattore di scala specifico e indipendente, tuttavia, utilizzare parametri in virgola mobile per ogni singolo canale annullerebbe i vantaggi della quantizzazione, appesantendo e rallentando drasticamente i calcoli hardware. Il PTF aggira l'ostacolo assegnando a ogni canale un fattore di compensazione che è rigorosamente espresso come una potenza del due (ad esempio $2^1, 2^2, 2^3$). Ciò permette di utilizzare veloci operazioni hardware come il \textit{BitShift}. Grazie a questo stratagemma, il framework riesce ad allineare l'ampiezza dei vari canali sbilanciati in modo precisissimo, operando esclusivamente nel dominio dei numeri interi e garantendo la massima velocità di inferenza. \par
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/SOTA/FQViT.png}
+    \caption{Evidenzia la differenza tra una quantizzazione incompleta e quella di FQ-ViT, che lavora anche sulla \textit{Softmax} ed evita la moltiplicazione finale. Fonte:~\cite{lin2023fqvitposttrainingquantizationfully}.}
+    \label{figure:FQ-ViT}
+\end{figure}
+In secondo luogo, l'analisi delle mappe di attenzione rivela una distribuzione dei valori fortemente asimmetrica: la stragrande maggioranza dei punteggi ricade in un intorno piccolissimo (tra 0 e 0.01), mentre solo rare eccezioni si avvicinano ad 1. La quantizzazione lineare standard si dimostra del tutto inadeguata per tale distribuzione, poiché alloca un ridotto numero di intervalli di precisione per la fascia di valori più densa, aggregando tutti i valori indiscriminatamente. La soluzione proposta è il \textbf{Log-Int-Softmax (LIS)}, un meccanismo che adotta una quantizzazione in base logaritmica (\textit{Log2}). Questa trasformazione matematica garantisce una risoluzione molto più fine e granulare per i valori prossimi allo zero, preservando le sfumature della mappa di attenzione originale.
+Inoltre, grazie al modulo \textit{Log-Int-Softmax}, FQ-ViT riesce a comprimere in modo aggressivo le mappe di attenzione portandole a soli 4 bit di precisione. Sfruttando le proprietà dell'aritmetica logaritmica, il framework sostituisce le dispendiose moltiplicazioni matriciali a valle dell'attenzione con semplici operazioni di \textit{BitShift}, mantenendo l'intera pipeline di calcolo della \textit{Self-Attention} strettamente nel dominio dei numeri interi. \par
+I test confermano l'efficacia di queste ottimizzazioni: applicato ad architetture di grandi dimensioni come ViT-L sul dataset ImageNet, \textit{FQ-ViT} raggiunge un'accuratezza top-1 dell'84.89\%, dimostrando che è possibile quantizzare (PTQ) completamente un \textit{Vision Transformer} senza compromettere la capacità predittiva della rete.
+
+\subsubsection{Q-ViT: Accurate and Fully Quantized Low-bit Vision Transformer}
+Sebbene i metodi di \textit{Post-Training Quantization} (PTQ) abbiano dimostrato risultati notevoli, non risultano efficaci quando si tenta di spingere la quantizzazione ad una precisione estremamente ridotta, come 2, 3 o 4 bit. In queste condizioni, i ViT subiscono un drastico calo delle prestazioni. Per superare questa barriera, Li et al. introducono \textbf{Q-ViT}~\cite{li2022qvitaccuratefullyquantized}, un framework basato sul \textit{Quantization-Aware Training} (QAT). \par
+Attraverso un'approfondita analisi empirica, gli autori identificano due colli di bottiglia fondamentali che impediscono ai ViT di apprendere efficacemente a bassa precisione. Nel \textit{forward pass}, la quantizzazione diretta provoca una grave distorsione dell'informazione nella mappa di attenzione: le reti quantizzate perdono la capacità di variare la distanza di attenzione al variare della profondità (fenomeno in cui i layer superficiali catturano feature locali e quelli profondi feature globali), appiattendo irrimediabilmente la gerarchia delle feature. Nella fase di \textit{backward pass}, invece, i classici metodi di distillazione basati sull'output di classificazione si rivelano inefficaci e troppo grossolani per compensare l'enorme divario creatosi nei punteggi di attenzione quantizzati. \par
+Per risolvere queste criticità, Q-ViT interviene con due soluzioni architetturali mirate:
+\begin{itemize}
+    \item \textbf{Information Rectification Module (IRM)}: Un modulo progettato per il \textit{forward pass} e fondato sulla teoria dell'informazione. Partendo dall'osservazione che i valori di \textit{query} e \textit{key} nei ViT seguono tipicamente una distribuzione gaussiana $\mathcal{N}(\mu, \sigma^2)$, gli autori dimostrano che la discretizzazione a bassa precisione ne altera irreversibilmente il profilo, facendone crollare l'entropia informativa. Poiché per una variabile gaussiana la massimizzazione dell'entropia di output equivale alla minimizzazione dell'errore medio di quantizzazione, l'IRM applica una standardizzazione modificata della funzione di quantizzazione, definita come $\tilde{q} = \frac{q - \mu(q) + \beta_q}{\gamma_q \sqrt{\sigma^2(q) + \epsilon_q}}$, dove $\gamma$ e $\beta$ sono parametri addestrabili. Questo riallineamento parametrico compensa l'alterazione e ripristina la capacità del meccanismo di attenzione di catturare le dipendenze globali.
+    
+    \item \textbf{Distribution Guided Distillation (DGD)}: Uno schema di distillazione avanzato per il \textit{backward pass}. I metodi tradizionali, che si limitano a supervisionare l'output o le mappe di attenzione finali, si rivelano insufficienti per correggere il collasso della distanza di attenzione. La DGD interviene estraendo le matrici di similarità \textit{patch-based} calcolando il prodotto scalare tra i vettori delle \textit{query} e tra i vettori delle \textit{key} e le normalizza applicando la norma $L_2$. Questa normalizzazione è cruciale per eliminare le differenze di scala e le instabilità numeriche tra il modello \textit{teacher} in virgola mobile e lo \textit{student} quantizzato. Minimizzando la distanza $L_2$ tra queste matrici normalizzate, la rete riceve una supervisione di maggiore qualità.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/SOTA/QViT.png}
+    \caption{I due principali contributi di \textit{Q-ViT}: Information Rectification Module (IRM) e Distribution Guided Distillation (DGD). Fonte:~\cite{li2022qvitaccuratefullyquantized}.}
+    \label{figure:Q-ViT}
+\end{figure}
+
+I risultati empirici di questa impostazione stabiliscono un nuovo standard per la compressione estrema. Applicato all'architettura DeiT-S, Q-ViT a 4-bit raggiunge un'accuratezza top-1 dell'80.9\% sul dataset ImageNet, riuscendo paradossalmente a superare la \textit{baseline} in virgola mobile (79.9\%) e garantendo al contempo un'accelerazione teorica di 6.14 volte. Ancor più notevole è il risultato a 2-bit, dove il framework riesce a comprimere i FLOPs del modello di ben 21.5 volte, mantenendo un'accuratezza del 72.0\%. Con questo approccio, viene dimostrato che la QAT è una via estremamente promettente per il \textit{deploy} dei Transformer su dispositivi a risorse limitate.
+\newpage
 \subsection{Knowledge Distillation}

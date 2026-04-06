@@ -37,18 +37,22 @@
 \contentsline {figure}{\numberline {2.21}{\ignorespaces Switchable Scaling Layer introdotti all'interno dei blocchi \textit {Transformer}. Fonte:~\blx@tocontentsinit {0}\cite {su2021vitasvisiontransformerarchitecture}.}}{35}{figure.caption.49}%
 \contentsline {figure}{\numberline {2.22}{\ignorespaces Visualizzazione delle politiche di condivisione dei parametri in MDL-NAS: \textit {Sequential Sharing} e \textit {Mask Sharing}. Fonte:~\blx@tocontentsinit {0}\cite {wang2023mdlnas}.}}{37}{figure.caption.51}%
 \contentsline {figure}{\numberline {2.23}{\ignorespaces Rappresentazione dello spazio di ricerca continuo in DASViT tramite Grafo Aciclico Diretto (DAG) e selezione finale dell'architettura. Fonte:~\blx@tocontentsinit {0}\cite {wu2025dasvitdifferentiablearchitecturesearch}.}}{38}{figure.caption.53}%
+\contentsline {figure}{\numberline {2.24}{\ignorespaces Confronto tra l'inferenza Integer-Only (sinistra) e l'addestramento con Simulated Quantization (destra). Fonte:~\blx@tocontentsinit {0}\cite {jacob2017quantizationtrainingneuralnetworks}.}}{43}{figure.caption.61}%
+\contentsline {figure}{\numberline {2.25}{\ignorespaces Diagramma del framework di quantizzazione per Vision Transformer. Evidenzia l'uso della \textit {Similarity-Aware Quantization} per i moduli MLP e della \textit {Ranking-Aware} per la Self-Attention. Fonte:~\blx@tocontentsinit {0}\cite {liu2021posttrainingquantizationvisiontransformer}.}}{45}{figure.caption.63}%
+\contentsline {figure}{\numberline {2.26}{\ignorespaces Evidenzia la differenza tra una quantizzazione incompleta e quella di FQ-ViT, che lavora anche sulla \textit {Softmax} ed evita la moltiplicazione finale. Fonte:~\blx@tocontentsinit {0}\cite {lin2023fqvitposttrainingquantizationfully}.}}{47}{figure.caption.65}%
+\contentsline {figure}{\numberline {2.27}{\ignorespaces I due principali contributi di \textit {Q-ViT}: Information Rectification Module (IRM) e Distribution Guided Distillation (DGD). Fonte:~\blx@tocontentsinit {0}\cite {li2022qvitaccuratefullyquantized}.}}{49}{figure.caption.67}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Rappresentazione schematica dell'albero di ricerca generato dalle azioni di \textit {Branching}.}}{45}{figure.caption.60}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{49}{figure.caption.61}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{50}{figure.caption.62}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{50}{figure.caption.63}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{51}{figure.caption.64}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{52}{figure.caption.65}%
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{52}{figure.caption.66}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Rappresentazione schematica dell'albero di ricerca generato dalle azioni di \textit {Branching}.}}{54}{figure.caption.68}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {MLP Pruning}.}}{58}{figure.caption.69}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {QK Pruning}, nella \textit {MHSA}.}}{59}{figure.caption.70}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {VProj Pruning}, nella \textit {MHSA}.}}{59}{figure.caption.71}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Head Pruning}, nella \textit {MHSA}.}}{60}{figure.caption.72}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {MHSA}.}}{61}{figure.caption.73}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Visualizzazione delle matrici dei pesi mascherate dall'azione di \textit {Emb Pruning}, nella \textit {FFN}.}}{61}{figure.caption.74}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Processo di suddivisione del dataset adottato.}}{59}{figure.caption.68}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagramma di flusso del processo di compressione iterativo.}}{60}{figure.caption.69}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Processo di suddivisione del dataset adottato.}}{68}{figure.caption.76}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagramma di flusso del processo di compressione iterativo.}}{69}{figure.caption.77}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{65}{figure.caption.70}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{66}{figure.caption.71}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{74}{figure.caption.78}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{75}{figure.caption.79}%
 \addvspace {10\p@ }
