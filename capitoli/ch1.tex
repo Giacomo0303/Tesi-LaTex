@@ -522,9 +522,9 @@ ridurre la memoria e incrementare la velocità di inferenza, tipicamente
 sfruttando le capacità di hardware specializzato. Esistono diverse strategie di
 quantizzazione, tra cui:
 \begin{itemize}
-    \item \textbf{Quantizzazione Post-Addestramento (PTQ)}: trattasi di un operazione che avviene al termine del processo di addestramento del modello e che non prevede ulteriori fasi di \textit{training}. In questo caso, il modello viene quantizzato senza la possibilità di adattare i pesi alla nuova rappresentazione a bassa precisione, il che si traduce spesso in un maggiore degrado delle prestazioni, ma con il vantaggio della estrema semplicità e rapidità della procedura.
-    \item \textbf{Quantizzazione con Addestramento (QAT)}: strategia che prevede, dopo la quantizzazione di pesi e attivazioni, una fase di addestramento aggiuntiva volta al recupero delle prestazioni inevitabilmente perdute nel processo. In alternativa, è possibile integrare la quantizzazione durante la fase di addestramento principale, in modo da adattare il modello alla bassa risoluzione dei pesi fin dall'inizio. Questa strategia risulta più complessa e necessita di maggiore tempo, ma consente di mantenere (anche se spesso non completamente) le prestazioni del modello originale.
-    \item \textbf{Quantizzazione Statica}: viene utilizzato un set di dati di calibrazione per determinare gli spazi dei valori delle attivazioni attesi durante l'inferenza. Grazie a questo set è possibile quantizzare le attivazioni in anticipo, senza la necessità di calcoli \textit{on-the-fly}. Questa strategia garantisce la migliore velocità in fase di inferenza, ma può portare a un degrado delle prestazioni se il set di calibrazione non rappresenta adeguatamente la distribuzione dei dati reali.
+    \item \textbf{Quantizzazione Post-Addestramento (PTQ)}: trattasi di un operazione che avviene al termine del processo di addestramento del modello e che non prevede ulteriori fasi di \textit{training}. In questo caso, il modello viene quantizzato senza la possibilità di adattare i pesi alla nuova rappresentazione a bassa precisione, il che si traduce spesso in un maggiore degrado delle prestazioni, ma con il vantaggio della estrema semplicità e rapidità della procedura;
+    \item \textbf{Quantizzazione con Addestramento (QAT)}: strategia che prevede, dopo la quantizzazione di pesi e attivazioni, una fase di addestramento aggiuntiva volta al recupero delle prestazioni inevitabilmente perdute nel processo. In alternativa, è possibile integrare la quantizzazione durante la fase di addestramento principale, in modo da adattare il modello alla bassa risoluzione dei pesi fin dall'inizio. Questa strategia risulta più complessa e necessita di maggiore tempo, ma consente di mantenere (anche se spesso non completamente) le prestazioni del modello originale;
+    \item \textbf{Quantizzazione Statica}: viene utilizzato un set di dati di calibrazione per determinare gli spazi dei valori delle attivazioni attesi durante l'inferenza. Grazie a questo set è possibile quantizzare le attivazioni in anticipo, senza la necessità di calcoli \textit{on-the-fly}. Questa strategia garantisce la migliore velocità in fase di inferenza, ma può portare a un degrado delle prestazioni se il set di calibrazione non rappresenta adeguatamente la distribuzione dei dati reali;
     \item \textbf{Quantizzazione Dinamica}: le attivazioni vengono quantizzate dinamicamente durante l'inferenza, adattando gli spazi dei valori in tempo reale. Questo approccio può migliorare le prestazioni rispetto alla quantizzazione statica, ma introduce un overhead computazionale aggiuntivo durante l'inferenza, che potrebbe non essere accettabile in scenari di \textit{edge computing} con risorse limitate.
 \end{itemize}
 A seguire una panoramica dei principali lavori in questo ambito, con un'attenzione particolare alla quantizzazione di modelli \textit{Vision Transformer}. Risulta importante notare come tutti i metodi presentati in questa sezione siano statici, ovvero non prevedano calcoli dinamici durante l'inferenza, al fine di massimizzare la velocità di inferenza, evitando la necessità di operazioni \textit{on-the-fly}.
@@ -533,15 +533,24 @@ A seguire una panoramica dei principali lavori in questo ambito, con un'attenzio
 Uno dei primi lavori a formalizzare il processo di quantizzazione come
 trasformazione dei parametri in virgola mobile in rappresentazioni intere è
 stato quello di Jacob et al.
-\cite{jacob2017quantizationtrainingneuralnetworks}. Fino a quel momento, i tentativi di quantizzazione si dividevano prevalentemente in due categorie. La prima comprendeva approcci che operavano solo sui pesi \cite{han2016deepcompressioncompressingdeep, gong2014compressingdeepconvolutionalnetworks}, i quali si concentravano sull'abbattimento della memoria di archiviazione ma, mantenendo le attivazioni in virgola mobile, vanificavano buona parte della reale accelerazione computazionale dell'hardware. La seconda categoria esplorava approcci estremi come le reti binarie (1-bit) \cite{rastegari2016xnornetimagenetclassificationusing}, che pur ottimizzando pesantemente l'inferenza, causavano un drastico degrado dell'accuratezza.
-Per risolvere questa problematica e garantire una concreta riduzione della
-latenza, gli autori
-introducono due contributi fondamentali:
+\cite{jacob2017quantizationtrainingneuralnetworks}. Fino a quel momento, i
+tentativi di quantizzazione si dividevano prevalentemente in due categorie. La
+prima comprendeva approcci che operavano solo sui pesi
+\cite{han2016deepcompressioncompressingdeep,
+    gong2014compressingdeepconvolutionalnetworks}, i quali si concentravano
+sull'abbattimento della memoria di archiviazione ma, mantenendo le attivazioni
+in virgola mobile, vanificavano buona parte della reale accelerazione
+computazionale dell'hardware. La seconda categoria esplorava approcci estremi
+come le reti binarie (1-bit)
+\cite{rastegari2016xnornetimagenetclassificationusing}, che pur ottimizzando
+pesantemente l'inferenza, causavano un drastico degrado dell'accuratezza. Per
+risolvere questa problematica e garantire una concreta riduzione della latenza,
+gli autori introducono due contributi fondamentali:
 \begin{itemize}
     \item Uno schema di quantizzazione \textbf{Integer-Only}, in cui pesi e attivazioni
           sono rappresentati rigorosamente come interi a 8 bit (\textit{uint8} o
           \textit{int8}), mentre le operazioni di accumulo e i bias utilizzano interi a
-          32 bit (\textit{int32}).
+          32 bit (\textit{int32});
     \item Un framework di addestramento basato sulla \textbf{Simulated Quantization}
           (oggi noto come \textit{Quantization-Aware Training}, QAT), capace di modellare
           l'errore di arrotondamento durante il \textit{forward pass} per preservare
@@ -560,18 +569,30 @@ $r$ viene approssimato ad un valore quantizzato $q$ secondo la relazione:
     r = S(q - Z),
 \end{equation}
 dove $S$ è il fattore di scala (\textit{Scale}), ovvero un numero reale strettamente positivo, e $Z$, detto punto zero (\textit{Zero-point}), è un intero dello stesso tipo di $q$. La genialità di questa formulazione risiede nel parametro $Z$: esso garantisce che il valore reale $0$ sia sempre rappresentabile in modo esatto nello spazio quantizzato. Questa proprietà è cruciale per l'implementazione efficiente di operazioni come il \textit{zero-padding} nelle convoluzioni e le attivazioni ReLU \cite{agarap2019deeplearningusingrectified}. \par
-Applicando questa formulazione alla moltiplicazione tra matrici, gli autori dimostrano che il calcolo può essere eseguito interamente tramite somme e moltiplicazioni tra interi. L'unico fattore non intero risultante dall'equazione è il moltiplicatore $M = \frac{S_1 S_2}{S_3}$. Questo termine agisce come un fattore di riscalamento necessario per mappare il prodotto delle attivazioni e dei pesi (che possiede intrinsecamente una scala pari a $S_1 S_2$) nel dominio di quantizzazione del livello successivo, definito dalla scala $S_3$. \par
-Poiché $M$ è un valore costante determinato offline dai parametri di quantizzazione, esso può essere trattato senza ricorrere ad aritmetica a virgola mobile durante l'inferenza. Gli autori osservano empiricamente che $M$ ricade quasi sempre nell'intervallo $(0, 1)$ e propongono di decomporlo nella forma:
+Applicando questa formulazione alla moltiplicazione tra matrici, gli autori
+dimostrano che il calcolo può essere eseguito interamente tramite somme e
+moltiplicazioni tra interi. L'unico fattore non intero risultante
+dall'equazione è il moltiplicatore $M = \frac{S_1 S_2}{S_3}$. Questo termine
+agisce come un fattore di riscalamento necessario per mappare il prodotto delle
+attivazioni e dei pesi (che possiede intrinsecamente una scala pari a $S_1
+    S_2$) nel dominio di quantizzazione del livello successivo, definito dalla
+scala $S_3$. \par
+Poiché $M$ è un valore costante determinato offline dai parametri di
+quantizzazione, esso può essere trattato senza ricorrere ad aritmetica a
+virgola mobile durante l'inferenza. Gli autori osservano empiricamente che $M$
+ricade quasi sempre nell'intervallo $(0, 1)$ e propongono di decomporlo nella
+forma:
 \begin{equation}
     M = 2^{-n} M_0,
 \end{equation}
 dove $M_0 \in [0.5, 1)$ è un moltiplicatore normalizzato e $n$ è un intero non negativo. In fase di implementazione hardware, $M_0$ viene approssimato come un intero a virgola fissa (ad esempio un valore a 32 bit), permettendo di sostituire l'operazione teorica con una moltiplicazione tra interi seguita da un'operazione di \textit{bit-shift} verso destra per applicare il fattore $2^{-n}$. Questo stratagemma consente di mantenere l'intera pipeline di calcolo nel dominio delle unità aritmetiche intere (ALU), garantendo un'efficienza estrema sui processori mobile. \par
 Per colmare il divario prestazionale causato dalla discretizzazione, il modello
-non viene quantizzato post-addestramento. Al contrario, il processo di addestramento
-viene modificato iniettando dei nodi di quantizzazione simulata (\textit{fake
-    quantization}) nel grafo computazionale. Durante il \textit{forward pass},
-questi nodi simulano l'effetto di troncamento e saturazione imposto dai limiti
-degli 8 bit; durante il \textit{backward pass}, i gradienti fluiscono attraverso i pesi in \textit{floating-point}, consentendo
+non viene quantizzato post-addestramento. Al contrario, il processo di
+addestramento viene modificato iniettando dei nodi di quantizzazione simulata
+(\textit{fake quantization}) nel grafo computazionale. Durante il
+\textit{forward pass}, questi nodi simulano l'effetto di troncamento e
+saturazione imposto dai limiti degli 8 bit; durante il \textit{backward pass},
+i gradienti fluiscono attraverso i pesi in \textit{floating-point}, consentendo
 all'ottimizzatore di compensare l'errore indotto. Un'attenzione particolare
 viene inoltre posta nel fondere matematicamente i parametri di \textit{Batch
     Normalization} all'interno dei pesi convoluzionali prima di applicare la
@@ -583,11 +604,20 @@ accuratezza: il modello quantizzato garantisce uno \textit{speedup} fino al
 prestazionale minimo, spesso inferiore al 2\% rispetto alle controparti
 operanti in singola precisione.
 \subsubsection{Post-Training Quantization for Vision Transformer}
-L'applicazione diretta dei framework di \textit{Post-Training Quantization} (PTQ) tradizionali ai \textit{Vision Transformer} (ViT) ha rivelato limiti strutturali significativi. I metodi convenzionali, infatti, sono stati progettati primariamente per le reti convoluzionali (CNN) e non tengono conto delle peculiarità architetturali dei Transformer, primo fra tutti il meccanismo di \textit{Self-Attention}. Per colmare questa mancanza nella ricerca, Liu et al. propongono il primo approccio PTQ esplicitamente sviluppato e ottimizzato per i ViT~\cite{liu2021posttrainingquantizationvisiontransformer}.
-Per preservare un'accuratezza paragonabile alla \textit{baseline} in virgola mobile abbattendo i costi computazionali, gli autori strutturano il framework su tre contributi principali:
+L'applicazione diretta dei framework di \textit{Post-Training Quantization}
+(PTQ) tradizionali ai \textit{Vision Transformer} (ViT) ha rivelato limiti
+strutturali significativi. I metodi convenzionali, infatti, sono stati
+progettati primariamente per le reti convoluzionali (CNN) e non tengono conto
+delle peculiarità architetturali dei Transformer, primo fra tutti il meccanismo
+di \textit{Self-Attention}. Per colmare questa mancanza nella ricerca, Liu et
+al. propongono il primo approccio PTQ esplicitamente sviluppato e ottimizzato
+per i ViT~\cite{liu2021posttrainingquantizationvisiontransformer}. Per
+preservare un'accuratezza paragonabile alla \textit{baseline} in virgola mobile
+abbattendo i costi computazionali, gli autori strutturano il framework su tre
+contributi principali:
 \begin{itemize}
-    \item \textbf{Ranking-Aware Quantization}: Un meccanismo progettato per mantenere inalterata la gerarchia relativa dei valori all'interno delle mappe di attenzione.
-    \item \textbf{Similarity-Aware Quantization}: Un'ottimizzazione mirata degli intervalli di quantizzazione per massimizzare la somiglianza matematica tra le \textit{feature map} originali e quelle quantizzate.
+    \item \textbf{Ranking-Aware Quantization}: Un meccanismo progettato per mantenere inalterata la gerarchia relativa dei valori all'interno delle mappe di attenzione;
+    \item \textbf{Similarity-Aware Quantization}: Un'ottimizzazione mirata degli intervalli di quantizzazione per massimizzare la somiglianza matematica tra le \textit{feature map} originali e quelle quantizzate;
     \item \textbf{Mixed-Precision Quantization}: Un'allocazione dinamica dei bit guidata dalla \textit{Nuclear Norm} delle \textit{feature} per valutare la sensibilità intrinseca di ciascun layer alla compressione.
 \end{itemize}
 
@@ -598,14 +628,75 @@ Per preservare un'accuratezza paragonabile alla \textit{baseline} in virgola mob
     \label{figure:liu_quantization}
 \end{figure}
 
-Il problema fondamentale riscontrato nello studio risiede nel modulo di \textit{Multi-Head Self-Attention} (MSA). Analizzando empiricamente il modello, gli autori osservano che l'applicazione di una discretizzazione uniforme altera gravemente il \textit{ranking} relativo dei punteggi calcolati nella mappa di attenzione (poiché, usando meno bit, la precisione si riduce). Poiché l'attenzione modella la rilevanza globale tra i vari \textit{token} di un'immagine, intaccare questo \textit{ranking} genera un drastico calo prestazionale. La soluzione individuata risiede in una \textit{Ranking Loss}: una funzione di costo che penalizza severamente le inversioni di ordine tra i pesi di attenzione originali e quelli quantizzati. Minimizzare questa funzione assicura che la gerarchia relazionale appresa dalla rete rimanga intatta. \par
-Parallelamente, per mitigare l'errore nelle operazioni lineari dei moduli MLP, viene formulato un problema di ottimizzazione iterativa per ricercare le soglie di \textit{clipping} ideali (ovvero i confini degli intervalli di quantizzazione). L'obiettivo matematico è la massimizzazione del coefficiente di correlazione di Pearson tra l'output originale e la sua controparte a bassa precisione. Questa scelta metodologica è strategica: essendo invariante a traslazioni e variazioni di scala uniformi, il coefficiente di Pearson quantifica esclusivamente la dipendenza lineare tra i tensori. Ciò garantisce che le \textit{feature map} vengano preservate fedelmente per i layer successivi. \par
-Infine, superando i limiti degli approcci a larghezza di bit uniforme, gli autori constatano che ogni blocco del Transformer esibisce una diversa tolleranza alla quantizzazione. Attraverso la decomposizione ai valori singolari (SVD), il framework calcola la \textit{Nuclear Norm} (ossia la somma dei valori singolari) delle mappe di attenzione e delle \textit{feature} di output per quantificarne la diversità e la ricchezza informativa. Questa misura guida un processo di ottimizzazione che assegna precisioni miste in modo asimmetrico: i layer più critici mantengono risoluzioni elevate, mentre quelli più robusti vengono compressi maggiormente. \par
-I risultati sperimentali confermano la solidità del framework: valutato su architetture all'avanguardia come DeiT-B sul dataset ImageNet, il modello riesce a mantenere un'accuratezza top-1 dell'81.29\% operando in un regime di quantizzazione approssimabile agli 8 bit. Tale risultato annulla quasi totalmente il divario con la \textit{baseline} ad alta precisione, garantendo allo stesso tempo un drastico abbattimento del peso in memoria e della latenza di inferenza.
+Il problema fondamentale riscontrato nello studio risiede nel modulo di
+\textit{Multi-Head Self-Attention} (MSA). Analizzando empiricamente il modello,
+gli autori osservano che l'applicazione di una discretizzazione uniforme altera
+gravemente il \textit{ranking} relativo dei punteggi calcolati nella mappa di
+attenzione (poiché, usando meno bit, la precisione si riduce). Poiché
+l'attenzione modella la rilevanza globale tra i vari \textit{token} di
+un'immagine, intaccare questo \textit{ranking} genera un drastico calo
+prestazionale. La soluzione individuata risiede in una \textit{Ranking Loss}:
+una funzione di costo che penalizza severamente le inversioni di ordine tra i
+pesi di attenzione originali e quelli quantizzati. Minimizzare questa funzione
+assicura che la gerarchia relazionale appresa dalla rete rimanga intatta. \par
+Parallelamente, per mitigare l'errore nelle operazioni lineari dei moduli MLP,
+viene formulato un problema di ottimizzazione iterativa per ricercare le soglie
+di \textit{clipping} ideali (ovvero i confini degli intervalli di
+quantizzazione). L'obiettivo matematico è la massimizzazione del coefficiente
+di correlazione di Pearson tra l'output originale e la sua controparte a bassa
+precisione. Questa scelta metodologica è strategica: essendo invariante a
+traslazioni e variazioni di scala uniformi, il coefficiente di Pearson
+quantifica esclusivamente la dipendenza lineare tra i tensori. Ciò garantisce
+che le \textit{feature map} vengano preservate fedelmente per i layer
+successivi. \par
+Infine, superando i limiti degli approcci a larghezza di bit uniforme, gli
+autori constatano che ogni blocco del Transformer esibisce una diversa
+tolleranza alla quantizzazione. Attraverso la decomposizione ai valori
+singolari (SVD), il framework calcola la \textit{Nuclear Norm} (ossia la somma
+dei valori singolari) delle mappe di attenzione e delle \textit{feature} di
+output per quantificarne la diversità e la ricchezza informativa. Questa misura
+guida un processo di ottimizzazione che assegna precisioni miste in modo
+asimmetrico: i layer più critici mantengono risoluzioni elevate, mentre quelli
+più robusti vengono compressi maggiormente. \par
+I risultati sperimentali confermano la solidità del framework: valutato su
+architetture all'avanguardia come DeiT-B sul dataset ImageNet, il modello
+riesce a mantenere un'accuratezza top-1 dell'81.29\% operando in un regime di
+quantizzazione approssimabile agli 8 bit. Tale risultato annulla quasi
+totalmente il divario con la \textit{baseline} ad alta precisione, garantendo
+allo stesso tempo un drastico abbattimento del peso in memoria e della latenza
+di inferenza.
 \subsubsection{FQ-ViT: Fully Quantized Vision Transformer}
-Nonostante i progressi ottenuti nell'adattamento della \textit{Post-Training Quantization} ai modelli basati sull'attenzione, i framework precedenti presentavano un limite rilevante: per evitare drastici crolli di accuratezza, mantenevano i moduli di \textit{LayerNorm} e \textit{Softmax} in virgola mobile. Questa scelta impediva di ottenere reti completamente quantizzate (\textit{Fully Quantized}), costringendo l'hardware a continui e onerosi passaggi di conversione dei dati tra interi e \textit{floating-point}, limitando di fatto il reale guadagno di velocità in fase di inferenza. Per risolvere questa problematica, Lin et al. hanno introdotto \textbf{FQ-ViT} \cite{lin2023fqvitposttrainingquantizationfully}, il primo approccio capace di operare una quantizzazione totale dei \textit{Vision Transformer} riducendo al minimo il degrado prestazionale (approssimabile a circa l'1\%).
-Gli autori individuano due cause fondamentali alla base del fallimento delle tecniche tradizionali su questi specifici moduli. \par 
-In primo luogo, gli input dei layer di normalizzazione (\textit{LayerNorm}) presentano una variabilità estrema tra i diversi canali, con fluttuazioni che possono superare di 40 volte il valore mediano. Applicare intervalli di quantizzazione uniformi a livello di intero layer in un contesto di così forte sbilanciamento genera errori importanti. Per risolvere questa criticità, \textit{FQ-ViT} introduce il \textbf{Power-of-Two Factor (PTF)}: per gestire le enormi differenze numeriche tra i canali della \textit{LayerNorm}, la soluzione teorica ideale sarebbe assegnare a ciascun canale un fattore di scala specifico e indipendente, tuttavia, utilizzare parametri in virgola mobile per ogni singolo canale annullerebbe i vantaggi della quantizzazione, appesantendo e rallentando drasticamente i calcoli hardware. Il PTF aggira l'ostacolo assegnando a ogni canale un fattore di compensazione che è rigorosamente espresso come una potenza del due (ad esempio $2^1, 2^2, 2^3$). Ciò permette di utilizzare veloci operazioni hardware come il \textit{BitShift}. Grazie a questo stratagemma, il framework riesce ad allineare l'ampiezza dei vari canali sbilanciati in modo precisissimo, operando esclusivamente nel dominio dei numeri interi e garantendo la massima velocità di inferenza. \par
+Nonostante i progressi ottenuti nell'adattamento della \textit{Post-Training
+    Quantization} ai modelli basati sull'attenzione, i framework precedenti
+presentavano un limite rilevante: per evitare drastici crolli di accuratezza,
+mantenevano i moduli di \textit{LayerNorm} e \textit{Softmax} in virgola
+mobile. Questa scelta impediva di ottenere reti completamente quantizzate
+(\textit{Fully Quantized}), costringendo l'hardware a continui e onerosi
+passaggi di conversione dei dati tra interi e \textit{floating-point},
+limitando di fatto il reale guadagno di velocità in fase di inferenza. Per
+risolvere questa problematica, Lin et al. hanno introdotto \textbf{FQ-ViT}
+\cite{lin2023fqvitposttrainingquantizationfully}, il primo approccio capace di
+operare una quantizzazione totale dei \textit{Vision Transformer} riducendo al
+minimo il degrado prestazionale (approssimabile a circa l'1\%). Gli autori
+individuano due cause fondamentali alla base del fallimento delle tecniche
+tradizionali su questi specifici moduli. \par
+In primo luogo, gli input dei layer di normalizzazione (\textit{LayerNorm})
+presentano una variabilità estrema tra i diversi canali, con fluttuazioni che
+possono superare di 40 volte il valore mediano. Applicare intervalli di
+quantizzazione uniformi a livello di intero layer in un contesto di così forte
+sbilanciamento genera errori importanti. Per risolvere questa criticità,
+\textit{FQ-ViT} introduce il \textbf{Power-of-Two Factor (PTF)}: per gestire le
+enormi differenze numeriche tra i canali della \textit{LayerNorm}, la soluzione
+teorica ideale sarebbe assegnare a ciascun canale un fattore di scala specifico
+e indipendente, tuttavia, utilizzare parametri in virgola mobile per ogni
+singolo canale annullerebbe i vantaggi della quantizzazione, appesantendo e
+rallentando drasticamente i calcoli hardware. Il PTF aggira l'ostacolo
+assegnando a ogni canale un fattore di compensazione che è rigorosamente
+espresso come una potenza del due (ad esempio $2^1, 2^2, 2^3$). Ciò permette di
+utilizzare veloci operazioni hardware come il \textit{BitShift}. Grazie a
+questo stratagemma, il framework riesce ad allineare l'ampiezza dei vari canali
+sbilanciati in modo precisissimo, operando esclusivamente nel dominio dei
+numeri interi e garantendo la massima velocità di inferenza. \par
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{images/SOTA/FQViT.png}
@@ -614,15 +705,36 @@ In primo luogo, gli input dei layer di normalizzazione (\textit{LayerNorm}) pres
 \end{figure}
 In secondo luogo, l'analisi delle mappe di attenzione rivela una distribuzione dei valori fortemente asimmetrica: la stragrande maggioranza dei punteggi ricade in un intorno piccolissimo (tra 0 e 0.01), mentre solo rare eccezioni si avvicinano ad 1. La quantizzazione lineare standard si dimostra del tutto inadeguata per tale distribuzione, poiché alloca un ridotto numero di intervalli di precisione per la fascia di valori più densa, aggregando tutti i valori indiscriminatamente. La soluzione proposta è il \textbf{Log-Int-Softmax (LIS)}, un meccanismo che adotta una quantizzazione in base logaritmica (\textit{Log2}). Questa trasformazione matematica garantisce una risoluzione molto più fine e granulare per i valori prossimi allo zero, preservando le sfumature della mappa di attenzione originale.
 Inoltre, grazie al modulo \textit{Log-Int-Softmax}, FQ-ViT riesce a comprimere in modo aggressivo le mappe di attenzione portandole a soli 4 bit di precisione. Sfruttando le proprietà dell'aritmetica logaritmica, il framework sostituisce le dispendiose moltiplicazioni matriciali a valle dell'attenzione con semplici operazioni di \textit{BitShift}, mantenendo l'intera pipeline di calcolo della \textit{Self-Attention} strettamente nel dominio dei numeri interi. \par
-I test confermano l'efficacia di queste ottimizzazioni: applicato ad architetture di grandi dimensioni come ViT-L sul dataset ImageNet, \textit{FQ-ViT} raggiunge un'accuratezza top-1 dell'84.89\%, dimostrando che è possibile quantizzare (PTQ) completamente un \textit{Vision Transformer} senza compromettere la capacità predittiva della rete.
+I test confermano l'efficacia di queste ottimizzazioni: applicato ad
+architetture di grandi dimensioni come ViT-L sul dataset ImageNet,
+\textit{FQ-ViT} raggiunge un'accuratezza top-1 dell'84.89\%, dimostrando che è
+possibile quantizzare (PTQ) completamente un \textit{Vision Transformer} senza
+compromettere la capacità predittiva della rete.
 
 \subsubsection{Q-ViT: Accurate and Fully Quantized Low-bit Vision Transformer}
-Sebbene i metodi di \textit{Post-Training Quantization} (PTQ) abbiano dimostrato risultati notevoli, non risultano efficaci quando si tenta di spingere la quantizzazione ad una precisione estremamente ridotta, come 2, 3 o 4 bit. In queste condizioni, i ViT subiscono un drastico calo delle prestazioni. Per superare questa barriera, Li et al. introducono \textbf{Q-ViT}~\cite{li2022qvitaccuratefullyquantized}, un framework basato sul \textit{Quantization-Aware Training} (QAT). \par
-Attraverso un'approfondita analisi empirica, gli autori identificano due colli di bottiglia fondamentali che impediscono ai ViT di apprendere efficacemente a bassa precisione. Nel \textit{forward pass}, la quantizzazione diretta provoca una grave distorsione dell'informazione nella mappa di attenzione: le reti quantizzate perdono la capacità di variare la distanza di attenzione al variare della profondità (fenomeno in cui i layer superficiali catturano feature locali e quelli profondi feature globali), appiattendo irrimediabilmente la gerarchia delle feature. Nella fase di \textit{backward pass}, invece, i classici metodi di distillazione basati sull'output di classificazione si rivelano inefficaci e troppo grossolani per compensare l'enorme divario creatosi nei punteggi di attenzione quantizzati. \par
-Per risolvere queste criticità, Q-ViT interviene con due soluzioni architetturali mirate:
+Sebbene i metodi di \textit{Post-Training Quantization} (PTQ) abbiano
+dimostrato risultati notevoli, non risultano efficaci quando si tenta di
+spingere la quantizzazione ad una precisione estremamente ridotta, come 2, 3 o
+4 bit. In queste condizioni, i ViT subiscono un drastico calo delle
+prestazioni. Per superare questa barriera, Li et al. introducono
+\textbf{Q-ViT}~\cite{li2022qvitaccuratefullyquantized}, un framework basato sul
+\textit{Quantization-Aware Training} (QAT). \par
+Attraverso un'approfondita analisi empirica, gli autori identificano due colli
+di bottiglia fondamentali che impediscono ai ViT di apprendere efficacemente a
+bassa precisione. Nel \textit{forward pass}, la quantizzazione diretta provoca
+una grave distorsione dell'informazione nella mappa di attenzione: le reti
+quantizzate perdono la capacità di variare la distanza di attenzione al variare
+della profondità (fenomeno in cui i layer superficiali catturano feature locali
+e quelli profondi feature globali), appiattendo irrimediabilmente la gerarchia
+delle feature. Nella fase di \textit{backward pass}, invece, i classici metodi
+di distillazione basati sull'output di classificazione si rivelano inefficaci e
+troppo grossolani per compensare l'enorme divario creatosi nei punteggi di
+attenzione quantizzati. \par
+Per risolvere queste criticità, Q-ViT interviene con due soluzioni
+architetturali mirate:
 \begin{itemize}
-    \item \textbf{Information Rectification Module (IRM)}: Un modulo progettato per il \textit{forward pass} e fondato sulla teoria dell'informazione. Partendo dall'osservazione che i valori di \textit{query} e \textit{key} nei ViT seguono tipicamente una distribuzione gaussiana $\mathcal{N}(\mu, \sigma^2)$, gli autori dimostrano che la discretizzazione a bassa precisione ne altera irreversibilmente il profilo, facendone crollare l'entropia informativa. Poiché per una variabile gaussiana la massimizzazione dell'entropia di output equivale alla minimizzazione dell'errore medio di quantizzazione, l'IRM applica una standardizzazione modificata della funzione di quantizzazione, definita come $\tilde{q} = \frac{q - \mu(q) + \beta_q}{\gamma_q \sqrt{\sigma^2(q) + \epsilon_q}}$, dove $\gamma$ e $\beta$ sono parametri addestrabili. Questo riallineamento parametrico compensa l'alterazione e ripristina la capacità del meccanismo di attenzione di catturare le dipendenze globali.
-    
+    \item \textbf{Information Rectification Module (IRM)}: Un modulo progettato per il \textit{forward pass} e fondato sulla teoria dell'informazione. Partendo dall'osservazione che i valori di \textit{query} e \textit{key} nei ViT seguono tipicamente una distribuzione gaussiana $\mathcal{N}(\mu, \sigma^2)$, gli autori dimostrano che la discretizzazione a bassa precisione ne altera irreversibilmente il profilo, facendone crollare l'entropia informativa. Poiché per una variabile gaussiana la massimizzazione dell'entropia di output equivale alla minimizzazione dell'errore medio di quantizzazione, l'IRM applica una standardizzazione modificata della funzione di quantizzazione, definita come $\tilde{q} = \frac{q - \mu(q) + \beta_q}{\gamma_q \sqrt{\sigma^2(q) + \epsilon_q}}$, dove $\gamma$ e $\beta$ sono parametri addestrabili. Questo riallineamento parametrico compensa l'alterazione e ripristina la capacità del meccanismo di attenzione di catturare le dipendenze globali;
+
     \item \textbf{Distribution Guided Distillation (DGD)}: Uno schema di distillazione avanzato per il \textit{backward pass}. I metodi tradizionali, che si limitano a supervisionare l'output o le mappe di attenzione finali, si rivelano insufficienti per correggere il collasso della distanza di attenzione. La DGD interviene estraendo le matrici di similarità \textit{patch-based} calcolando il prodotto scalare tra i vettori delle \textit{query} e tra i vettori delle \textit{key} e le normalizza applicando la norma $L_2$. Questa normalizzazione è cruciale per eliminare le differenze di scala e le instabilità numeriche tra il modello \textit{teacher} in virgola mobile e lo \textit{student} quantizzato. Minimizzando la distanza $L_2$ tra queste matrici normalizzate, la rete riceve una supervisione di maggiore qualità.
 \end{itemize}
 
@@ -633,6 +745,184 @@ Per risolvere queste criticità, Q-ViT interviene con due soluzioni architettura
     \label{figure:Q-ViT}
 \end{figure}
 
-I risultati empirici di questa impostazione stabiliscono un nuovo standard per la compressione estrema. Applicato all'architettura DeiT-S, Q-ViT a 4-bit raggiunge un'accuratezza top-1 dell'80.9\% sul dataset ImageNet, riuscendo paradossalmente a superare la \textit{baseline} in virgola mobile (79.9\%) e garantendo al contempo un'accelerazione teorica di 6.14 volte. Ancor più notevole è il risultato a 2-bit, dove il framework riesce a comprimere i FLOPs del modello di ben 21.5 volte, mantenendo un'accuratezza del 72.0\%. Con questo approccio, viene dimostrato che la QAT è una via estremamente promettente per il \textit{deploy} dei Transformer su dispositivi a risorse limitate.
-\newpage
+I risultati empirici di questa impostazione stabiliscono un nuovo standard per
+la compressione estrema. Applicato all'architettura DeiT-S, Q-ViT a 4-bit
+raggiunge un'accuratezza top-1 dell'80.9\% sul dataset ImageNet, riuscendo
+paradossalmente a superare la \textit{baseline} in virgola mobile (79.9\%) e
+garantendo al contempo un'accelerazione teorica di 6.14 volte. Ancor più
+notevole è il risultato a 2-bit, dove il framework riesce a comprimere i FLOPs
+del modello di ben 21.5 volte, mantenendo un'accuratezza del 72.0\%. Con questo
+approccio, viene dimostrato che la QAT è una via estremamente promettente per
+il \textit{deploy} dei Transformer su dispositivi a risorse limitate. \newpage
 \subsection{Knowledge Distillation}
+La \textbf{Knowledge Distillation} (KD) è una tecnica di compressione indiretta
+di modelli che consiste in un trasferimento di conoscenza da un modello
+\textit{teacher} più grande e complesso a un modello \textit{student} più
+piccolo e leggero. L'obiettivo è quello di addestrare il modello
+\textit{student} ad emulare il comportamento del modello \textit{teacher},
+mantenendo prestazioni comparabili nonostante la riduzione delle dimensioni.
+Esistono tre principali strategie di distillazione:
+\begin{itemize}
+    \item \textbf{Distillazione basata sui Logit}: tecniche il cui obiettivo è allineare le predizioni finali dei modelli. Il modello \textit{student} viene addestrato a imitare le rappresentazioni finali del modello \textit{teacher}, ad esempio minimizzando la distanza tra le distribuzioni di probabilità prodotte dai due modelli;
+    \item \textbf{Distillazione basata sulle relazioni}: metodi avanzati, meno diffusi in letteratura, che puntano a trasferire la conoscenza strutturale e semantica della rete. Anziché replicare valori puntuali, il modello \textit{student} impara a emulare le mutue interazioni, come le distanze vettoriali, le correlazioni o le matrici di similarità tra le feature apprese;
+    \item \textbf{Distillazione basata sulle Feature}: approcci in cui il modello \textit{student} viene istruito a replicare fedelmente i valori numerici delle rappresentazioni intermedie (le \textit{feature map}) del modello \textit{teacher}.
+\end{itemize}
+Di seguito una panoramica dei principali lavori in questo ambito, con un'attenzione particolare alla distillazione di modelli \textit{Vision Transformer}.
+
+\subsubsection{Le origini della Knowledge Distillation}
+Il primo importante lavoro a formalizzare e testare il processo di
+trasferimento della conoscenza da modelli complessi a modelli compatti è stato
+quello di Hinton et al. \cite{hinton2015distilling}. Fino a quel punto,
+l'approccio diffuso per massimizzare le prestazioni di un sistema di
+\textit{machine learning} consisteva nell'addestrare un \textit{ensemble}
+(insieme) di reti neurali, una tecnica estremamente efficace in fase di
+training ma proibitiva in fase di \textit{deploy} su larga scala a causa degli
+elevati costi computazionali e della latenza. Sebbene fosse già stato
+dimostrato da Buciluă et al. \cite{buciluǎ2006model} che la conoscenza di un
+\textit{ensemble} potesse essere compressa in un singolo modello, risultava
+necessario definire un framework capace di astrarre la conoscenza acquisita dal
+modello, svincolandola dai soli parametri numerici per intenderla, invece, come
+una funzione di mappatura appresa tra input e output. \par
+Per risolvere questa limitazione, gli autori introducono il concetto di
+\textbf{Distillation} (Distillazione), apportando due contributi fondamentali:
+\begin{itemize}
+    \item L'utilizzo delle probabilità di output del modello complesso come \textbf{Soft
+              Targets} per l'addestramento del modello compatto. Questi valori forniscono
+          molta più informazione per ogni caso di addestramento rispetto ai tradizionali
+          \textit{hard targets} (etichette binarie), catturando la ricca struttura di
+          similarità tra le classi appresa dal modello complesso;
+    \item L'introduzione del parametro della \textbf{Temperatura} nella funzione Softmax.
+          Questo espediente matematico permette di addolcire la distribuzione di
+          probabilità, facendo emergere i valori relativi alle classi errate che, sebbene
+          minimi, veicolano informazioni cruciali su come il modello tende a
+          generalizzare.
+\end{itemize}
+Lo schema proposto interviene direttamente sull'ultimo layer della rete neurale. Ogni probabilità di classe $q_i$ viene calcolata a partire dai logit $z_i$ introducendo il parametro di temperatura $T$:
+\begin{equation}
+    q_i = \frac{\exp(z_i/T)}{\sum_{j} \exp(z_j/T)}.
+\end{equation}
+In condizioni normali $T$ è impostato a 1. Tuttavia, durante la distillazione, si utilizza un valore di $T$ elevato per generare una distribuzione di target più informativa. Il modello \textit{student} viene quindi addestrato a minimizzare una funzione obiettivo composta dalla media pesata di due componenti:
+\begin{enumerate}
+    \item La \textit{cross-entropy} calcolata rispetto ai \textit{soft targets} generati
+          dal \textit{teacher}, utilizzando la medesima temperatura $T$ per entrambi i
+          modelli. Da un punto di vista dell'ottimizzazione, poiché la distribuzione del
+          \textit{teacher} è fissa, minimizzare questa componente equivale
+          matematicamente a minimizzare la divergenza di Kullback-Leibler (KL Divergence)
+          tra le distribuzioni in uscita dei due modelli;
+    \item La \textit{cross-entropy} standard calcolata rispetto alle etichette reali
+          (\textit{hard targets}), computata sui logit dello \textit{student} a
+          temperatura unitaria.
+\end{enumerate}
+Poiché i gradienti prodotti dai \textit{soft targets} scalano proporzionalmente a $1/T^2$, gli autori osservano che è necessario moltiplicarli per $T^2$ durante l'ottimizzazione. Questo assicura che il contributo relativo dei \textit{soft} e \textit{hard targets} rimanga bilanciato per qualsiasi valore selezionato di temperatura. Hinton et al. dimostrano inoltre che, per un valore di $T$ tendente ad infinito, la distillazione equivale matematicamente alla minimizzazione della distanza quadratica tra i logit di \textit{teacher} e \textit{student}. \par
+Valutato su molteplici domini, questo approccio ha dimostrato capacità di
+trasferimento della conoscenza notevoli. Negli esperimenti su dataset MNIST, il
+modello distillato è stato in grado di riconoscere correttamente cifre (come il
+"3") pur non avendone mai osservato alcun esempio durante l'addestramento,
+affidandosi esclusivamente alla conoscenza trasferita dal \textit{teacher}. In
+ambito di riconoscimento vocale, un singolo modello distillato è riuscito a
+eguagliare quasi perfettamente le prestazioni di un \textit{ensemble} di 10
+reti neurali profonde, riducendo drasticamente l'onere computazionale in fase
+di inferenza senza compromettere l'accuratezza.
+
+\subsubsection{DeiT}
+L'architettura \textit{Vision Transformer} (ViT) originale aveva dimostrato
+prestazioni ottime in ambito visivo, ma con un limite infrastrutturale critico:
+per generalizzare correttamente senza incorrere in \textit{overfitting},
+richiedeva l'addestramento su dataset dalle dimensioni proibitive (come
+JFT-300M, contenente 300 milioni di immagini). Con l'introduzione di
+\textbf{DeiT} (\textit{Data-efficient Image Transformers}
+\cite{touvron2021trainingdataefficientimagetransformers}), Touvron et al.
+superano questa limitazione, dimostrando che è possibile addestrare un ViT
+competitivo utilizzando esclusivamente il dataset ImageNet-1K. \par
+Il fulcro del loro approccio non si basa su variazioni particolari
+dell'architettura, bensì sull'utilizzo di una tecnica di \textit{Knowledge
+    Distillation}. In primo luogo, gli autori osservano un fenomeno interessante:
+utilizzare una rete neurale convoluzionale (CNN) come modello \textit{teacher}
+produce risultati nettamente superiori rispetto all'uso di un Transformer di
+pari dimensioni. Questo avviene perché la distillazione permette al modello
+\textit{student} (il ViT) di ereditare indirettamente i \textit{bias induttivi}
+della CNN, compensando la propria mancanza intrinseca di capacità spaziali e di
+invarianza alla traslazione. \par
+Un'aspetto fondamentale del loro lavoro consiste nella rottura rispetto al
+paradigma stabilito da Hinton \cite{hinton2015distilling} riguardo la funzione
+obiettivo. Invece di utilizzare la \textit{soft distillation} basata sulle
+distribuzioni addolcite, DeiT impiega la \textbf{Hard-label distillation}. In
+questa formulazione, la decisione finale rigida della rete \textit{teacher}
+($y_t = \operatorname{argmax} Z_t(c)$) viene considerata e utilizzata alla
+stregua di una vera e propria etichetta (\textit{true label}). La funzione di
+costo globale diventa quindi la media di due \textit{Cross-Entropy} distinte,
+una calcolata sull'etichetta reale $y$ e l'altra sull'etichetta del
+\textit{teacher} $y_t$:
+\begin{equation}
+    \mathcal{L}_{global}^{hardDistill} = \frac{1}{2}\mathcal{L}_{CE}(\psi(Z_s), y) + \frac{1}{2}\mathcal{L}_{CE}(\psi(Z_s), y_t).
+\end{equation}
+L'innovazione più incisiva di DeiT risiede però nell'integrazione di questa funzione di costo all'interno della rete attraverso il \textbf{Distillation Token}. Ispirandosi al token di classificazione (`[CLS]`) standard dei ViT, gli autori aggiungono alla sequenza di token,  ottenuti dalle \textit{patch} in ingresso, un nuovo vettore addestrabile. Questo token interagisce liberamente con tutti gli altri attraverso i molteplici layer di \textit{Self-Attention}. Tuttavia, mentre la supervisione finale del token `[CLS]` mira a minimizzare l'errore rispetto all'etichetta reale ($y$), l'ottimizzazione del \textit{distillation token} è esclusivamente delegata a riprodurre l'etichetta predetta dal \textit{teacher} ($y_t$). \par
+Analizzando le dinamiche interne della rete, si nota che i due token non
+collassano mai nello stesso vettore. Al primo layer, la loro similarità coseno
+è quasi nulla (0.06), per poi crescere progressivamente man mano che la rete
+aggrega la semantica, fino a raggiungere un valore di 0.93 all'ultimo layer.
+Questo comportamento dimostra che, pur puntando a predizioni affini, i due
+token estraggono ed elaborano informazioni visive in modo complementare. \par
+Grazie alla sinergia di questi contributi, il modello DeiT-B non solo supera
+nettamente le prestazioni del ViT-B originale a parità di dati utilizzati in
+addestramento, ma riesce persino a battere la variante ViT pre-addestrata sul
+dataset JFT-300M. Questo risultato permette all'architettura Transformer di
+chiudere il divario con le reti convoluzionali, eguagliando architetture CNN
+ottimizzate e offrendo un elevato rapporto tra accuratezza e velocità di
+inferenza.
+
+\subsubsection{DearKD}
+Sebbene l'introduzione di metodi come DeiT abbia dimostrato la fattibilità
+dell'addestramento dei \textit{Vision Transformer} senza l'ausilio di dataset
+di grandi dimensioni, le architetture puramente basate sull'attenzione
+continuano a necessitare di moli considerevoli di dati. Questo limite deriva
+dalla mancanza di \textit{bias induttivo}, ovvero l'assenza di vincoli
+strutturali innati, come la località e la condivisione dei pesi, che rendono le
+reti neurali convoluzionali (CNN) estremamente efficienti nell'estrarre pattern
+visivi sin dalle prime fasi dell'addestramento.\par
+I metodi di distillazione analizzati finora si limitano a trasferire la
+conoscenza esclusivamente attraverso i \textit{logit} del modello
+\textit{teacher}. Chen et al. introducono \textbf{DearKD}
+\cite{chen2022dearkddataefficientearlyknowledge}, evidenziando come questa
+pratica presenti due criticità per i Transformer: in primo luogo, rende più
+difficile per i layer iniziali del modello \textit{student} apprendere il bias
+induttivo locale delle CNN; in secondo luogo, forzare il ViT a imitare la CNN
+per l'intera durata dell'addestramento ostacola lo sviluppo delle proprie
+rappresentazioni intrinseche e delle dipendenze globali. \par
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{images/SOTA/DearKD.png}
+    \caption{Strategia di distillazione a due stadi di \textit{DearKD}. Fonte:~\cite{chen2022dearkddataefficientearlyknowledge}.}
+    \label{figure:DearKD}
+\end{figure}
+Per superare questi problemi, Chen et al. propongono un framework di apprendimento a due stadi, come è possibile notare in Figura \ref{figure:DearKD}, denominato \textit{Data-efficient EARly Knowledge Distillation} (DearKD):
+\begin{itemize}
+    \item \textbf{Stadio I (Distillazione Convoluzionale Iniziale):} In questa prima fase, il modello apprende non solo dai logit, ma soprattutto dai layer intermedi della CNN \textit{teacher}. Poiché le \textit{feature map} convoluzionali e i token del Transformer possiedono dimensioni incompatibili, gli autori introducono un modulo di allineamento (\textit{aligner module}). Questo modulo (Figura \ref{figure:DearKD_align}) rimodella e interpola spazialmente i token per poterne calcolare l'errore quadratico medio rispetto alle \textit{feature map} della CNN.
+    L'obbiettivo dell'apprendimento di una rappresentazione spaziale è ulteriormente rinforzato dall'introduzione di un meccanismo di \textit{Multi-Head Convolutional-Attention} (MHCA). Basandosi sulla dimostrazione teorica \cite{cordonnier2020relationshipselfattentionconvolutionallayers} secondo cui un layer di attenzione dotato di codifica posizionale relativa può matematicamente esprimere qualsiasi operazione convoluzionale, gli autori riformulano la matrice di attenzione $A$ come:
+    \begin{equation}
+        A = \text{Softmax}(QK + v^{(h)}r_{ij}),
+    \end{equation}
+    dove l'argomento della funzione Softmax è diviso in due componenti complementari. La prima componente, il prodotto scalare $QK$ (\textit{query-key}), elabora il contenuto del token per catturare le tradizionali dipendenze semantiche globali. La seconda componente, $v^{(h)}r_{ij}$, costituisce l'informazione posizionale relativa (RPE, \textit{Relative Positional Embedding}). Nello specifico, $r_{ij}$ funge da vettore geometrico fisso che descrive le distanze spaziali tra i token, mentre $v^{(h)}$ incapsula i parametri addestrabili della testa dell'attenzione. Il loro prodotto agisce come una finestra Gaussiana, permettendo a ogni \textit{head} di emulare un filtro convoluzionale con campo ricettivo dinamico, inducendo il modello \textit{student} a focalizzarsi sulle relazioni locali.
+
+    \item \textbf{Stadio II (Apprendimento Intrinseco):} Raggiunta una solida base di comprensione spaziale e locale, la distillazione viene completamente disattivata. Il Transformer prosegue l'addestramento guidato unicamente dalla \textit{Cross-Entropy} rispetto alle etichette reali (\textit{ground truth}). Questo accorgimento permette alla rete di concludere l'addestramento senza la rigida guida della CNN, consentendole di sfruttare le capacità globali della \textit{Self-Attention}.
+\end{itemize}
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\textwidth]{images/SOTA/DearKD_aligner.png}
+        \caption{Operazione di allineamento dei token di \textit{DearKD}, per riportarli alla dimensione delle \textit{feature map}. Fonte:~\cite{chen2022dearkddataefficientearlyknowledge}.}
+        \label{figure:DearKD_align}
+    \end{figure}
+I test dimostrano che un modello DearKD, addestrato utilizzando solamente il 50\% delle immagini del dataset ImageNet, riesce a superare le prestazioni della \textit{baseline} DeiT
+addestrata sull'intero dataset (100\%). Il framework è stato inoltre testato
+dagli autori con dati esclusivamente generati sinteticamente ed il modello ha registrato un calo prestazionale minimo (solo l'1.0\% in meno rispetto alla controparte addestrata
+su dati reali), confermando l'efficacia delle soluzioni proposte.
+
+\subsubsection{TinyViT}
+Se DeiT e DearKD hanno risolto i problemi di inefficienza dei dati e di bias induttivo, l'implementazione dei \textit{Vision Transformer} su dispositivi \textit{Edge} pone una sfida ulteriore. La procedura standard per ottenere reti compatte ad alte prestazioni consiste nell'applicare la \textit{Knowledge Distillation} durante la fase di pre-addestramento su dataset di grandi dimensioni (come ImageNet-21k), trasferendo la conoscenza da modelli \textit{teacher} complessi. Tuttavia, l'esecuzione simultanea di un modello \textit{teacher} e di uno \textit{student} satura facilmente la memoria GPU e rallenta drasticamente il processo di addestramento. \par
+Per superare questa limitazione, Wu et al. propongono \textbf{TinyViT} \cite{wu2022tinyvitfastpretrainingdistillation}, un framework basato su una tecnica innovativa denominata \textit{Fast Pretraining Distillation}. L'intuizione fondamentale è svincolare completamente il calcolo delle predizioni del \textit{teacher} dal ciclo di addestramento dello \textit{student}. Gli autori eseguono un \textit{forward pass} del \textit{teacher} in una fase preliminare (\textit{offline}), registrando le predizioni su un dispositivo di archiviazione. \par
+Per rendere questa procedura scalabile su milioni di immagini, il framework implementa due accorgimenti tecnici cruciali:
+\begin{itemize}
+    \item \textbf{Sparse Soft Labels}: Invece di salvare l'intera distribuzione di probabilità (che su ImageNet-21k comprenderebbe oltre 21.000 valori per immagine), vengono archiviati esclusivamente i $K$ logit con i valori più alti (\textit{top-K}) e i rispettivi indici. Questo approccio abbatte i costi di archiviazione, senza compromettere particolarmente la qualità del trasferimento di conoscenza.
+    \item \textbf{Data Augmentation Encoding}: Poiché le moderne tecniche di \textit{Data Augmentation} introducono variazioni stocastiche per ogni immagine a ogni iterazione, memorizzare i parametri di ogni singola trasformazione risulterebbe impraticabile. Il sistema risolve il problema salvando un singolo parametro generatore (un \textit{seed}), permettendo allo \textit{student} di riprodurre esattamente la stessa sequenza di trasformazioni visive osservata dal \textit{teacher}.
+\end{itemize}
+Durante la vera e propria fase di \textit{training}, il modello \textit{student} compatto si limita a caricare i target sparsi e il seme per il generatore random per l'\textit{augmentation} dal disco, annullando il carico computazionale del \textit{teacher}. Grazie a questa strategia è possibile adottare tecniche di distillazione anche in casi di limitate risorse computazionali, accelerando notevolmente il processo di addestramento.
