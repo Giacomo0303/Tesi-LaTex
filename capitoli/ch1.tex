@@ -509,19 +509,107 @@ Nello specifico, per quanto riguarda i modelli \textit{Transformer}, un altra te
 Questa strategia risulta particolarmente efficace dato il suo diretto impatto sul meccanismo di attenzione. Quest'ultimo infatti è caratterizzato da una complessità computazionale quadratica rispetto al numero di token, di conseguenza, ridurre questo porta a significativi miglioramenti in termini di latenza. Di seguito una panoramica dei principali lavori in questo ambito.
 
 \subsubsection{SViTE}
-Tradizionalmente i metodi di \textit{pruning} richiedono l'addestramento dell'intero modello denso prima di poterne rimuovere le ridondanze, un processo che si traduce in costi computazionali e di memoria, in particolar modo per i \textit{Vision Transformer}. Per ovviare a questo problema, Chen et al. propongono \textbf{SViTE} (\textit{Sparse Vision Transformer Exploration}) \cite{chen2021chasingsparsityvisiontransformers}, un framework che utilizza il concetto di sparsità, addestrando dinamicamente una sottorete sparsa sin dalle prime fasi dell'inizializzazione e mantenendo fisso un budget di parametri ridotto per l'intera durata del training. \par
+Tradizionalmente i metodi di \textit{pruning} richiedono l'addestramento
+dell'intero modello denso prima di poterne rimuovere le ridondanze, un processo
+che si traduce in costi computazionali e di memoria, in particolar modo per i
+\textit{Vision Transformer}. Per ovviare a questo problema, Chen et al.
+propongono \textbf{SViTE} (\textit{Sparse Vision Transformer Exploration})
+\cite{chen2021chasingsparsityvisiontransformers}, un framework che utilizza il
+concetto di sparsità, addestrando dinamicamente una sottorete sparsa sin dalle
+prime fasi dell'inizializzazione e mantenendo fisso un budget di parametri
+ridotto per l'intera durata del training. \par
 Il lavoro degli autori si articola in tre contributi fondamentali:
 \begin{itemize}
     \item \textbf{SViTE (Pruning Non Strutturato)}: Invece di addestrare un modello denso per poi comprimerlo, questa variante inizializza la rete con una struttura già sparsa (molti parametri sono posti a zero fin dall'inizio). Durante l'addestramento, le connessioni attive non rimangono fisse, ma vengono aggiornate dinamicamente tramite un ciclo di \textit{prune-and-grow}. A intervalli regolari, il sistema identifica i pesi attivi meno importanti, ovvero quelli con il valore assoluto più basso, e li disattiva. Subito dopo, per mantenere rigorosamente costante il livello di sparsità globale, la rete riattiva parametri precedentemente spenti. Queste nuove attivazioni vengono scelte in base alla magnitudo del loro gradiente: vengono cioè riattivati i pesi che promettono di ridurre maggiormente l'errore del modello. Questo approccio permette alla rete di esplorare e trovare la topologia sparsa ottimale direttamente durante l'addestramento.
-    
+
     \item \textbf{S$^2$ViTE (Pruning Strutturato)}: Poiché la sparsità non strutturata raramente si traduce in concreti vantaggi, misurabili in fase di inferenza, il framework viene esteso alla sua variante strutturata, \textit{$S^2$ViTE} (\textit{Structured Sparse ViT Exploration}). In questo caso, il pruning non agisce sui singoli pesi, ma rimuove intere teste di attenzione (\textit{attention heads}) e specifici neuroni nei moduli MLP. L'importanza delle singole teste viene stimata tramite un'approssimazione del primo ordine (basata sull'espansione di Taylor) della funzione di perdita, mentre l'importanza dei neuroni MLP viene valutata tramite la norma $L_1$, calcolata sulla base dei rispettivi parametri.
-    
+
     \item \textbf{SViTE+ (Token Pruning)}: Per massimizzare ulteriormente l'efficienza, la sparsità architetturale viene unita alla riduzione del numero di token. A tale scopo, viene introdotto un selettore di token addestrabile che analizza le \textit{patch} dell'immagine in ingresso per mantenere attivi solo i \textit{top-k} token più informativi scartando il background o eventuali ridondanze. Questo ha un forte impatto proprio sul meccanismo di attenzione, riducendo drasticamente la complessità computazionale, che è quadratica rispetto al numero di token.
 \end{itemize}
 
-I risultati si dimostrano ottimi. Applicando la variante \textit{$S^2$ViTE} su un'architettura DeiT-Small, rimuovendo il 30\% dei parametri, il modello ottiene una riduzione del 31\% dei FLOPs e del 22\% del tempo di inferenza. Per quanto riguarda l'accuratezza, la rete compressa non subisce un pesante degrado prestazionale (0.6\%) rispetto alla sua controparte densa originale.
+I risultati si dimostrano ottimi. Applicando la variante \textit{$S^2$ViTE} su
+un'architettura DeiT-Small, rimuovendo il 30\% dei parametri, il modello
+ottiene una riduzione del 31\% dei FLOPs e del 22\% del tempo di inferenza. Per
+quanto riguarda l'accuratezza, la rete compressa non subisce un pesante degrado
+prestazionale (0.6\%) rispetto alla sua controparte densa originale.
+
 \subsubsection{WDPruning}
+La maggior parte dei metodi di \textit{pruning} strutturato per i
+\textit{Vision Transformer} si concentra prevalentemente sulla riduzione della
+larghezza della rete, attraverso il taglio di canali o specifiche teste di
+attenzione. Tuttavia, Yu et al. fanno notare come la riduzione della profondità
+(ovvero la rimozione di interi blocchi Transformer) risulti spesso più
+vantaggiosa per l'accelerazione hardware, in quanto garantisce una maggiore
+efficienza di parallelizzazione e una notevole riduzione di parametri. Per
+colmare questa lacuna, gli autori propongono \textbf{WDPruning} (\textit{Width
+    \& Depth Pruning}) \cite{yu2022width}, un framework in grado di comprimere
+simultaneamente in larghezza e in profondità un modello ViT, addestrando il
+modello compatto direttamente, senza necessitare di successive fasi di
+\textit{fine-tuning}. \par
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/SOTA/wdp.png}
+    \caption{\textit{Pruning} in larghezza proposto da Yu et al in WDPruning. Vengono compresse le teste di attenzione e i moduli MLP. Fonte:~\cite{yu2022width}.}
+    \label{figure:wdp}
+\end{figure}
+Per quanto riguarda il \textit{pruning} in larghezza, vengono compressi i layer lineari e i moduli di \textit{Multi-Head Self-Attention} (Figura \ref{figure:wdp}s). In particolare, il metodo associa una maschera binaria e un \textit{saliency score} (punteggio di importanza) addestrabile a ogni dimensione (singolo neurone oppure testa di attenzione). Durante l'addestramento, i canali il cui punteggio risulta inferiore a una soglia vengono azzerati. Questa soglia viene resa specifica per ogni blocco Transformer e diventa inoltre un parametro differenziabile e addestrabile tramite l'ausilio di una funzione sigmoide, permettendo al modello di apprendere autonomamente un tasso di sparsità non uniforme e ottimizzato per ogni singolo layer. Per vincolare la rete a rispettare un \textit{budget}, ovvero un obiettivo di \textit{pruning} globale stabilito a priori, viene impiegato il metodo del Lagrangiano Aumentato direttamente nella funzione di costo. \par
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/SOTA/wdp_cls.png}
+    \caption{\textit{Pruning} in profondità attraverso \textit{shallow classifiers} in WDPruning. A sinistra la configurazione in fase di addestramento e \textit{pruning}, a destra quella in fase di inferenza. Fonte:~\cite{yu2022width}.}
+    \label{figure:wdp_cls}
+\end{figure}
+Al fine di comprimere la rete in profondità, gli autori sfruttano la proprietà dei token di classificazione (`[CLS]`) di accumulare rappresentazioni semantiche utili alla predizione già nei blocchi iniziali. Vengono quindi inseriti dei classificatori ausiliari (\textit{shallow classifiers}) che hanno come input i token `[CLS]` dei blocchi intermedi (Figura \ref{figure:wdp_cls}). Questi classificatori vengono addestrati congiuntamente al resto della rete. In fase di inferenza, è possibile selezionare il classificatore intermedio che offre il miglior compromesso tra latenza e accuratezza, permettendo di scartare tutti i blocchi Transformer successivi. \par
+I risultati sperimentali sul dataset ImageNet-1K dimostrano che
+l'ottimizzazione congiunta di queste due dimensioni porta a risultati
+interessanti. Applicando il metodo all'architettura DeiT-Base, gli autori sono
+riusciti a rimuovere circa il 20\% dei parametri e oltre il 22\% dei FLOPs,
+ottenendo un incremento del \textit{throughput} del 10\%. Sorprendentemente,
+questo livello di compressione ha prodotto un lieve incremento dell'accuratezza
+Top-1 (+0.14\%) rispetto al modello denso di base. Per quanto riguarda i
+modelli di dimensioni ridotte (DeiT-Small e DeiT-Tiny), rimuovendo il 30\% dei
+parametri si notano ottimi miglioramenti in termini di latenza e FLOPs, ma con
+un degrado in termini di accuratezza più significativo (superiore all'1\%).
+
 \subsubsection{GOHSP}
+Un limite fondamentale degli approcci tradizionali di \textit{pruning}
+applicati ai \textit{Vision Transformer} risiede nell'errata assunzione che
+l'architettura possa essere compressa in maniera omogenea. Yin et al.
+\cite{yin2023gohspunifiedframeworkgraph} evidenziano come i modelli ViT siano
+invece intrinsecamente caratterizzati da una \textbf{sparsità strutturata
+    eterogenea}. Nello specifico, il modulo di attenzione permette una compressione
+su due livelli di granularità, a livello di intere teste (\textit{head-level})
+e a livello di singole colonne delle matrici dei pesi (\textit{column-level});
+mentre il modulo MLP esclusivamente a livello di colonna. Questa
+multi-granularità rende inadeguate le metriche di \textit{pruning}
+convenzionali: valutando l'importanza delle dimensioni in modo isolato, tali
+metriche falliscono nel catturare le complesse interazioni globali tra i
+diversi componenti della rete.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{images/SOTA/gohsp.png}
+    \caption{Rappresentazione grafica del metodo di \textit{pruning} introdotto da Yin et al. in GOHSP. Sono visibili le tre fasi distinte (da sinistra a destra) del processo. Fonte:~\cite{yin2023gohspunifiedframeworkgraph}.}
+    \label{figure:gohsp}
+\end{figure}
+Per risolvere questa problematica, gli autori propongono \textbf{GOHSP}
+(\textit{Graph and Optimization-based Heterogeneous Structured Pruning}, Figura \ref{figure:gohsp})
+\cite{yin2023gohspunifiedframeworkgraph}, un framework che affronta la
+compressione attraverso tre fasi sequenziali:
+
+\begin{itemize}
+    \item \textbf{Graph-based Head Ranking}: Invece di valutare ogni testa di attenzione singolarmente, gli autori analizzano come queste interagiscono tra loro, nello specifico layer, costruendo un grafo in cui ogni nodo rappresenta una testa. Il collegamento (arco) tra due teste ha un peso proporzionale alla similarità coseno tra i loro output: maggiore è la similarità tra i risultati di due teste su un batch di dati, maggiore è la loro relazione. Questo sistema viene modellato come una \textbf{Catena di Markov}, in modo tale da poter analizzare globalmente le relazioni tra le teste. In questo contesto, la \textbf{distribuzione stazionaria} rappresenta la probabilità finale di trovarsi su una determinata testa dopo aver effettuato un numero infinito di transizioni sul grafo. Intuitivamente, una testa con probabilità stazionaria elevata indica che questa produce un output fortemente simile a quello delle altre teste della rete. Al contrario, teste con una probabilità stazionaria minore risultano isolate o meno rappresentative dell'informazione globale, venendo quindi identificate come candidate per la rimozione. Tuttavia, eliminarle (un approccio rigido, o \textit{hard-pruning}) causerebbe un decremento immediato dell'accuratezza. Per evitare questo problema, viene adottata una strategia graduale: ai pesi di queste teste vengono attribuite delle penalità nella funzione di costo della fase successiva. Questa operazione non azzera i parametri bensì li costringe a tendere gradualmente verso lo zero durante le iterazioni di addestramento. In questo modo si realizza il cosiddetto \textit{soft-pruning}.
+
+    \item \textbf{Optimization-based Soft Pruning (Ottimizzazione Globale)}: Questa fase ha il delicato compito di imporre la \textbf{sparsità eterogenea}. L'algoritmo non si limita infatti a penalizzare le teste suggerite dal \textit{ranking}, ma deve simultaneamente ottimizzare la rimozione delle singole colonne, sia nei moduli di attenzione sia nei moduli MLP, al fine di rispettare il \textit{budget} di compressione prefissato. Per gestire questi molteplici vincoli spaziali di diversa granularità all'interno di un unico problema di ottimizzazione (minimizzando al contempo la funzione di costo), viene impiegato il metodo di separazione di \textit{Douglas-Rachford} \cite{eckstein1992douglas}. Questo algoritmo adotta un approccio iterativo duplice: ad ogni iterazione, i pesi vengono dapprima aggiornati liberamente per minimizzare l'errore del modello; successivamente, l'algoritmo impone il rispetto del \textit{budget} di \textit{pruning} e, tramite le penalità sulla funzione di perdita, riduce verso lo zero i pesi che risultano meno rilevanti, gestendo attenzione ed MLP in modo indipendente. Questa alternanza scinde l'ottimizzazione di due obiettivi spesso contrastanti, evitando gradienti instabili e garantendo una convergenza stabile.
+
+    \item \textbf{Fase 3: Hard-Pruning e Fine-Tuning}: Al termine del processo di ottimizzazione, i pesi e le strutture identificate come superflue avranno raggiunto valori prossimi allo zero. A questo punto viene eseguito il \textit{pruning} strutturato definitivo, seguito da alcune epoche di \textit{fine-tuning} per recuperare l'eventuale accuratezza persa.
+\end{itemize}
+I risultati sperimentali evidenziano la superiorità di questo approccio. Sul dataset ImageNet, applicando GOHSP al modello DeiT-Small con
+un tasso di \textit{pruning} del 40\%, il modello ottiene un'accuratezza
+del 79.98\%, superando leggermente sia il modello base denso (79.90\%) sia i
+metodi strutturati concorrenti come S$^2$ViTE. Spingendo la sparsità al 50\%,
+il modello riesce comunque a eguagliare le prestazioni della controparte densa
+originale, garantendo al contempo un miglioramento del tempo di
+inferenza (\textit{run-time}) superiore al 26\%.
 \subsubsection{X-Pruner}
 \subsubsection{COMCAT}
 \subsubsection{CAIT}
@@ -909,29 +997,45 @@ rappresentazioni intrinseche e delle dipendenze globali. \par
 Per superare questi problemi, Chen et al. propongono un framework di apprendimento a due stadi, come è possibile notare in Figura \ref{figure:DearKD}, denominato \textit{Data-efficient EARly Knowledge Distillation} (DearKD):
 \begin{itemize}
     \item \textbf{Stadio I (Distillazione Convoluzionale Iniziale):} In questa prima fase, il modello apprende non solo dai logit, ma soprattutto dai layer intermedi della CNN \textit{teacher}. Poiché le \textit{feature map} convoluzionali e i token del Transformer possiedono dimensioni incompatibili, gli autori introducono un modulo di allineamento (\textit{aligner module}). Questo modulo (Figura \ref{figure:DearKD_align}) rimodella e interpola spazialmente i token per poterne calcolare l'errore quadratico medio rispetto alle \textit{feature map} della CNN.
-    L'obbiettivo dell'apprendimento di una rappresentazione spaziale è ulteriormente rinforzato dall'introduzione di un meccanismo di \textit{Multi-Head Convolutional-Attention} (MHCA). Basandosi sulla dimostrazione teorica \cite{cordonnier2020relationshipselfattentionconvolutionallayers} secondo cui un layer di attenzione dotato di codifica posizionale relativa può matematicamente esprimere qualsiasi operazione convoluzionale, gli autori riformulano la matrice di attenzione $A$ come:
-    \begin{equation}
-        A = \text{Softmax}(QK + v^{(h)}r_{ij}),
-    \end{equation}
-    dove l'argomento della funzione Softmax è diviso in due componenti complementari. La prima componente, il prodotto scalare $QK$ (\textit{query-key}), elabora il contenuto del token per catturare le tradizionali dipendenze semantiche globali. La seconda componente, $v^{(h)}r_{ij}$, costituisce l'informazione posizionale relativa (RPE, \textit{Relative Positional Embedding}). Nello specifico, $r_{ij}$ funge da vettore geometrico fisso che descrive le distanze spaziali tra i token, mentre $v^{(h)}$ incapsula i parametri addestrabili della testa dell'attenzione. Il loro prodotto agisce come una finestra Gaussiana, permettendo a ogni \textit{head} di emulare un filtro convoluzionale con campo ricettivo dinamico, inducendo il modello \textit{student} a focalizzarsi sulle relazioni locali.
+          L'obbiettivo dell'apprendimento di una rappresentazione spaziale è ulteriormente rinforzato dall'introduzione di un meccanismo di \textit{Multi-Head Convolutional-Attention} (MHCA). Basandosi sulla dimostrazione teorica \cite{cordonnier2020relationshipselfattentionconvolutionallayers} secondo cui un layer di attenzione dotato di codifica posizionale relativa può matematicamente esprimere qualsiasi operazione convoluzionale, gli autori riformulano la matrice di attenzione $A$ come:
+          \begin{equation}
+              A = \text{Softmax}(QK + v^{(h)}r_{ij}),
+          \end{equation}
+          dove l'argomento della funzione Softmax è diviso in due componenti complementari. La prima componente, il prodotto scalare $QK$ (\textit{query-key}), elabora il contenuto del token per catturare le tradizionali dipendenze semantiche globali. La seconda componente, $v^{(h)}r_{ij}$, costituisce l'informazione posizionale relativa (RPE, \textit{Relative Positional Embedding}). Nello specifico, $r_{ij}$ funge da vettore geometrico fisso che descrive le distanze spaziali tra i token, mentre $v^{(h)}$ incapsula i parametri addestrabili della testa dell'attenzione. Il loro prodotto agisce come una finestra Gaussiana, permettendo a ogni \textit{head} di emulare un filtro convoluzionale con campo ricettivo dinamico, inducendo il modello \textit{student} a focalizzarsi sulle relazioni locali.
 
     \item \textbf{Stadio II (Apprendimento Intrinseco):} Raggiunta una solida base di comprensione spaziale e locale, la distillazione viene completamente disattivata. Il Transformer prosegue l'addestramento guidato unicamente dalla \textit{Cross-Entropy} rispetto alle etichette reali (\textit{ground truth}). Questo accorgimento permette alla rete di concludere l'addestramento senza la rigida guida della CNN, consentendole di sfruttare le capacità globali della \textit{Self-Attention}.
 \end{itemize}
 \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.4\textwidth]{images/SOTA/DearKD_aligner.png}
-        \caption{Operazione di allineamento dei token di \textit{DearKD}, per riportarli alla dimensione delle \textit{feature map}. Fonte:~\cite{chen2022dearkddataefficientearlyknowledge}.}
-        \label{figure:DearKD_align}
-    \end{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{images/SOTA/DearKD_aligner.png}
+    \caption{Operazione di allineamento dei token di \textit{DearKD}, per riportarli alla dimensione delle \textit{feature map}. Fonte:~\cite{chen2022dearkddataefficientearlyknowledge}.}
+    \label{figure:DearKD_align}
+\end{figure}
 I test dimostrano che un modello DearKD, addestrato utilizzando solamente il 50\% delle immagini del dataset ImageNet, riesce a superare le prestazioni della \textit{baseline} DeiT
 addestrata sull'intero dataset (100\%). Il framework è stato inoltre testato
 dagli autori con dati esclusivamente generati sinteticamente ed il modello ha registrato un calo prestazionale minimo (solo l'1.0\% in meno rispetto alla controparte addestrata
 su dati reali), confermando l'efficacia delle soluzioni proposte.
 
 \subsubsection{TinyViT}
-Se DeiT e DearKD hanno risolto i problemi di inefficienza dei dati e di bias induttivo, l'implementazione dei \textit{Vision Transformer} su dispositivi \textit{Edge} pone una sfida ulteriore. La procedura standard per ottenere reti compatte ad alte prestazioni consiste nell'applicare la \textit{Knowledge Distillation} durante la fase di pre-addestramento su dataset di grandi dimensioni (come ImageNet-21k), trasferendo la conoscenza da modelli \textit{teacher} complessi. Tuttavia, l'esecuzione simultanea di un modello \textit{teacher} e di uno \textit{student} satura facilmente la memoria GPU e rallenta drasticamente il processo di addestramento. \par
-Per superare questa limitazione, Wu et al. propongono \textbf{TinyViT} \cite{wu2022tinyvitfastpretrainingdistillation}, un framework basato su una tecnica innovativa denominata \textit{Fast Pretraining Distillation}. L'intuizione fondamentale è svincolare completamente il calcolo delle predizioni del \textit{teacher} dal ciclo di addestramento dello \textit{student}. Gli autori eseguono un \textit{forward pass} del \textit{teacher} in una fase preliminare (\textit{offline}), registrando le predizioni su un dispositivo di archiviazione. \par
-Per rendere questa procedura scalabile su milioni di immagini, il framework implementa due accorgimenti tecnici cruciali:
+Se DeiT e DearKD hanno risolto i problemi di inefficienza dei dati e di bias
+induttivo, l'implementazione dei \textit{Vision Transformer} su dispositivi
+\textit{Edge} pone una sfida ulteriore. La procedura standard per ottenere reti
+compatte ad alte prestazioni consiste nell'applicare la \textit{Knowledge
+    Distillation} durante la fase di pre-addestramento su dataset di grandi
+dimensioni (come ImageNet-21k), trasferendo la conoscenza da modelli
+\textit{teacher} complessi. Tuttavia, l'esecuzione simultanea di un modello
+\textit{teacher} e di uno \textit{student} satura facilmente la memoria GPU e
+rallenta drasticamente il processo di addestramento. \par
+Per superare questa limitazione, Wu et al. propongono \textbf{TinyViT}
+\cite{wu2022tinyvitfastpretrainingdistillation}, un framework basato su una
+tecnica innovativa denominata \textit{Fast Pretraining Distillation}.
+L'intuizione fondamentale è svincolare completamente il calcolo delle
+predizioni del \textit{teacher} dal ciclo di addestramento dello
+\textit{student}. Gli autori eseguono un \textit{forward pass} del
+\textit{teacher} in una fase preliminare (\textit{offline}), registrando le
+predizioni su un dispositivo di archiviazione. \par
+Per rendere questa procedura scalabile su milioni di immagini, il framework
+implementa due accorgimenti tecnici cruciali:
 \begin{itemize}
     \item \textbf{Sparse Soft Labels}: Invece di salvare l'intera distribuzione di probabilità (che su ImageNet-21k comprenderebbe oltre 21.000 valori per immagine), vengono archiviati esclusivamente i $K$ logit con i valori più alti (\textit{top-K}) e i rispettivi indici. Questo approccio abbatte i costi di archiviazione, senza compromettere particolarmente la qualità del trasferimento di conoscenza.
     \item \textbf{Data Augmentation Encoding}: Poiché le moderne tecniche di \textit{Data Augmentation} introducono variazioni stocastiche per ogni immagine a ogni iterazione, memorizzare i parametri di ogni singola trasformazione risulterebbe impraticabile. Il sistema risolve il problema salvando un singolo parametro generatore (un \textit{seed}), permettendo allo \textit{student} di riprodurre esattamente la stessa sequenza di trasformazioni visive osservata dal \textit{teacher}.
