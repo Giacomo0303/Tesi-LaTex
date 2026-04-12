@@ -33,7 +33,7 @@ input per poi generare l'output.s
 La grande limitazione di questi modelli risiede proprio nell'utilizzo di un singolo vettore statico per la fase di decodifica, che non risulta sufficiente a riassumere adeguatamente la sequenza in input. Inoltre, se quest'ultima è particolarmente lunga, dato l'utilizzo di modelli RNN o LSTM, le informazioni legate ai primi dati in ingresso possono essere perse a causa della grande distanza dallo stato finale. Allo scopo di superare i limiti del vettore di contesto e migliorare quindi le prestazioni dei modelli \textit{seq2seq} viene introdotto per la prima volta un meccanismo di attenzione da Bahdanau et al. \cite{bahdanau2016neuralmachinetranslationjointly}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{images/SOTA/attn.png}
+    \includegraphics[width=0.8\textwidth]{images/SOTA/attn.png}
     \caption{Meccanismo di attenzione nei modelli \textit{seq2seq}. Fonte: \url{https://lena-voita.github.io/nlp_course/seq2seq_and_attention.html} }
 \end{figure}
 Questo meccanismo rende dinamico il vettore di contesto, che viene calcolato per ogni iterazione di decodifica pesando i contributi di tutti gli stati intermedi ottenuti dall'\textit{encoder}. In questo modo è possibile fornire in input al modello \textit{decoder} un vettore che riassume adeguatamente la sequenza in ingresso, dando maggiore importanza alle porzioni realmente rilevanti per l'output e migliorando nettamente le prestazioni dei modelli \textit{seq2seq}. \par
@@ -53,7 +53,7 @@ particolare, l'architettura proposta da Vaswani et al. \cite{AttentionIsAllYouNe
 traduzione automatica.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{images/SOTA/Transformer.png}
+    \includegraphics[width=0.45\textwidth]{images/SOTA/Transformer.png}
     \caption{Architettura Transformer originaria proposta da Vaswani et al. Fonte: \cite{AttentionIsAllYouNeed} }
     \label{figure:attn_is_all_you_need}
 \end{figure}
@@ -81,19 +81,19 @@ Infine, viene eseguita una somma pesata dei vettori \textit{value} $v$ per otten
 \begin{equation}
     a_i = \sum_{j=1}^{n} \alpha_{ij} v_j.
 \end{equation}
-Tuttavia, il vero punto di forza dell'architettura Transformer risiede nella capacità di parallelizzare questa operazione attraverso la \textbf{Scaled-Dot-Product Attention}.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.2\textwidth]{images/SOTA/mhsa_detail.png}
-    \caption{Visualizzazione dell'operazione di \textit{Scaled-Dot-Product Attention}. Fonte: \cite{AttentionIsAllYouNeed} }
-    \label{figure:attn_mask}
-\end{figure}
+Tuttavia, il vero punto di forza dell'architettura Transformer risiede nella capacità di parallelizzare questa operazione attraverso la \textbf{Scaled-Dot-Product Attention} (Figura \ref{figure:attn_mask}).
 Invece di calcolare l'attenzione un elemento alla volta, le proiezioni di tutti gli $n$ elementi della sequenza vengono raggruppate in matrici $Q, K, V \in \mathbb{R}^{n \times d}$, permettendo di eseguire l'intero calcolo tramite il prodotto matriciale, facilmente parallelizzabile tramite hardware apposito (GPU oppure TPU):
 \begin{equation}
     \text{Attention}(Q, K, V) = \text{softmax} \left( \frac{QK^T}{\sqrt{d_k}} \right) V.
 \end{equation}
 Notare che l'architettura Transformer non possiede meccanismi intrinseci per gestire l'ordine sequenziale dei dati (a differenza delle RNN). È quindi necessario introdurre il meccanismo di \textbf{Positional Encoding} \cite{shaw2018selfattentionrelativepositionrepresentations, su2023roformerenhancedtransformerrotary}. Si tratta di vettori che vengono sommati ai vettori di input per fornire al modello informazioni sulla posizione relativa o assoluta di ogni elemento nella sequenza.
 Questa formulazione evidenzia i costi computazionali dell'architettura: il prodotto $QK^T$ genera una matrice di attenzione di dimensione $n \times n$, portando a una complessità quadratica $O(n^2)$ (temporale e spaziale) rispetto alla lunghezza della sequenza. Di conseguenza, il vantaggio rispetto alle architetture RNN, dato dalla possibilità di parallelizzare e velocizzare le operazioni sull'intera sequenza, comporta un aumento del costo computazionale (le RNN hanno costo lineare $O(n)$). \par
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{images/SOTA/mhsa_detail.png}
+    \caption{Visualizzazione dell'operazione di \textit{Scaled-Dot-Product Attention}. Fonte: \cite{AttentionIsAllYouNeed} }
+    \label{figure:attn_mask}
+\end{figure}
 Al fine di aumentare la capacità di questa nuova architettura viene introdotto
 il concetto di \textbf{Multi-Head Attention}, attraverso il quale è possibile
 dotare il meccanismo di attenzione di molteplici "teste" che operano estraendo
@@ -103,7 +103,7 @@ descritto in precedenza viene applicato all'interno di ogni \textit{attention
 spazio della dimensione originale della rappresentazione.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.35\textwidth]{images/SOTA/MHSA.png}
+    \includegraphics[width=0.3\textwidth]{images/SOTA/MHSA.png}
     \caption{\textit{Multi Head Self Attention}. Fonte: \cite{AttentionIsAllYouNeed} }
 \end{figure}
 
@@ -126,37 +126,38 @@ necessaria durante l'inferenza.
 Per quanto concerne l'ambito della visione artificiale, per anni le \textbf{Reti Neurali Convoluzionali} (CNN) hanno dominato il campo grazie alla loro capacità di estrarre le \textit{features} spaziali delle immagini attraverso l'uso di filtri appresi che vengono applicati alle immagini. Il successo delle CNN è dovuto principalmente a due proprietà intrinseche: l'\textbf{invarianza alla traslazione} e la \textbf{località dei dati}. Grazie ai filtri convoluzionali, queste reti sono in grado di riconoscere pattern indipendentemente dalla loro posizione nell'immagine e di elaborare le relazioni tra pixel vicini in modo estremamente efficiente. Tuttavia, questo approccio presenta un limite fondamentale: la natura locale delle convoluzioni rende difficile catturare le \textbf{relazioni a lungo raggio} tra pixel distanti, se non attraverso l'utilizzo di numerosi strati, posti in cascata, che aumentano progressivamente il campo ricettivo (\textit{receptive field}) \cite{luo2017understandingeffectivereceptivefield}. \par
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/SOTA/ViT_original.pdf}
+    \includegraphics[width=0.8
+    \textwidth]{images/SOTA/ViT_original.pdf}
     \caption{Architettura del Vision Transformer (ViT). Fonte: \cite{dosovitskiy2021imageworth16x16words} }
 \end{figure}
 L'introduzione dei modelli \textit{Transformer} ha portato alla nascita dei \textbf{Vision Transformer} (ViT) \cite{dosovitskiy2021imageworth16x16words}, che utilizzano un'architettura \textit{Encoder-Only} per applicare il meccanismo di attenzione all'ambito della visione artificiale. In particolare, l'architettura ViT suddivide l'immagine in regioni non sovrapposte, dette \textit{patch}. Quest'ultime, ad esempio di dimensione $16 \times 16$ pixel, vengono poi appiattite e proiettate in uno spazio di rappresentazione tramite una trasformazione lineare. Questi vettori di rappresentazione delle \textit{patch} vengono quindi arricchiti attraverso l'\textit{Embedding Posizionale} e forniti ad una serie di blocchi \textit{Transformer-Encoder} simili a quelli descritti in precedenza. \par
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/MHSA.png}
+    \includegraphics[width=0.75\textwidth]{images/MHSA.png}
     \caption{Struttura della \textit{Multi Head Attention}.}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/MLP.png}
+    \includegraphics[width=0.75\textwidth]{images/MLP.png}
     \caption{Struttura del \textit{Multi Layer Perceptron} nei blocchi Transformer del ViT.}
 \end{figure}
 Sfruttando il meccanismo di attenzione, i ViT permettono alle regioni dell'immagine di interagire tra loro, catturando relazioni a lungo raggio molto più facilmente rispetto alle CNN. Nonostante i ViT abbiano dimostrato prestazioni competitive rispetto alle CNN \cite{dosovitskiy2021imageworth16x16words,touvron2021trainingdataefficientimagetransformers,liu2021swintransformerhierarchicalvision}, soprattutto su dataset di grandi dimensioni, presentano ancora alcune limitazioni, come la necessità di grandi quantità di dati per l'addestramento \cite{steiner2022trainvitdataaugmentation} e la complessità computazionale elevata, dovuta alla natura quadratica del meccanismo di attenzione. Tuttavia, l'utilizzo di questi modelli sta crescendo rapidamente (soprattutto come \textit{backbone} o \textit{Vision Encoder} all'interno di architetture modulari \cite{kirillov2023segment,radford2021learningtransferablevisualmodels}), portando a numerose varianti e miglioramenti che cercano di mitigare queste criticità, come l'introduzione di meccanismi di attenzione più efficienti \cite{liu2021swintransformerhierarchicalvision} o l'adozione di approcci ibridi che combinano le CNN con i ViT \cite{mehta2022mobilevitlightweightgeneralpurposemobilefriendly,vasu2023fastvitfasthybridvision}. \par
 \section{Evoluzioni principali del Vision Transformer}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{images/SOTA/DeiT.pdf}
+    \includegraphics[width=0.35\textwidth]{images/SOTA/DeiT.pdf}
     \caption{Architettura del Data-efficient Image Transformer (DeiT). Fonte: \cite{touvron2021trainingdataefficientimagetransformers}}
 \end{figure}
-Una delle prime varianti che ha migliorato l'implementazione originale del ViT è stata il \textbf{Data-efficient Image Transformer} (DeiT) \cite{touvron2021trainingdataefficientimagetransformers}, che ha introdotto un nuovo metodo di addestramento chiamato \textit{knowledge distillation}, in cui un modello ("student") viene addestrato a imitare le predizioni di un modello pre-addestrato ("teacher"), ottenendo prestazioni competitive anche con dataset di dimensioni ridotte. Questa tecnica, applicata ad uno speciale \textit{token} di distillazione, ha permesso al DeiT di raggiungere risultati paragonabili a quelli del ViT originale, ma con un minor quantitativo di dati.
+Una delle prime varianti che ha migliorato l'implementazione originale del ViT è stata il \textbf{Data-efficient Image Transformer} (DeiT) \cite{touvron2021trainingdataefficientimagetransformers}, che ha dimostrato come l'utilizzo di una tecnica di \textit{data augmentation} aggressiva possa evitare la necessità di utilizzare dataset di grandi dimensioni per addestrare i \textit{Vision Transformer}. Hanno inoltre introdotto una variante dell'architettura, addestrata attraverso \textit{knowledge distillation}, in cui un modello ("student") viene addestrato a imitare le predizioni di un modello pre-addestrato ("teacher"), ottenendo prestazioni competitive anche con dataset di dimensioni ridotte. Questa tecnica, applicata ad uno speciale \textit{token} di distillazione, ha permesso al \textit{DeiT-Distilled} di raggiungere risultati paragonabili a quelli del ViT originale, ma con un quantitativo di dati di addestramento significativamente minore.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{images/SOTA/SWIN_arch.pdf}
+    \includegraphics[width=0.9\textwidth]{images/SOTA/SWIN_arch.pdf}
     \caption{Architettura di \textit{Swin Transformer}. Fonte: \cite{liu2021swintransformerhierarchicalvision}}
 \end{figure}
 Successivamente, è stato proposto \textbf{Swin Transformer} \cite{liu2021swintransformerhierarchicalvision}, che introduce meccanismi di attenzione gerarchici e a finestre mobili per migliorare l'efficienza computazionale. A differenza del ViT che mantiene una risoluzione costante, lo \textit{Swin Transformer} riduce gradualmente la risoluzione spaziale man mano che si scende in profondità nella rete, unendo le patch vicine (Patch Merging). Questo crea una struttura gerarchica simile a quella delle reti neurali convoluzionali (CNN), permettendo al modello di vedere sia dettagli piccoli sia strutture grandi. Inoltre, piuttosto che calcolare l'attenzione sull'intera immagine, lo \textit{Swin Transformer} la calcola esclusivamente all'interno di finestre locali non sovrapposte (composte da patch), introducendo meccanismi di località simili a quelli delle CNN.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/SOTA/SWIN_window.png}
+    \includegraphics[width=0.6\textwidth]{images/SOTA/SWIN_window.png}
     \caption{Meccaniscmo di Shifted Window. Fonte: \cite{liu2021swintransformerhierarchicalvision}}
 \end{figure}
 Al tempo stesso viene introdotto un meccanismo di \textit{Shifted Window} che permette alle finestre di patch di interagire tra loro nel blocco successivo, garantendo che le informazioni vengano propagate attraverso l'intera immagine. Grazie a queste innovazioni, \textit{Swin Transformer} è in grado di raggiungere prestazioni all'avanguardia su una varietà di compiti di visione artificiale \cite{liu2021swintransformerhierarchicalvision}, come la classificazione delle immagini, il rilevamento degli oggetti e la segmentazione semantica, con un'efficienza computazionale significativamente migliorata rispetto al ViT originale. \par
