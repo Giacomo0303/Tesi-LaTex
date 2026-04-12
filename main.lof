@@ -66,3 +66,5 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Esempio di immagini dal dataset CIFAR100.}}{92}{figure.caption.92}%
 \contentsline {figure}{\numberline {5.2}{\ignorespaces Esempio di immagini del dataset ImageNet-1K.}}{93}{figure.caption.93}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Analisi visiva del processo di ricerca che ha portato alla compressione di ViT-Small sul dataset CIFAR100, con \textit {Knowledge Distillation} attiva. In alto è visibile l'andamento della accuratezza (top-1) pre e post \textit {fine tuning}, al centro il numero di \textit {subnet} (nodi) esplorati per ogni iterazione, in basso la compressione progressiva in termini di numero di parametri.}}{99}{figure.caption.96}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Illustrazione delle percentuali di dimensioni tagliate nei vari blocchi \textit {Encoder} del ViT-Small, }}{100}{figure.caption.97}%
