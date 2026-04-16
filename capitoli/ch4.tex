@@ -145,20 +145,20 @@ le seguenti metriche:
 \label{section:test}
 I seguenti test sono eseguiti sul modello \textit{vit\_small\_patch16\_224.augreg\_in21k\_ft\_in1k} della libreria \textbf{timm}. Trattasi di un modello preaddestrato sul dataset ImageNet-21K, e successivamente specializzato su ImageNet-1K tramite \textit{fine tuning}.
 \subsection{Test sul dataset CIFAR100}
-In questi test è stato utilizzato il \textit{ViT-Small} che, con
-l'aggiunta della testa di classificazione da 100 unità, ha raggiunto
-\textbf{21.7} Mln di parametri. Il modello è stato successivamente sottoposto
-alla fase di \textit{fine tuning} iniziale sul dataset in oggetto. Per quanto
-riguarda il framework, tutti i test sono stati effettuati con \textbf{15
-    iterazioni} di compressione. Ad ogni iterazione, la \textbf{profondità}
-dell'albero di ricerca è stata limitata a \textbf{6}, questo implica che al
-modello possono essere applicate fino a \textbf{6 azioni consecutive} di
-\textit{pruning} prima di essere nuovamente addestrato. Viene inoltre
-utilizzata una \textbf{soglia di tolleranza} della fase di \textit{Bound} pari
-a \textbf{0.005}, in modo tale da permettere una più approfondita esplorazione
-dello spazio di ricerca, al costo di un numero lievemente maggiore di nodi
-esplorati. Infine, la \textbf{funzione obiettivo} utilizza un valore di
-\textbf{$\lambda$} pari a \textbf{1.0}, attribuito al contributo dei parametri.
+In questi test è stato utilizzato il \textit{ViT-Small} che, con l'aggiunta
+della testa di classificazione da 100 unità, ha raggiunto \textbf{21.7} Mln di
+parametri. Il modello è stato successivamente sottoposto alla fase di
+\textit{fine tuning} iniziale sul dataset in oggetto. Per quanto riguarda il
+framework, tutti i test sono stati effettuati con \textbf{15 iterazioni} di
+compressione. Ad ogni iterazione, la \textbf{profondità} dell'albero di ricerca
+è stata limitata a \textbf{6}, questo implica che al modello possono essere
+applicate fino a \textbf{6 azioni consecutive} di \textit{pruning} prima di
+essere nuovamente addestrato. Viene inoltre utilizzata una \textbf{soglia di
+    tolleranza} della fase di \textit{Bound} pari a \textbf{0.005}, in modo tale da
+permettere una più approfondita esplorazione dello spazio di ricerca, al costo
+di un numero lievemente maggiore di nodi esplorati. Infine, la \textbf{funzione
+    obiettivo} utilizza un valore di \textbf{$\lambda$} pari a \textbf{1.0},
+attribuito al contributo dei parametri.
 \begin{table}[H]
     \centering
     \footnotesize
@@ -177,7 +177,7 @@ esplorati. Infine, la \textbf{funzione obiettivo} utilizza un valore di
     \caption{Nella tabella sono presentati i risultati comparativi utilizzando il \textit{ViT-Small} e il dataset \textit{CIFAR100}, in particolare vengono evidenziati i valori delle metriche e le variazioni rispetto al modello \textit{Baseline}.}
     \label{tab:risultati-cifar100}
 \end{table}
-Questi risultati dimostrano chiaramente un eccesso di parametri del modello, che infatti possono essere rimossi, senza intaccare in maniera significativa le prestazioni. Il framework è riuscito a comprimere il modello di circa il \textbf{27\%}, con una perdita di accuratezza inferiore di circa lo \textbf{0.5\%}, e un aumento del throughput superiore al \textbf{23\%}. L'aggiunta della \textit{Knowledge Distillation} ha permesso di recuperare parte dell'accuratezza perduta durante la fase di compressione, con un risultato superiore di circa \textbf{0.3\%} rispetto al test senza KD, a fronte di un numero di parametri molto simile.
+Questi risultati dimostrano chiaramente un eccesso di parametri del modello, che infatti possono essere rimossi senza intaccare in maniera significativa le prestazioni. Il framework è riuscito a comprimere il modello di circa il \textbf{27\%}, con una perdita di accuratezza inferiore di circa lo \textbf{0.5\%}, e un aumento del throughput superiore al \textbf{23\%}. L'aggiunta della \textit{Knowledge Distillation} ha permesso di recuperare parte dell'accuratezza perduta durante la fase di compressione, con un risultato superiore di circa \textbf{0.3\%} rispetto al test senza KD, a fronte di un numero di parametri molto simile.
 
 \subsection{Test sul dataset ImageNet-1K}
 In questo caso il modello \textit{ViT-Small} ha raggiunto i 22 Mln di parametri
@@ -227,73 +227,194 @@ maniera più conservativa le azioni di \textit{pruning} da eseguire, al fine di
 mantenere elevate le prestazioni del modello.
 
 \subsection{Analisi dell'algoritmo di ricerca con il modello ViT-Small}
-In questa sezione viene illustrato il funzionamento dell'algoritmo di ricerca oltre agli interessanti \textit{pattern} individuati nel taglio dei parametri.
+In questa sezione viene illustrato il funzionamento dell'algoritmo di ricerca
+oltre agli interessanti \textit{pattern} individuati nel taglio dei parametri.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{images/Results/vit_s_KD_cifar100.png}
     \caption{Illustrazione del processo di ricerca che ha portato alla compressione di ViT-Small sul dataset CIFAR100, con \textit{Knowledge Distillation} attiva. In alto è visibile l'andamento della accuratezza (top-1) pre e post \textit{fine tuning}, al centro il numero di \textit{subnet} (nodi) esplorati per ogni iterazione, in basso la compressione progressiva in termini di numero di parametri.}
     \label{figure:vit_s_cifar100}
 \end{figure}
-Guardando la Figura \ref{figure:vit_s_cifar100}, è possibile notare una serie di particolarità. Partendo dal primo grafico in alto, è importante osservare come nelle prime iterazioni la compressione corrisponda ad un effettivo aumento della \textit{accuracy}. In corrispondenza dell'iterazione 5 infatti, il modello risulta ridotto di circa il 10\% con il livello di accuratezza massima raggiunta sul set di validazione. Questo risultato si verifica in ogni test eseguito e conferma il metodo di compressione proposto come tecnica efficace di regolarizzazione. \par
-Per quanto riguarda il secondo grafico, è possibile notare come il numero di \textit{subnet} esplorate sia spesso vicino a 40, con alcune eccezioni per i quali l'algoritmo ha approfondito la ricerca fino ad oltre 80 nodi. Nonostante questi picchi, dal terzo grafico si evince che il framework produce una compressione sempre graduale e vicina ad un comportamento lineare. Questo si traduce in cali di \textit{accuracy} mai eccessivi al termine della ricerca, che infatti non superano il 2\%, e scendendo al massimo a circa il 3\% dalla \textit{baseline} del modello originale. 
+Guardando la Figura \ref{figure:vit_s_cifar100}, è possibile notare una serie di particolarità. Partendo dal primo grafico in alto, è importante osservare come nelle prime iterazioni la compressione corrisponda ad un effettivo aumento della \textit{accuracy}. In corrispondenza dell'iterazione 5 infatti, il modello risulta ridotto di circa il 10\% con il livello di accuratezza massima raggiunta sul set di validazione. Questo risultato si verifica in ogni test eseguito e conferma il metodo di compressione proposto come tecnica efficace di \textbf{regolarizzazione}. \par
+Per quanto riguarda il secondo grafico, è possibile notare come il numero di
+\textit{subnet} esplorate sia spesso vicino a 40, con alcune eccezioni per i
+quali l'algoritmo ha approfondito la ricerca fino ad oltre 80 nodi. Nonostante
+questi picchi, dal terzo grafico si evince che il framework produce una
+compressione sempre graduale e vicina ad un comportamento lineare. Questo si
+traduce in cali di \textit{accuracy} mai eccessivi al termine della ricerca,
+che infatti non superano il 2\%, e scendendo al massimo a circa il 3\% dalla
+\textit{baseline} del modello originale.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{images/Results/vit_s_KD_cifar100_dims.png}
     \caption{Illustrazione delle percentuali di dimensioni tagliate nei vari blocchi \textit{Encoder} del ViT-Small, nel caso del test sul dataset CIFAR100 con l'utilizzo di \textit{Knowledge Distillation}.}
     \label{figure:vit_s_cifar100_dims}
 \end{figure}
-Per quanto riguarda invece la Figura \ref{figure:vit_s_cifar100_dims}, emergono dei dettagli interessanti sui \textit{pattern} di compressione a vari livelli di profondità. Questi ultimi rimangono inalterati al variare del dataset e anche dell'utilizzo della distillazione. In particolare, è possibile notare come il framework di compressione abbia prediletto il taglio del meccanismo di attenzione nei primi livelli (specialmente il primo, al quale sono state rimosse 5 delle 6 teste). Nei livelli più profondi invece, sono stati osservati dei tagli più marcati nelle strutture MLP. Molto interessante è invece la decisione di lasciare inalterati i blocchi centrali della rete. \par
-Al fine di confrontare i due processi di compressione, effettuati utilizzando i due dataset differenti, di seguito vengono illustrati ed analizzati i risultati ottenuti utilizzando lo stesso modello (ViT-Small) sul dataset ImageNet-1K.
+Per quanto riguarda invece la Figura \ref{figure:vit_s_cifar100_dims}, emergono dei dettagli interessanti sui \textbf{pattern di compressione} a vari livelli di profondità. Questi ultimi rimangono inalterati al variare del dataset e anche dell'utilizzo della distillazione. In particolare, è possibile notare come il framework di compressione abbia prediletto il taglio del meccanismo di attenzione nei primi livelli (specialmente il primo, al quale sono state rimosse 5 delle 6 teste). Nei livelli più profondi invece, sono stati osservati dei tagli più marcati nelle strutture MLP. Molto interessante è invece la decisione di lasciare inalterati i blocchi centrali della rete. \par
+Al fine di confrontare i due processi di compressione, effettuati utilizzando i
+due dataset differenti, di seguito vengono illustrati ed analizzati i risultati
+ottenuti utilizzando lo stesso modello (ViT-Small) sul dataset ImageNet-1K.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{images/Results/vit_s_KD_imagenet.png}
     \caption{Illustrazione del processo di ricerca che ha portato alla compressione di ViT-Small sul dataset ImageNet-1K, con \textit{Knowledge Distillation} attiva. In alto è visibile l'andamento della accuratezza (top-1) pre e post \textit{fine tuning}, al centro il numero di \textit{subnet} (nodi) esplorati per ogni iterazione, in basso la compressione progressiva in termini di numero di parametri.}
     \label{figure:vit_s_imagenet}
 \end{figure}
-Osservando la Figura \ref{figure:vit_s_imagenet} è possibile notare che mentre le prime iterazioni hanno esplorato un numero di nodi simile a quanto osservato in Figura \ref{figure:vit_s_cifar100}, a causa della maggiore difficoltà del dataset utilizzato per questo test, le iterazioni successive hanno esplorato un numero di \textit{subnet} molto superiore, superando in certi casi i 300 nodi. Questo comportamento conferma la flessibilità del framework proposto, che ha eseguito delle fasi di ricerca molto più approfondite rispetto a quanto visto nei risultati precedenti, proprio a causa della natura del problema, in questo caso intrinsecamente più complesso. \par
-Per quanto concerne il grafico in alto (Figura \ref{figure:vit_s_imagenet}) è necessario precisare che le \textit{accuracy} osservate risultano nettamente maggiori di quella finale ottenuta (Tabella \ref{tab:risultati-ImageNet}), poiché queste sono misurate a partire dal \textit{validation set}. Questo set di dati è stato ricavato dal \textit{train set} durante la prima fase di \textit{fine tuning} iniziale (che ha interessato esclusivamente il classificatore finale a valle del ViT), di conseguenza i campioni sono stati interessati dalla fase di \textit{pre-training} del modello. Osservando l'andamento dell'accuratezza è possibile affermare che questo fattore non ha intaccato in modo significativo il processo, data la forte similitudine del comportamento con quanto visto in Figura \ref{figure:vit_s_cifar100}. In particolare, sebbene sia possibile notare una decrescita più marcata del valore di accuratezza, rispetto a quanto osservato nel test sul CIFAR100, questo risulta fisiologico considerando che questi campioni, precedentemente utilizzati in fase di \textit{pre-training}, vengono ora utilizzati esclusivamente per la valutazione. Il modello, durante il processo di compressione, dimostra di perdere la sua conoscenza mnemonica di questi campioni, mantenendo però una robusta capacità di generalizzazione, come confermato dalle metriche osservate sul \textit{test set}.\par
-Infine, per quanto riguarda il terzo grafico, come nel test precedente, notiamo un decremento del numero di parametri graduale e lineare, che non raggiunge però lo stesso grado di compressione visto in Tabella \ref{tab:risultati-cifar100}. Questo risultato è comprensibile considerando la maggiore complessità del task e del dataset impiegato, che ha reso più complicato il taglio dei parametri del modello.
+Osservando la Figura \ref{figure:vit_s_imagenet} è possibile notare che mentre le prime iterazioni hanno esplorato un numero di nodi simile a quanto osservato in Figura \ref{figure:vit_s_cifar100}, a causa della maggiore difficoltà del dataset utilizzato per questo test, le iterazioni successive hanno esplorato un numero di \textit{subnet} molto superiore, superando in certi casi i 300 nodi. Questo comportamento conferma la \textbf{flessibilità} del framework proposto, che ha eseguito delle fasi di ricerca molto più approfondite rispetto a quanto visto nei risultati precedenti, proprio a causa della natura del problema, in questo caso intrinsecamente più complesso. \par
+Per quanto concerne il grafico in alto (Figura \ref{figure:vit_s_imagenet}) è
+necessario precisare che le \textit{accuracy} osservate risultano nettamente
+maggiori di quella finale ottenuta (Tabella \ref{tab:risultati-ImageNet}),
+poiché queste sono misurate a partire dal \textit{validation set}. Questo set
+di dati è stato ricavato dal \textit{train set} durante la prima fase di
+\textit{fine tuning} iniziale (che ha interessato esclusivamente il
+classificatore finale a valle del ViT), di conseguenza i campioni sono stati
+interessati dalla fase di \textit{pre-training} del modello. Osservando
+l'andamento dell'accuratezza è possibile affermare che questo fattore non ha
+intaccato in modo significativo il processo, data la forte similitudine del
+comportamento con quanto visto in Figura \ref{figure:vit_s_cifar100}. In
+particolare, sebbene sia possibile notare una decrescita più marcata del valore
+di accuratezza, rispetto a quanto osservato nel test sul CIFAR100, questo
+risulta fisiologico considerando che questi campioni, precedentemente
+utilizzati in fase di \textit{pre-training}, vengono ora utilizzati
+esclusivamente per la valutazione. Il modello, durante il processo di
+compressione, dimostra di perdere la sua conoscenza mnemonica di questi
+campioni, mantenendo però una robusta capacità di generalizzazione, come
+confermato dalle metriche osservate sul \textit{test set}.\par
+Infine, per quanto riguarda il terzo grafico, come nel test precedente, notiamo
+un decremento del numero di parametri graduale e lineare, che non raggiunge
+però lo stesso grado di compressione visto in Tabella
+\ref{tab:risultati-cifar100}. Questo risultato è comprensibile considerando la
+maggiore complessità del task e del dataset impiegato, che ha reso più
+complicato il taglio dei parametri del modello.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{images/Results/vit_s_KD_imagenet_dims.png}
     \caption{Illustrazione delle percentuali di dimensioni tagliate nei vari blocchi \textit{Encoder} del ViT-Small, nel caso del test sul dataset ImageNet-1K con l'utilizzo di \textit{Knowledge Distillation}.}
     \label{figure:vit_s_imagenet_dims}
 \end{figure}
-Per quanto riguarda la Figura \ref{figure:vit_s_imagenet_dims} è possibile osservare i pattern di taglio prodotti dal framework di compressione. Questi grafici mostrano dei trend molto simili a quanto visto per i test sul dataset CIFAR100. In particolare i blocchi MLP vengono compressi solo nei \textit{layer} più profondi, al contrario del meccanismo di attenzione, che viene prevalentemente ridotto nei \textit{layer} iniziali, più vicini all'input. Nonostante le differenti percentuali di compressione, dovute alle differenze tra i dataset utilizzati, sono visibili delle sostanziali somiglianze con quanto osservato nella Figura \ref{figure:vit_s_cifar100_dims}, suggerendo l'esistenza di motivazioni architetturali dietro alle scelte effettuate dal framework. In effetti, quanto osservato in questi test trova riscontro e giustificazione in diversi studi sulle dinamiche interne ai modelli Transformer. \par
-Per quanto riguarda i moduli di attenzione, Michel et al. \cite{michel2019sixteen} dimostrano l'estrema ridondanza del meccanismo di \textit{Multi-Head Self-Attention}, provando che la rimozione di gran parte delle teste, o addirittura la riduzione di determinati layer a una singola testa, non comporta un degrado rilevante delle prestazioni. Il framework di compressione sfrutta questa tolleranza, mostrando un pattern ricorrente in cui i tagli al meccanismo di attenzione si concentrano prevalentemente sui layer iniziali e finali. Questo risulta coerente con le dinamiche di elaborazione dell'informazione nei Vision Transformer descritte da Tian et al. \cite{tian2025distillationdynamicsunderstandingfeaturebased}, che hanno individuato una struttura ad "U" del meccanismo di elaborazione delle informazioni interno al ViT. In particolare, attraverso un'analisi delle attivazioni di ogni blocco \textit{encoder}, vengono identificati i blocchi centrali come i responsabili di elaborare le feature a basso livello che sono state ripulite dal rumore e dalla ridondanza nei blocchi precedenti. Ai layer finali viene invece attribuito il ruolo di espandere lo spazio delle features per individuare delle rappresentazioni di alto livello, introducendo però al contempo della ridondanza. Questa interpretazione spiega e trova sostegno nei tagli attuati dal framework di compressione, che evita il più possibile i blocchi centrali poiché essi costituiscono il nucleo semantico della rete.\par
-Analizzando la struttura della componente MLP nei \textit{Transformer}, Geva et al. \cite{geva2021transformer} evidenziano che questi moduli operano come memorie chiave-valore, lavorando in sinergia con il flusso residuale della rete per raffinare le rappresentazioni interne al modello. Con l'avanzare della profondità, l'informazione accumulata all'interno del flusso residuale diventa progressivamente più ricca e quindi in grado di guidare la predizione. In questo contesto, il MLP assume un ruolo sempre più marginale con l'aumentare della profondità. Coerentemente con questa dinamica, il framework di compressione proposto agisce tagliando in maniera coerente con quanto affermato da Geva et al. Anche in questo caso, considerato che questo pattern viene osservato anche su dataset differenti, si deduce che tale ridondanza sia un'ulteriore proprietà intrinseca di questa architettura.
+Per quanto riguarda la Figura \ref{figure:vit_s_imagenet_dims} è possibile osservare i pattern di taglio prodotti dal framework di compressione. Questi grafici mostrano dei trend molto simili a quanto visto per i test sul dataset CIFAR100. In particolare i blocchi MLP vengono compressi solo nei \textit{layer} più profondi, al contrario del meccanismo di attenzione, che viene prevalentemente ridotto nei \textit{layer} iniziali, più vicini all'input. Nonostante le differenti percentuali di compressione, dovute alle differenze tra i dataset utilizzati, sono visibili delle sostanziali somiglianze con quanto osservato nella Figura \ref{figure:vit_s_cifar100_dims}, suggerendo l'esistenza di \textbf{motivazioni architetturali} dietro alle scelte effettuate dal framework. In effetti, quanto osservato in questi test trova riscontro e giustificazione in diversi studi sulle dinamiche interne ai modelli Transformer. \par
+Per quanto riguarda i moduli di \textit{attenzione}, Michel et al.
+\cite{michel2019sixteen} dimostrano l'estrema ridondanza del meccanismo di
+\textit{Multi-Head Self-Attention}, provando che la rimozione di gran parte
+delle teste, o addirittura la riduzione di determinati layer a una singola
+testa, non comporta un degrado rilevante delle prestazioni. Il framework di
+compressione sfrutta questa tolleranza, mostrando un pattern ricorrente in cui
+i tagli al meccanismo di attenzione si concentrano prevalentemente sui layer
+iniziali e finali. Questo risulta coerente con le dinamiche di elaborazione
+dell'informazione nei Vision Transformer descritte da Tian et al.
+\cite{tian2025distillationdynamicsunderstandingfeaturebased}, che hanno
+individuato una \textit{struttura ad "U"} del meccanismo di elaborazione delle
+informazioni interno al ViT. In particolare, attraverso un'analisi delle
+attivazioni di ogni blocco \textit{encoder}, vengono identificati i blocchi
+centrali come i responsabili di elaborare le feature a basso livello che sono
+state ripulite dal rumore e dalla ridondanza nei blocchi precedenti. Ai layer
+finali viene invece attribuito il ruolo di espandere lo spazio delle features
+per individuare delle rappresentazioni di alto livello, introducendo però al
+contempo della ridondanza. Questa interpretazione spiega e trova sostegno nei
+tagli attuati dal framework di compressione, che evita il più possibile i
+blocchi centrali poiché essi costituiscono il \textbf{nucleo semantico} della
+rete.\par
+Analizzando la struttura della componente \textbf{MLP} nei
+\textit{Transformer}, Geva et al. \cite{geva2021transformer} evidenziano che
+questi moduli operano come memorie chiave-valore, lavorando in sinergia con il
+flusso residuale della rete per raffinare le rappresentazioni interne al
+modello. Con l'avanzare della profondità, l'informazione accumulata all'interno
+del flusso residuale diventa progressivamente più ricca e quindi in grado di
+guidare la predizione. In questo contesto, il MLP assume un ruolo sempre più
+marginale con l'aumentare della profondità. Si può quindi affermare che il
+framework di compressione proposto agisce in maniera coerente con quanto
+mostrato da Geva et al.. Anche in questo caso, considerato che questo pattern
+viene osservato anche su dataset differenti, si deduce che tale ridondanza sia
+un'ulteriore proprietà intrinseca di questa architettura.
 
 \section{Test con DeiT-Small}
-I seguenti test sono eseguiti sul modello \textit{deit\_small\_patch16\_224.fb\_in1k} della libreria \textbf{timm}. Trattasi di un modello addestrato sul dataset ImageNet-1K secondo la configurazione proposta da Touvron et al. \cite{touvron2021trainingdataefficientimagetransformers}.
+I seguenti test sono eseguiti sul modello
+\textit{deit\_small\_patch16\_224.fb\_in1k} della libreria \textbf{timm}.
+Trattasi di un modello addestrato sul dataset ImageNet-1K secondo la
+configurazione proposta da Touvron et al.
+\cite{touvron2021trainingdataefficientimagetransformers}.
 \subsection{Test su dataset CIFAR100}
 Per i seguenti risultati è stato utilizzato il \textit{DeiT-Small} che, con
 l'aggiunta della testa di classificazione da 100 unità, ha raggiunto
 \textbf{21.7} Mln di parametri. Il modello è stato successivamente sottoposto
-alla fase di \textit{fine tuning} iniziale sul dataset in oggetto secondo le modalità illustrate nella Sezione \ref{section:impl}. Per quanto
-riguarda il framework, tutti i test sono stati effettuati con \textbf{25
-    iterazioni} di compressione. Ad ogni iterazione, la \textbf{profondità}
-dell'albero di ricerca è stata limitata a \textbf{8}. Viene inoltre
-utilizzata una \textbf{soglia di tolleranza} della fase di \textit{Bound} pari
-a \textbf{0.01}. Infine, la \textbf{funzione obiettivo} utilizza un valore di
-\textbf{$\lambda$} pari a \textbf{1.25}, attribuito al contributo dei parametri.
+alla fase di \textit{fine tuning} iniziale sul dataset in oggetto secondo le
+modalità illustrate nella Sezione \ref{section:impl}. Per quanto riguarda il
+framework, tutti i test sono stati effettuati con \textbf{25 iterazioni} di
+compressione. Ad ogni iterazione, la \textbf{profondità} dell'albero di ricerca
+è stata limitata a \textbf{8}. Viene inoltre utilizzata una \textbf{soglia di
+    tolleranza} della fase di \textit{Bound} pari a \textbf{0.01}. Infine, la
+\textbf{funzione obiettivo} utilizza un valore di \textbf{$\lambda$} pari a
+\textbf{1.25}, attribuito al contributo dei parametri.
 \begin{table}[H]
     \centering
-    \label{tab:risultati-cifar100-deit}
     \footnotesize
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{@{} l r r r r r @{}}
         \toprule
-        \textbf{Modello}   & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput (img/s)}} & \multicolumn{1}{c}{\textbf{Latency (ms)}} \\ \midrule
-        DeiT-Small          & 21.70 \hphantom{(-00.0\%)}                 & 87.51\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1134.7 \hphantom{(+00.00\%)}                    & 112.8 \hphantom{(-00.00\%)}               \\
+        \textbf{Modello}     & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput (img/s)}} & \multicolumn{1}{c}{\textbf{Latency (ms)}} \\ \midrule
+        DeiT-Small           & 21.70 \hphantom{(-00.0\%)}                 & 87.51\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1134.7 \hphantom{(+00.00\%)}                    & 112.8 \hphantom{(-00.00\%)}               \\
         \midrule
-        \textbf{Pruned}    & 15.95 (-26.5\%)                            & 87.09\% (-0.42\%)                            & 3.36 (-27.00\%)                     & 1443.6 (+27.22\%)                               & 88.7 (-21.40\%)                           \\
+        \textbf{Pruned}      & 15.95 (-26.5\%)                            & 87.09\% (-0.42\%)                            & 3.36 (-27.00\%)                     & 1443.6 (+27.22\%)                               & 88.7 (-21.40\%)                           \\
+        \midrule
+        \textbf{Pruned + KD} & 15.54 (-28.4\%)                            & 87.80\% (+0.29\%)                            & 3.30 (-28.30\%)                     & 1421.0 (+25.20\%)                               & 90.1 (-20.13\%)                           \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
     \caption{Nella tabella sono presentati i risultati comparativi utilizzando il \textit{DeiT-Small} e il dataset \textit{CIFAR100}, in particolare vengono evidenziati i valori delle metriche e le variazioni rispetto al modello \textit{Baseline}.}
+    \label{tab:risultati-cifar100-deit}
 \end{table}
+Per quanto riguarda i risultati ottenuti sul dataset CIFAR100, è possibile notare una minore accuratezza di DeiT rispetto a quanto osservato con ViT. Questo è dovuto ai modelli utilizzati, infatti i ViT (Sezione \ref{section:test}) sono stati ottenuti attraverso un addestramento che includeva anche il dataset ImageNet-21K, invece i modelli DeiT sono ottenuti esclusivamente tramite addestramento sul dataset ImageNet-1K. Questo implica che il primo è più robusto del secondo, poiché i parametri sono stati ottenuti con una mole molto maggiore di dati di \textit{training} (13 Mln. contro 1.3 Mln). La conseguenza di ciò è proprio una \textit{accuracy} minore a parità di dataset utilizzato (CIFAR100), fin dai modelli \textit{baseline} non compressi. \par
+Un dato interessante è che, a differenza di quanto osservato in Tabella
+\ref{tab:risultati-cifar100}, il declino di accuratezza è risultato minore, a
+fronte di un fattore di compressione molto simile. In particolare, senza
+l'ausilio della \textit{distillation} (KD), il framework è riuscito a ridurre
+di oltre il \textbf{26\%} il numero di parametri con una perdita di
+\textit{accuracy} trascurabile (0.4\%). Ma il risultato di maggiore interesse è
+sicuramente il secondo, ottenuto nelle stesse condizioni del precendente e con
+l'aggiunta della KD, il quale ha portato ad oltre il \textbf{28\%} di
+compressione e un leggero \textbf{guadagno} di \textit{accuracy} (0.3\%).
+Quanto osservato conferma quindi da un lato come l'utilizzo della distillazione
+agevoli il taglio di parametri, permettendo una compressione maggiore (trend
+già osservato nella Sezione \ref{section:test}), e dall'altro permetta di
+mantenere più elevate le prestazioni del modello in modo significativo. \par
+Confrontando questi risultati con quelli ottenuti dal modello ViT-Small, una
+ulteriore osservazione è che in questo caso i tagli di parametri si traducono
+in un maggiore incremento nel \textbf{throughput} e decremento di \textbf{latenza}. La
+spiegazione può essere individuata nei trend di compressione alle varie
+strutture del modello DeiT, che verranno approfondite maggiormente nella
+Sezione \ref{section:analisi-deit}. In questi test, infatti, è stata osservata
+una maggiore tendenza al taglio di interi blocchi \textit{Multi-Head Self
+    Attention} all'interno dei \textit{layer}, fenomeno che non si osservava nel
+caso del modello ViT. Intuitivamente, il taglio di un intero blocco di MHSA
+produce un incremento in velocità molto importante e maggiore rispetto ai tagli
+di una singola testa di attenzione, o anche di una grossa percentuale di MLP in
+un \textit{layer}, portando così ai risultati osservati in questo test. \par
+Infine, dalla Tabella \ref{tab:risultati-cifar100-deit} è possibile
+notare una discrepanza tra gli incrementi in velocità dei due modelli
+risultanti. Il modello ottenuto utilizzando la
+\textit{distillation} è maggiormente compresso ma la sua velocità risulta
+inferiore all'altro, che ha mantenuto un numero di parametri leggermente
+superiore. La spiegazione risiede nel numero di MHSA interamente eliminate, che
+nel caso del modello con più parametri è pari a 2, mentre nell'altro si limita
+ad 1. Si noti inoltre che questa differenza si registra a causa dei fattori di
+compressione molto simili, e non si osserverebbe nel caso di modelli con una
+maggiore differenza in termini di numero di parametri.
 \subsection{Test su dataset ImageNet-1K}
 \subsection{Analisi dell'algoritmo di ricerca con il modello DeiT-Small}
+\label{section:analisi-deit}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/Results/deit_s_KD_cifar100.png}
+    \caption{Illustrazione del processo di ricerca che ha portato alla compressione di DeiT-Small sul dataset CIFAR100, con \textit{Knowledge Distillation} attiva. In alto è visibile l'andamento della accuratezza (top-1) pre e post \textit{fine tuning}, al centro il numero di \textit{subnet} (nodi) esplorati per ogni iterazione, in basso la compressione progressiva in termini di numero di parametri.}
+    \label{figure:deit_s_cifar}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/Results/deit_s_KD_cifar100_dims.png}
+    \caption{Illustrazione delle percentuali di dimensioni tagliate nei vari blocchi \textit{Encoder} del DeiT-Small, nel caso del test sul dataset CIFAR100 con l'utilizzo di \textit{Knowledge Distillation}.}
+    \label{figure:deit_s_cifar_dims}
+\end{figure}
 
 \section{Analisi dell'algoritmo di ricerca}
 Fare test con la loss nella funzione obiettivo, poi un altro senza la soglia
@@ -303,11 +424,12 @@ nel bound e con vari valori.
 Al fine di verificare la bontà del metodo sono stati effettuati dei test per
 isolare il contributo delle due principali componenti del \textit{framework},
 l'algoritmo di ricerca e la metrica di importanza. \par
-I seguenti risultati sono stati ottenuti sul dataset CIFAR100 e sul modello ViT-Small, utilizzando la
-stessa configurazione riportata nella sezione \ref{section:test} e nella
-sezione \ref{section:impl}. I test sono stati eseguiti senza l'utilizzo della
-\textit{Knowledge Distillation} per isolare al meglio l'effetto delle singole
-componenti del framework. Di seguito i risultati:
+I seguenti risultati sono stati ottenuti sul dataset CIFAR100 e sul modello
+ViT-Small, utilizzando la stessa configurazione riportata nella sezione
+\ref{section:test} e nella sezione \ref{section:impl}. I test sono stati
+eseguiti senza l'utilizzo della \textit{Knowledge Distillation} per isolare al
+meglio l'effetto delle singole componenti del framework. Di seguito i
+risultati:
 \begin{table}[ht]
     \centering
     \label{tab:risultati-ablazione}
