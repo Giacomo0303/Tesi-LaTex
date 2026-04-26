@@ -43,7 +43,7 @@ stato suddiviso con rapporto \textbf{97/3} al fine di ottenere un
 di compressione ed eventuale \textit{Early Stop}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{images/imagenet_examples.png}
+    \includegraphics[width=1.0\textwidth]{images/imagenet_examples.png}
     \caption{Esempio di immagini del dataset ImageNet-1K.}
 \end{figure}
 
@@ -168,7 +168,7 @@ attribuito al contributo dei parametri.
         \textbf{Modello}   & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput (img/s)}} & \multicolumn{1}{c}{\textbf{Latency (ms)}} \\ \midrule
         ViT-Small          & 21.70 \hphantom{(-00.0\%)}                 & 90.42\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.5 \hphantom{(+00.00\%)}                    & 112.5 \hphantom{(-00.00\%)}               \\
         \midrule
-        \textbf{Pruned}    & 15.93 (-26.6\%)                            & 89.59\% (-0.83\%)                            & 3.42 (-25.51\%)                     & 1405.5 (+23.56\%)                               & 91.1 (-19.02\%)                           \\
+        \textbf{Pruned}    & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                               & 97.8 (-13.06\%)                           \\
         \midrule
         \textbf{Pruned+KD} & 15.78 (-27.3\%)                            & 89.86\% (-0.56\%)                            & 3.39 (-26.19\%)                     & 1406.0 (+23.60\%)                               & 91.0 (-19.11\%)                           \\
         \bottomrule
@@ -198,9 +198,9 @@ a \textbf{0.005}, la \textbf{funzione obiettivo} con \textbf{$\lambda$} pari a
         \textbf{Modello}   & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput (img/s)}} & \multicolumn{1}{c}{\textbf{Latency (ms)}} \\ \midrule
         ViT-Small          & 22.05 \hphantom{(-00.0\%)}                 & 81.20\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1142.6 \hphantom{(+00.00\%)}                    & 112.0 \hphantom{(-00.00\%)}               \\
         \midrule
-        \textbf{Pruned}    & 18.77 (-14.88\%)                           & 79.17\% (-2.03\%)                            & 3.90 (-15.13\%)                     & 1270.5 (+11.20\%)                               & 100.7 (-10.07\%)                          \\
+        \textbf{Pruned}    & 18.77 (-14.9\%)                           & 79.17\% (-2.03\%)                            & 3.90 (-15.13\%)                     & 1270.5 (+11.20\%)                               & 100.7 (-10.07\%)                          \\
         \midrule
-        \textbf{Pruned+KD} & 17.18 (-22.11\%)                           & 81.12\% (-0.08\%)                            & 3.58 (-22.26\%)                     & 1321.9 (+15.70\%)                               & 96.8 (-13.57\%)                           \\
+        \textbf{Pruned+KD} & 17.18 (-22.1\%)                           & 81.12\% (-0.08\%)                            & 3.58 (-22.26\%)                     & 1321.9 (+15.70\%)                               & 96.8 (-13.57\%)                           \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -356,7 +356,7 @@ compressione. Ad ogni iterazione, la \textbf{profondità} dell'albero di ricerca
         \midrule
         \textbf{Pruned}      & 15.95 (-26.5\%)                            & 87.09\% (-0.42\%)                            & 3.36 (-27.00\%)                     & 1443.6 (+27.22\%)                               & 88.7 (-21.40\%)                           \\
         \midrule
-        \textbf{Pruned + KD} & 15.54 (-28.4\%)                            & 87.80\% (+0.29\%)                            & 3.30 (-28.30\%)                     & 1421.0 (+25.20\%)                               & 90.1 (-20.13\%)                           \\
+        \textbf{Pruned + KD} & 16.44 (-24.3\%)                            & 88.34\% (+0.83\%)                            & 3.49 (-24.20\%)                     & 1347.3 (+18.74\%)                               & 95.0 (-15.78\%)                           \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -428,9 +428,9 @@ I seguenti risultati sono stati ottenuti sul dataset CIFAR100 e sul modello
 ViT-Small, utilizzando la stessa configurazione riportata nella sezione
 \ref{section:test} e nella sezione \ref{section:impl}. I test sono stati
 eseguiti senza l'utilizzo della \textit{Knowledge Distillation} per isolare al
-meglio l'effetto delle singole componenti del framework. Di seguito i
-risultati:
-\begin{table}[ht]
+meglio l'effetto delle singole componenti del framework. 
+\subsection{Metrica di Importanza e Algoritmo di Ricerca}
+\begin{table}[H]
     \centering
     \label{tab:risultati-ablazione}
     \footnotesize
@@ -440,7 +440,7 @@ risultati:
         \textbf{Modello}              & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
         ViT-Small                     & 21.70 \hphantom{(-00.0\%)}                 & 90.42\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.5 \hphantom{(+00.00\%)}            & 112.5 \hphantom{(-00.00\%)}          \\
         \midrule
-        \textbf{ViT-S Pruned (No KD)} & 15.93 (-26.6\%)                            & 89.59\% (-0.83\%)                            & 3.43 (-25.51\%)                     & 1405.5 (+23.56\%)                       & 91.1 (-19.02\%)                      \\
+        \textbf{ViT-S Pruned (No KD)} & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                               & 97.8 (-13.06\%)                           \\
         \midrule
         \textbf{Ricerca Disattivata}  & 12.28 (-43.4\%)                            & 81.17\% (-9.25\%)                            & 2.64 (-42.66\%)                     & 1679.9 (+47.68\%)                       & 76.2 (-32.27\%)                      \\
         \midrule
@@ -484,6 +484,49 @@ efficace nel guidare le azioni di \textit{pruning} e la ricerca. \par In questo 
 sono mantenute elevate, a conferma del grande lavoro di filtraggio eseguito dal
 processo di ricerca, che evita di selezionare quegli stati, la cui selezione
 casuale dei tagli, ha danneggiato gravemente il modello.
+
+\subsection{Il parametro $\lambda$ della funzione obiettivo}
+
+\begin{table}[H]
+    \centering
+    \label{tab:risultati-lambda}
+    \footnotesize
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{@{} l r r r r r @{}}
+        \toprule
+        \textbf{Modello}              & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
+        ViT-Small                     & 21.70 \hphantom{(-00.0\%)}                 & 90.42\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.5 \hphantom{(+00.00\%)}            & 112.5 \hphantom{(-00.00\%)}          \\
+        \midrule
+        \textbf{ViT-S Pruned $\lambda=1.0$} & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                               & 97.8 (-13.06\%)                           \\
+        \midrule
+        \textbf{ViT-S Pruned $\lambda=0.5$}  & 18.89 (-13.0\%)                            & 89.84\% (-0.58\%)                            & 4.00 (-13.13\%)                     & 1256.4 (+10.45\%)                       & 101.9 (-9.42\%)                      \\
+        \midrule
+        \textbf{ViT-S Pruned $\lambda=1.5$}  & 15.86 (-26.9\%)                            & 86.82\% (-3.60\%)                            & 3.43 (-25.47\%)                     & 1406.3 (+23.63\%)                       & 91.0 (-19.11\%)                     \\
+        \bottomrule
+    \end{tabular}
+    \vspace{10pt}
+    \caption{Nella tabella sono presentati i risultati dell'applicazione del \textit{framework} di compressione al variare del valore di $\lambda$, ovvero il peso della componente di compressione nella funzione obiettivo, sul dataset \textit{CIFAR100} e sul modello \textit{ViT-Small}.}
+\end{table}
+
+\subsection{Comparazione con l'approccio Greedy}
+\begin{table}[H]
+    \centering
+    \label{tab:risultati-greedy}
+    \footnotesize
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{@{} l r r r r r @{}}
+        \toprule
+        \textbf{Modello}              & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
+        ViT-Small                     & 21.70 \hphantom{(-00.0\%)}                 & 90.42\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.5 \hphantom{(+00.00\%)}            & 112.5 \hphantom{(-00.00\%)}          \\
+        \midrule
+        \textbf{ViT-S Pruned} & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                               & 97.8 (-13.06\%)                           \\
+        \midrule
+        \textbf{ViT-S Greedy}  & 16.94 (-21.9\%)                            & 88.44\% (-1.98\%)                            & 3.59 (-21.96\%)                     & 1322.3 (+16.25\%)                       & 96.8 (-13.96\%)                      \\
+        \bottomrule
+    \end{tabular}
+    \vspace{10pt}
+    \caption{Nella tabella sono presentati i risultati dell'applicazione del \textit{framework} di compressione al variare del valore di $\lambda$, ovvero il peso della componente di compressione nella funzione obiettivo, sul dataset \textit{CIFAR100} e sul modello \textit{ViT-Small}.}
+\end{table}
 
 \section{Tabella comparativa ImageNet-1K - DeiT-B}
 \begin{table}[H]
