@@ -413,11 +413,11 @@ compressione. Ad ogni iterazione, la \textbf{profondità} dell'albero di ricerca
     \begin{tabular}{@{} l r r r r r @{}}
         \toprule
         \textbf{Modello}   & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput (img/s)}} & \multicolumn{1}{c}{\textbf{Latency (ms)}} \\ \midrule
-        ViT-Small          & 22.05 \hphantom{(-00.0\%)}                 & 81.20\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1142.6 \hphantom{(+00.00\%)}                    & 112.0 \hphantom{(-00.00\%)}               \\
+        DeiT-Small          & 22.05 \hphantom{(-00.0\%)}                 & 79.85\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.0 \hphantom{(+00.00\%)}                    & 112.6 \hphantom{(-00.00\%)}               \\
         \midrule
         \textbf{Pruned}    & 18.77 (-14.9\%)                           & 79.17\% (-2.03\%)                            & 3.90 (-15.13\%)                     & 1270.5 (+11.20\%)                               & 100.7 (-10.07\%)                          \\
         \midrule
-        \textbf{Pruned+KD} & 17.18 (-22.1\%)                           & 81.12\% (-0.08\%)                            & 3.58 (-22.26\%)                     & 1321.9 (+15.70\%)                               & 96.8 (-13.57\%)                           \\
+        \textbf{Pruned+KD} & 16.49 (-25.2\%)                           & 79.15\% (-0.70\%)                            & 3.46 (-24.85\%)                     & 1392.6 (+22.48\%)                               & 91.9 (-18.36\%)                           \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -576,7 +576,6 @@ Dai risultati ottenuti, è possibile concludere che il parametro $\lambda$ può 
         \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9} \cmidrule(lr){10-11}
                           & Valore                                     & $\Delta\%$                              & Valore                              & $\Delta\%$                              & Valore                               & $\Delta\%$ & Valore & $\Delta\%$ & Valore & $\Delta\%$ \\
         \midrule
-        DEIT-S-distil*    & 22.00                                      & --                                      & 81.20\%                             & --                                      & 4.6                                  & --         & 292.3  & --         & NA     & --         \\
         DEIT-S            & 22.00                                      & --                                      & 79.80\%                             & --                                      & 4.6                                  & --         & 290.9  & --         & NA     & --         \\
         \midrule
         \textbf{WDP}      & 15.00                                      & (-31.81\%)                              & 78.55\%                             & (-1.25\%)                               & 3.1                                  & (-32.60\%) & --     & (+10.7\%)  & --     & (-11.2\%)  \\
@@ -590,4 +589,11 @@ Dai risultati ottenuti, è possibile concludere che il parametro $\lambda$ può 
 \end{table}
 
 \section{Deploy su mobile}
+Al fine di testare i benefici del framework di compressione proposto in un caso di applicazione reale è stato scelto di eseguire un \textit{deploy} su dispositivi mobili, in particolare per sistemi Android. Si è scelto di utilizzare l'ecosistema \textbf{ONNX Runtime} per gestire l'esportazione dei modelli e l'esecuzione dell'inferenza \textit{on-device}, per motivi legati alla semplicità di integrazione e alla elevata compatibilità con una vasta gamma di hardware mobile.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{images/deploy.png}
+    \caption{Processo di deploy adottato per il test di inferenza \textit{on-device}.}
+    \label{figure:deploy}
+\end{figure}
 
