@@ -565,35 +565,67 @@ Quanto osservato in Tabella \ref{tab:risultati-lambda} risulta in accordo con le
 \end{itemize}
 Dai risultati ottenuti, è possibile concludere che il parametro $\lambda$ può essere configurato sulla base degli obiettivi da raggiungere. Ad esempio, nel caso di un \textit{deploy} su dispositivi con capacità computazionali molto ridotte, è possibile incrementarlo al fine di ottenere un modello decisamente più compatto, accettando però un compromesso in termini di \textit{performance} predittive.
 
+
 \section{Tabella comparativa ImageNet-1K - DeiT-S}
 \begin{table}[H]
     \centering
     \footnotesize
-    \setlength{\tabcolsep}{3pt} % Ridotto leggermente per far entrare 11 colonne
-    \begin{tabular}{l rr rr rr rr rr}
+    \setlength{\tabcolsep}{5pt} % Ottimizzato per 8 colonne complessive
+    \begin{tabular}{l rr rr rr c c}
         \toprule
-        \textbf{Modello}  & \multicolumn{2}{c}{\textbf{Parametri (M)}} & \multicolumn{2}{c}{\textbf{Top-1 Acc.}} & \multicolumn{2}{c}{\textbf{GFLOPs}} & \multicolumn{2}{c}{\textbf{Throughput}} & \multicolumn{2}{c}{\textbf{Latency}}                                                          \\
-        \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9} \cmidrule(lr){10-11}
-                          & Valore                                     & $\Delta\%$                              & Valore                              & $\Delta\%$                              & Valore                               & $\Delta\%$ & Valore & $\Delta\%$ & Valore & $\Delta\%$ \\
+        \textbf{Modello}  & \multicolumn{2}{c}{\textbf{Parametri (M)}} & \multicolumn{2}{c}{\textbf{Top-1 Acc.}} & \multicolumn{2}{c}{\textbf{GFLOPs}} & \textbf{Throughput} & \textbf{Latency} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-8} \cmidrule(lr){9-9}
+                          & Valore & $\Delta\%$ & Valore & $\Delta\%$ & Valore & $\Delta\%$ & $\Delta\%$ & $\Delta\%$ \\
         \midrule
-        DEIT-S            & 22.00                                      & --                                      & 79.80\%                             & --                                      & 4.6                                  & --         & 290.9  & --         & NA     & --         \\
+        DEIT-S            & 22.00  & \text{---} & 79.80\% & \text{---} & 4.6  & \text{---} & \text{---} & \text{---} \\
         \midrule
-        \textbf{WDP}      & 15.00                                      & (-31.81\%)                              & 78.55\%                             & (-1.25\%)                               & 3.1                                  & (-32.60\%) & --     & (+10.7\%)  & --     & (-11.2\%)  \\
-        \textbf{CAIT}     & 18.40                                      & (-16.36\%)                              & 80.20\%                             & (+0.40\%)                               & 2.1                                  & (-54.35\%) & --     & (+90\%)    & --     & (NA)       \\
-        \textbf{S2ViTE}   & 14.60                                      & (-33.63\%)                              & 79.22\%                             & (-0.58\%)                               & NA                                   & (-31.63\%) & --     & (NA)       & --     & (-22.65\%) \\
-        \textbf{GOHSP}    & 14.40                                      & (-35.00\%)                              & 79.98\%                             & (+0.18\%)                               & NA                                   & (-35.00\%) & --     & (NA)       & --     & (-24.61\%) \\
-        \textbf{X-Pruner} & NA                                         & (NA\%)                                  & 78.93\%                             & (-0.87\%)                               & 2.4                                  & (-47.90\%) & --     & (NA)       & --     & (NA)       \\
+        \textbf{Ours}     & 15.40  & -30.0\%   & 79.26\% & -0.54\%    & 3.2  & -30.4\%   & +27.4\%    & -21.5\%    \\
+        \textbf{WDP}      & 15.00  & -31.8\%   & 78.55\% & -1.25\%    & 3.1  & -32.6\%   & +10.7\%    & -11.2\%    \\
+        \textbf{CAIT}     & 18.40  & -16.4\%   & 80.20\% & +0.40\%    & 2.1  & -54.4\%   & +90.0\%    & \text{N/A} \\
+        \textbf{S2ViTE}   & 14.60  & -33.6\%   & 79.22\% & -0.58\%    & \text{N/A} & -31.6\%   & \text{N/A} & -22.6\%    \\
+        \textbf{GOHSP}    & 14.40  & -35.0\%   & 79.98\% & +0.18\%    & \text{N/A} & -35.0\%   & \text{N/A} & -24.6\%    \\
+        \textbf{X-Pruner} & \text{N/A} & \text{N/A} & 78.93\% & -0.87\% & 2.4  & -47.9\%   & \text{N/A} & \text{N/A} \\
         \bottomrule
     \end{tabular}
+    \vspace{10pt}
+    \caption{Tabella comparativa delle prestazioni su ImageNet-1K utilizzando DeiT-Small come architettura di partenza. Vengono riportati i valori assoluti e le variazioni percentuali ($\Delta\%$) rispetto alla baseline per i parametri, l'accuratezza e la complessità computazionale, limitando l'analisi hardware al solo delta percentuale di Throughput e Latency.}
     \label{tab:comparativa_imagenet}
 \end{table}
 
 \section{Deploy su mobile}
-Al fine di testare i benefici del framework di compressione proposto in un caso di applicazione reale è stato scelto di eseguire un \textit{deploy} su dispositivi mobili, in particolare per sistemi Android. Si è scelto di utilizzare l'ecosistema \textbf{ONNX Runtime} per gestire l'esportazione dei modelli e l'esecuzione dell'inferenza \textit{on-device}, per motivi legati alla semplicità di integrazione e alla elevata compatibilità con una vasta gamma di hardware mobile.
+Al fine di testare i benefici del framework di compressione proposto in uno scenario applicativo reale, è stato eseguito il \textit{deploy} locale su dispositivi mobili basati su sistema operativo Android. Si è scelto di adottare l'ecosistema \textbf{ONNX Runtime} per la gestione dell'esportazione dei modelli e l'esecuzione dell'inferenza \textit{on-device}, sfruttando l'elevata compatibilità del framework con i diversi acceleratori hardware presenti sul mercato.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{images/deploy.png}
     \caption{Processo di deploy adottato per il test di inferenza \textit{on-device}.}
     \label{figure:deploy}
 \end{figure}
+Il processo di \textit{deploy}, illustrato in Figura \ref{figure:deploy}, ha interessato sia il modello proposto (Tabella \ref{tab:comparativa_imagenet}) sia la controparte DeiT-S non compressa, utilizzate per confrontare le prestazioni in termini di latenza. I modelli sono stati inizialmente esportati nello standard ONNX, generando i rispettivi grafi computazionali, e successivamente convertiti ad una precisione di 16 bit dei parametri (\textit{Float16}). \par
+La riduzione della precisione (quantizzazione) dei pesi è una pratica consolidata nelle \textit{pipeline} di \textit{deploy} per dispositivi \textit{edge}, in quanto consente un importante risparmio di memoria e un incremento del \textit{throughput}. Per i modelli appartenenti alla famiglia dei Vision Transformer, tale scelta rappresenta un compromesso ottimale: come dimostrato da Liu et al. \cite{liu2021posttrainingquantizationvisiontransformer}, i modelli ViT sono notoriamente sensibili alle tecniche di quantizzazione \textit{post-training} tradizionali (come il passaggio a INT8), le quali introducono grossi cali (fino al 10\%) delle metriche di accuratezza in assenza di un successivo processo di \textit{fine-tuning}. Adottando invece una precisione a 16 bit, è possibile mantenere un'accuratezza invariata rispetto al modello originale, ma con un importante risparmio in termini di memoria e un incremento del \textit{throughput} durante l'inferenza. \par
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/results/deploy_app.jpg}
+    \caption{Esempio di inferenza su una immagine, è visibile la classificazione, con la rispettiva \textit{confidence}, oltre alle latenze registrate con il corrispondente incremento percentuale.}
+    \label{figure:deploy_app}
+\end{figure}
+
+Una volta ottenuti i modelli esportati a 16 bit, questi sono stati integrati in un'applicazione Android nativa, sviluppata appositamente in linguaggio \textbf{Kotlin} per consentire l'esecuzione dell'inferenza \textit{on-device} e la misurazione della latenza. A tale scopo è stato utilizzato \textbf{ONNX Runtime Android} SDK, che si pone come intermediario tra i modelli esportati e le API di sistema per l'esecuzione dell'inferenza sui vari componenti hardware. \par
+
+Al fine di sfruttare l'accelerazione hardware dei dispositivo mobili moderni, sono state adottate le \textbf{Android Neural Networks API (NNAPI)}. Le NNAPI agiscono come uno strato di controllo che direziona le operazioni matematiche del Vision Transformer (come i prodotti tensoriali) verso gli acceleratori dedicati presenti sul system-on-chip (SoC) del dispositivo, quali la NPU (Neural Processing Unit) o la GPU, ove supportati. Qualora l'hardware del dispositivo non disponga di acceleratori compatibili con le operazioni a 16 bit, l'infrastruttura esegue un \textit{fallback} automatico sulla CPU. \par
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccc}
+\hline
+\textbf{Modello} & \textbf{Latenza Media (ms)} & \textbf{Std (ms)} & \textbf{Speedup (\%)} \\ \hline
+DeiT-S (Originale)    & 296,6 & 16,2 & Baseline \\
+DeiT-S (Compresso)    & 222,1 & 7,2  & +25,1\%  \\ \hline
+\end{tabular}
+\vspace{10pt}
+\caption{Analisi della latenza in fase di inferenza \textit{on-device}, sulla base di 12 test.}
+\label{tab:benchmark_mobile}
+\end{table}
+
+Come evidenziato dai dati statistici raccolti in Tabella \ref{tab:benchmark_mobile}, i tempi di inferenza presentano una variabilità importante. Tale fenomeno è comune nei sistemi operativi come Android, dove lo \textit{scheduler} alloca dinamicamente le risorse computazionali in base al carico istantaneo del sistema. L'analisi dei risultati mostra che il processo di compressione, eseguito dal \textit{framework} proposto, permette di ottenere uno \textit{speedup} medio del 25,1\%, riducendo la latenza in media da 296,6 ms a 222,1 ms. Oltre all'incremento prestazionale, si osserva una riduzione significativa della deviazione standard, che passa da 16,2 ms a 7,2 ms. Questo decremento evidenzia come l'ottimizzazione e il minor transito di dati in memoria rendano l'esecuzione del modello compresso significativamente più stabile e meno soggetta alle fluttuazioni di carico del sistema operativo rispetto alla controparte non compressa.
 
