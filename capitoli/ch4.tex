@@ -198,9 +198,9 @@ a \textbf{0.005}, la \textbf{funzione obiettivo} con \textbf{$\lambda$} pari a
         \textbf{Modello}   & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput (img/s)}} & \multicolumn{1}{c}{\textbf{Latency (ms)}} \\ \midrule
         ViT-Small          & 22.05 \hphantom{(-00.0\%)}                 & 81.20\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1142.6 \hphantom{(+00.00\%)}                    & 112.0 \hphantom{(-00.00\%)}               \\
         \midrule
-        \textbf{Pruned}    & 18.77 (-14.9\%)                           & 79.17\% (-2.03\%)                            & 3.90 (-15.13\%)                     & 1270.5 (+11.20\%)                               & 100.7 (-10.07\%)                          \\
+        \textbf{Pruned}    & 18.77 (-14.9\%)                            & 79.17\% (-2.03\%)                            & 3.90 (-15.13\%)                     & 1270.5 (+11.20\%)                               & 100.7 (-10.07\%)                          \\
         \midrule
-        \textbf{Pruned+KD} & 17.18 (-22.1\%)                           & 81.12\% (-0.08\%)                            & 3.58 (-22.26\%)                     & 1321.9 (+15.70\%)                               & 96.8 (-13.57\%)                           \\
+        \textbf{Pruned+KD} & 17.18 (-22.1\%)                            & 81.12\% (-0.08\%)                            & 3.58 (-22.26\%)                     & 1321.9 (+15.70\%)                               & 96.8 (-13.57\%)                           \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -209,13 +209,15 @@ a \textbf{0.005}, la \textbf{funzione obiettivo} con \textbf{$\lambda$} pari a
 \end{table}
 Come è possibile notare, i risultati ottenuti su \textit{ImageNet-1K} rispecchiano la maggiore complessità del dataset, con una diminuzione più marcata dell'accuratezza, a fronte di una minore percentuale di compressione. Nonostante ciò, il framework, con l'ausilio della \textit{Knowledge Distillation}, ha portato ad un risultato importante, con una perdita di accuratezza inferiore allo \textbf{0.1\%}, a fronte di una compressione superiore al \textbf{22\%}, e un aumento del throughput superiore al \textbf{15\%}. \par
 Questa caratteristica della KD, ovvero quella di agevolare il taglio di un
-numero maggiore di parametri, osservata anche nel caso del test precedente \ref{tab:risultati-cifar100}, è giustificata dalla natura iterativa del framework. Agendo come forte
-regolarizzatore durante le fasi di fine-tuning intermedie, la KD permette al
-modello di mantenere le prestazioni più elevate ed uno stato di convergenza più
-solido. Ciò permette alle iterazioni successive di compressione di sfruttare al
-meglio la metrica di importanza, la cui efficacia aumenta con la vicinanza del
-modello allo stato di convergenza, come discusso nella sezione
-\ref{section:fisher_hessian}, permettendo tagli più profondi. \par
+numero maggiore di parametri, osservata anche nel caso del test precedente
+\ref{tab:risultati-cifar100}, è giustificata dalla natura iterativa del
+framework. Agendo come forte regolarizzatore durante le fasi di fine-tuning
+intermedie, la KD permette al modello di mantenere le prestazioni più elevate
+ed uno stato di convergenza più solido. Ciò permette alle iterazioni successive
+di compressione di sfruttare al meglio la metrica di importanza, la cui
+efficacia aumenta con la vicinanza del modello allo stato di convergenza, come
+discusso nella sezione \ref{section:fisher_hessian}, permettendo tagli più
+profondi. \par
 Notare inoltre che la compressione inferiore ottenuta rispetto al test su
 CIFAR-100, sarebbe facilmente colmabile aumentando il numero di iterazioni a
 disposizione del framework. Nel caso in esame è stato scelto di mantenere
@@ -371,27 +373,30 @@ di oltre il \textbf{26\%} il numero di parametri con una perdita di
 sicuramente il secondo, ottenuto nelle stesse condizioni del precendente e con
 l'aggiunta della KD, il quale ha portato a quasi il \textbf{25\%} di
 compressione e un \textbf{guadagno} significativo di \textit{accuracy} (0.8\%).
-Quanto osservato conferma quindi da un lato come l'utilizzo della distillazione permetta di mantenere più elevate le prestazioni del modello. \par
+Quanto osservato conferma quindi da un lato come l'utilizzo della distillazione
+permetta di mantenere più elevate le prestazioni del modello. \par
 Confrontando questi risultati con quelli ottenuti dal modello ViT-Small, una
 ulteriore osservazione è che in questo caso i tagli di parametri si traducono
-in un maggiore incremento nel \textbf{throughput} e decremento di \textbf{latenza}. La
-spiegazione può essere individuata nei trend di compressione alle varie
-strutture del modello DeiT, che verranno approfondite maggiormente nella
-Sezione \ref{section:analisi-deit}. In questi test, infatti, è stata osservata
-una maggiore tendenza al taglio di interi blocchi \textit{Multi-Head Self
-    Attention} all'interno dei \textit{layer}, fenomeno che non si osservava nel
-caso del modello ViT. Intuitivamente, il taglio di un intero blocco di MHSA
-produce un incremento in velocità molto importante e maggiore rispetto al taglio
-di una singola testa di attenzione, o anche di una grossa percentuale di MLP in
-un \textit{layer}, portando così ai risultati osservati in questo test. \par
-Infine, dalla Tabella \ref{tab:risultati-cifar100-deit} è possibile
-notare una discrepanza tra gli incrementi in velocità dei due modelli
-risultanti. Il modello ottenuto utilizzando la
-\textit{distillation}, nonostante una simile compressione, ha un'incremento in velocità di molto inferiore all'altro. La spiegazione risiede nel numero di MHSA interamente eliminate, che
-nel caso del modello senza KD è pari a 2, mentre nell'altro si limita
-ad 1. Si noti inoltre che questa discrepanza si registra a causa dei fattori di
-compressione molto simili, e non si osserverebbe nel caso di modelli con una
-maggiore differenza in termini di numero di parametri.
+in un maggiore incremento nel \textbf{throughput} e decremento di
+\textbf{latenza}. La spiegazione può essere individuata nei trend di
+compressione alle varie strutture del modello DeiT, che verranno approfondite
+maggiormente nella Sezione \ref{section:analisi-deit}. In questi test, infatti,
+è stata osservata una maggiore tendenza al taglio di interi blocchi
+\textit{Multi-Head Self Attention} all'interno dei \textit{layer}, fenomeno che
+non si osservava nel caso del modello ViT. Intuitivamente, il taglio di un
+intero blocco di MHSA produce un incremento in velocità molto importante e
+maggiore rispetto al taglio di una singola testa di attenzione, o anche di una
+grossa percentuale di MLP in un \textit{layer}, portando così ai risultati
+osservati in questo test. \par
+Infine, dalla Tabella \ref{tab:risultati-cifar100-deit} è possibile notare una
+discrepanza tra gli incrementi in velocità dei due modelli risultanti. Il
+modello ottenuto utilizzando la \textit{distillation}, nonostante una simile
+compressione, ha un'incremento in velocità di molto inferiore all'altro. La
+spiegazione risiede nel numero di MHSA interamente eliminate, che nel caso del
+modello senza KD è pari a 2, mentre nell'altro si limita ad 1. Si noti inoltre
+che questa discrepanza si registra a causa dei fattori di compressione molto
+simili, e non si osserverebbe nel caso di modelli con una maggiore differenza
+in termini di numero di parametri.
 
 \subsection{Test su dataset ImageNet-1K}
 \label{deit-imagenet}
@@ -413,11 +418,11 @@ compressione. Ad ogni iterazione, la \textbf{profondità} dell'albero di ricerca
     \begin{tabular}{@{} l r r r r r @{}}
         \toprule
         \textbf{Modello}   & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput (img/s)}} & \multicolumn{1}{c}{\textbf{Latency (ms)}} \\ \midrule
-        DeiT-Small          & 22.05 \hphantom{(-00.0\%)}                 & 79.85\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.0 \hphantom{(+00.00\%)}                    & 112.6 \hphantom{(-00.00\%)}               \\
+        DeiT-Small         & 22.05 \hphantom{(-00.0\%)}                 & 79.85\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.0 \hphantom{(+00.00\%)}                    & 112.6 \hphantom{(-00.00\%)}               \\
         \midrule
-        \textbf{Pruned}    & 18.77 (-14.9\%)                           & 79.17\% (-2.03\%)                            & 3.90 (-15.13\%)                     & 1270.5 (+11.20\%)                               & 100.7 (-10.07\%)                          \\
+        \textbf{Pruned}    & 18.77 (-14.9\%)                            & 79.17\% (-2.03\%)                            & 3.90 (-15.13\%)                     & 1270.5 (+11.20\%)                               & 100.7 (-10.07\%)                          \\
         \midrule
-        \textbf{Pruned+KD} & 16.49 (-25.2\%)                           & 79.15\% (-0.70\%)                            & 3.46 (-24.85\%)                     & 1392.6 (+22.48\%)                               & 91.9 (-18.36\%)                           \\
+        \textbf{Pruned+KD} & 16.49 (-25.2\%)                            & 79.15\% (-0.70\%)                            & 3.46 (-24.85\%)                     & 1392.6 (+22.48\%)                               & 91.9 (-18.36\%)                           \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -435,8 +440,18 @@ Per quanto riguarda i risultati ottenuti con il modello DeiT-Small, è possibile
     \label{figure:deit_s_cifar}
 \end{figure}
 Analizzando inizialmente i test effettuati sul dataset CIFAR100 (Figura \ref{figure:deit_s_cifar}), è possibile notare un andamento simile a quanto osservato in Figura \ref{figure:vit_s_cifar100} per il modello ViT-Small. In particolare, si nota un incremento ancora più marcato dell'accuratezza nelle prime iterazioni, che raggiunge un picco di quasi il 2\% superiore al modello di partenza. Questo dimostra e conferma l'effetto di regolarizzazione osservato precedentemente. \par
-Per quanto riguarda il numero di nodi esplorati, in questo caso si osserva una media di poco inferiore ma comunque comparabile a quanto ottenuto nei test con ViT-Small. Infine, la compressione si dimostra anche in questo caso graduale e lineare, anche se distribuita su un numero maggiore di iterazioni, che in questo caso è pari a 25, contro le 15 dei test con ViT-Small. \par
-La scelta di adottare un numero maggiore di iterazioni è stata dettata da quanto già affermato nella sezione \ref{deit_cifar100}. In particolare, la motivazione risiede nella minor robustezza del modello DeiT-Small, che non ha beneficiato di un addestramento su un dataset di grandi dimensioni come ImageNet-21K, a differenza del modello ViT-Small. Di conseguenza, è stato necessario fornire al framework un numero maggiore di iterazioni per comprimere in maniera più graduale il modello.
+Per quanto riguarda il numero di nodi esplorati, in questo caso si osserva una
+media di poco inferiore ma comunque comparabile a quanto ottenuto nei test con
+ViT-Small. Infine, la compressione si dimostra anche in questo caso graduale e
+lineare, anche se distribuita su un numero maggiore di iterazioni, che in
+questo caso è pari a 25, contro le 15 dei test con ViT-Small. \par
+La scelta di adottare un numero maggiore di iterazioni è stata dettata da
+quanto già affermato nella sezione \ref{deit_cifar100}. In particolare, la
+motivazione risiede nella minor robustezza del modello DeiT-Small, che non ha
+beneficiato di un addestramento su un dataset di grandi dimensioni come
+ImageNet-21K, a differenza del modello ViT-Small. Di conseguenza, è stato
+necessario fornire al framework un numero maggiore di iterazioni per comprimere
+in maniera più graduale il modello.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{images/Results/deit_s_KD_cifar100_dims.png}
@@ -444,8 +459,12 @@ La scelta di adottare un numero maggiore di iterazioni è stata dettata da quant
     \label{figure:deit_s_cifar_dims}
 \end{figure}
 Per quanto concerne invece la struttura dei tagli, osservando la figura \ref{figure:deit_s_cifar_dims} è possibile rinforzare ulteriormente le osservazioni precedentemente effettuate (Figura \ref{figure:vit_s_cifar100_dims}). Risulta infatti possibile notare in modo ancora più evidente la struttura ad "U" del meccanismo di attenzione, con i tagli più marcati nei layer iniziali e finali, e una quasi totale conservazione dei blocchi centrali. \par
-Anche dal punto di vista del MLP si può osservare lo stesso comportamento visto nei test precedenti, dimostrando così la ridondanza di questi moduli nei layer più profondi. \par
-Considerazioni simili possono essere fatte per i test sul dataset ImageNet-1K, che presentano anche in questo caso forti somiglianze con quanto osservato nei test con ViT-Small sullo stesso dataset.
+Anche dal punto di vista del MLP si può osservare lo stesso comportamento visto
+nei test precedenti, dimostrando così la ridondanza di questi moduli nei layer
+più profondi. \par
+Considerazioni simili possono essere fatte per i test sul dataset ImageNet-1K,
+che presentano anche in questo caso forti somiglianze con quanto osservato nei
+test con ViT-Small sullo stesso dataset.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{images/Results/deit_s_KD_imagenet.png}
@@ -453,8 +472,25 @@ Considerazioni simili possono essere fatte per i test sul dataset ImageNet-1K, c
     \label{figure:deit_s_imagenet}
 \end{figure}
 In Figura \ref{figure:deit_s_imagenet} è possibile visionare l'andamento del processo di ricerca. Notare che, per quanto riguarda l'accuratezza, questa è mostrata sul \textit{validation set}, che viene prodotto secondo le stesse modalità viste nei test con ViT-Small. Questo porta all'osservazione di valori di accuratezza superiori e distanti da quanto osservato sul \textit{test set}, ma che comunque mostrano un andamento simile a quanto osservato nei test con il modello precedente (Figura \ref{figure:vit_s_imagenet}). \par
-Il numero di nodi esplorati è risultato in questo caso inferiore in media a quanto osservato nei test con ViT-Small, ma comunque con picchi molto elevati, che superano nettamente i valori sul dataset CIFAR100. Questo dimostra e conferma quanto osservato nella sezione \ref{results}, ovvero che il \textit{framework} di compressione è in grado di adattarsi dinamicamente alla complessità del task sottoposto.\par
-La scelta di differenziare il numero di iterazioni, 15 per ImageNet-1K e 25 per CIFAR100, riflette la differente stabilità delle rappresentazioni latenti nei due domini. Nel caso di ImageNet-1K, essendo il dataset di pre-addestramento originario del modello, DeiT-Small opera su un dominio di feature già consolidato. Questa stabilità consente al framework di comprimere il modello in modo più rapido. Al contrario, sul dataset CIFAR100, il modello si trova in uno situazione di \textit{transfer learning}, nel quale le feature originali sono state riadattate tramite un \textit{fine-tuning} iniziale su un task differente, portando ad una minore robustezza. Tale fenomeno non si registrava nel caso del ViT-Small, poiché era stato addestrato su un dataset di grandi dimensioni (ImageNet-21K) e quindi aveva già sviluppato delle rappresentazioni latenti più robuste e generali, che hanno permesso al framework di comprimere il modello in modo più rapido anche sul dataset CIFAR100.
+Il numero di nodi esplorati è risultato in questo caso inferiore in media a
+quanto osservato nei test con ViT-Small, ma comunque con picchi molto elevati,
+che superano nettamente i valori sul dataset CIFAR100. Questo dimostra e
+conferma quanto osservato nella sezione \ref{results}, ovvero che il
+\textit{framework} di compressione è in grado di adattarsi dinamicamente alla
+complessità del task sottoposto.\par
+La scelta di differenziare il numero di iterazioni, 15 per ImageNet-1K e 25 per
+CIFAR100, riflette la differente stabilità delle rappresentazioni latenti nei
+due domini. Nel caso di ImageNet-1K, essendo il dataset di pre-addestramento
+originario del modello, DeiT-Small opera su un dominio di feature già
+consolidato. Questa stabilità consente al framework di comprimere il modello in
+modo più rapido. Al contrario, sul dataset CIFAR100, il modello si trova in uno
+situazione di \textit{transfer learning}, nel quale le feature originali sono
+state riadattate tramite un \textit{fine-tuning} iniziale su un task
+differente, portando ad una minore robustezza. Tale fenomeno non si registrava
+nel caso del ViT-Small, poiché era stato addestrato su un dataset di grandi
+dimensioni (ImageNet-21K) e quindi aveva già sviluppato delle rappresentazioni
+latenti più robuste e generali, che hanno permesso al framework di comprimere
+il modello in modo più rapido anche sul dataset CIFAR100.
 
 \begin{figure}[H]
     \centering
@@ -463,10 +499,24 @@ La scelta di differenziare il numero di iterazioni, 15 per ImageNet-1K e 25 per 
     \label{figure:deit_s_imagenet_dims}
 \end{figure}
 In merito alla distribuzione dei tagli (Figura \ref{figure:deit_s_imagenet_dims}) è possibile riconfermare quanto osservato nei test precedenti, in quanto vengono osservati gli stessi pattern di compressione, sia per quanto riguarda il meccanismo di attenzione, sia per quanto riguarda i moduli MLP. \par
-Avendo osservato queste strutture su modelli e dataset differenti, è possibile confermare che siano presenti delle motivazioni intrinseche all'architettura dei modelli Transformer. In particolare, le osservazioni di Tian et al.
-\cite{tian2025distillationdynamicsunderstandingfeaturebased} sulla struttura ad "U" del meccanismo di attenzione, e le osservazioni di Geva et al. \cite{geva2021transformer} sulla marginalità dei moduli MLP nei layer più profondi, trovano conferma nei pattern di compressione individuati in questi test, suggerendo che queste siano delle proprietà intrinseche di questa architettura, e non semplicemente dei risultati casuali o dovuti alla natura dei dataset utilizzati. \par
-Queste osservazioni forniscono anche un importante spunto per futuri lavori, che potrebbero indagare più a fondo queste dinamiche interne ai modelli Transformer, in particolare valutando altri task sia visivi che testuali (ad esempio tramite modelli BERT \cite{devlin2019bertpretrainingdeepbidirectional}). In tal modo, sarebbe possibile verificare la presenza delle stesse strutture nei tagli, e di conseguenza sviluppare una nuova famiglia di modelli Transformer maggiormente efficienti, con architetture basate sulle osservazioni in oggetto.
-
+Avendo osservato queste strutture su modelli e dataset differenti, è possibile
+confermare che siano presenti delle motivazioni intrinseche all'architettura
+dei modelli Transformer. In particolare, le osservazioni di Tian et al.
+\cite{tian2025distillationdynamicsunderstandingfeaturebased} sulla struttura ad
+"U" del meccanismo di attenzione, e le osservazioni di Geva et al.
+\cite{geva2021transformer} sulla marginalità dei moduli MLP nei layer più
+profondi, trovano conferma nei pattern di compressione individuati in questi
+test, suggerendo che queste siano delle proprietà intrinseche di questa
+architettura, e non semplicemente dei risultati casuali o dovuti alla natura
+dei dataset utilizzati. \par
+Queste osservazioni forniscono anche un importante spunto per futuri lavori,
+che potrebbero indagare più a fondo queste dinamiche interne ai modelli
+Transformer, in particolare valutando altri task sia visivi che testuali (ad
+esempio tramite modelli BERT
+\cite{devlin2019bertpretrainingdeepbidirectional}). In tal modo, sarebbe
+possibile verificare la presenza delle stesse strutture nei tagli, e di
+conseguenza sviluppare una nuova famiglia di modelli Transformer maggiormente
+efficienti, con architetture basate sulle osservazioni in oggetto.
 
 \section{Ablazione}
 Al fine di verificare la bontà del metodo sono stati effettuati dei test per
@@ -476,7 +526,7 @@ I seguenti risultati sono stati ottenuti sul dataset CIFAR100 e sul modello
 ViT-Small, utilizzando la stessa configurazione riportata nella sezione
 \ref{section:test} e nella sezione \ref{section:impl}. I test sono stati
 eseguiti senza l'utilizzo della \textit{Knowledge Distillation} per isolare al
-meglio l'effetto delle singole componenti del framework. 
+meglio l'effetto delle singole componenti del framework.
 \subsection{Metrica di Importanza e Algoritmo di Ricerca}
 \begin{table}[H]
     \centering
@@ -488,7 +538,7 @@ meglio l'effetto delle singole componenti del framework.
         \textbf{Modello}              & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
         ViT-Small                     & 21.70 \hphantom{(-00.0\%)}                 & 90.42\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.5 \hphantom{(+00.00\%)}            & 112.5 \hphantom{(-00.00\%)}          \\
         \midrule
-        \textbf{ViT-S Pruned (No KD)} & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                               & 97.8 (-13.06\%)                           \\
+        \textbf{ViT-S Pruned (No KD)} & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                       & 97.8 (-13.06\%)                      \\
         \midrule
         \textbf{Ricerca Disattivata}  & 12.28 (-43.4\%)                            & 81.17\% (-9.25\%)                            & 2.64 (-42.66\%)                     & 1679.9 (+47.68\%)                       & 76.2 (-32.27\%)                      \\
         \midrule
@@ -534,7 +584,17 @@ processo di ricerca, che evita di selezionare quegli stati, la cui selezione
 casuale dei tagli, ha danneggiato gravemente il modello.
 
 \subsection{Il parametro $\lambda$ della funzione obiettivo}
-Considerando la funzione obiettivo definita nella Sezione \ref{section:search-form} è possibile notare la presenza di un parametro che bilancia il peso attribuito al fattore di compressione. Agendo su tale parametro è possibile modificare il comportamento dell'algoritmo di ricerca. In particolare all'aumentare del valore di $\lambda$ verranno considerati più facilmente stati la cui accuratezza è minore ma presentano una maggiore riduzione del numero di parametri. Per dimostrare il contributo di questo parametro sono stati eseguiti dei test sul modello ViT-Small, utilizzando il dataset CIFAR100 (la configurazione è la medesima rispetto ai test \ref{section:test}, senza l'ausilio della \textit{Knowledge Distillation}) i cui risultati sono mostrati in Tabella \ref{tab:risultati-lambda}. 
+Considerando la funzione obiettivo definita nella Sezione
+\ref{section:search-form} è possibile notare la presenza di un parametro che
+bilancia il peso attribuito al fattore di compressione. Agendo su tale
+parametro è possibile modificare il comportamento dell'algoritmo di ricerca. In
+particolare all'aumentare del valore di $\lambda$ verranno considerati più
+facilmente stati la cui accuratezza è minore ma presentano una maggiore
+riduzione del numero di parametri. Per dimostrare il contributo di questo
+parametro sono stati eseguiti dei test sul modello ViT-Small, utilizzando il
+dataset CIFAR100 (la configurazione è la medesima rispetto ai test
+\ref{section:test}, senza l'ausilio della \textit{Knowledge Distillation}) i
+cui risultati sono mostrati in Tabella \ref{tab:risultati-lambda}.
 
 \begin{table}[H]
     \centering
@@ -542,14 +602,14 @@ Considerando la funzione obiettivo definita nella Sezione \ref{section:search-fo
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{@{} l r r r r r @{}}
         \toprule
-        \textbf{Modello}              & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
-        ViT-Small                     & 21.70 \hphantom{(-00.0\%)}                 & 90.42\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.5 \hphantom{(+00.00\%)}            & 112.5 \hphantom{(-00.00\%)}          \\
+        \textbf{Modello}                    & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
+        ViT-Small                           & 21.70 \hphantom{(-00.0\%)}                 & 90.42\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.5 \hphantom{(+00.00\%)}            & 112.5 \hphantom{(-00.00\%)}          \\
         \midrule
-        \textbf{ViT-S Pruned $\lambda=0.5$}  & 18.89 (-13.0\%)                            & 89.84\% (-0.58\%)                            & 4.00 (-13.13\%)                     & 1256.4 (+10.45\%)                       & 101.9 (-9.42\%)                      \\
+        \textbf{ViT-S Pruned $\lambda=0.5$} & 18.89 (-13.0\%)                            & 89.84\% (-0.58\%)                            & 4.00 (-13.13\%)                     & 1256.4 (+10.45\%)                       & 101.9 (-9.42\%)                      \\
         \midrule
-        \textbf{ViT-S Pruned $\lambda=1.0$} & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                               & 97.8 (-13.06\%)                           \\
+        \textbf{ViT-S Pruned $\lambda=1.0$} & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                       & 97.8 (-13.06\%)                      \\
         \midrule
-        \textbf{ViT-S Pruned $\lambda=1.5$}  & 15.86 (-26.9\%)                            & 86.82\% (-3.60\%)                            & 3.43 (-25.47\%)                     & 1406.3 (+23.63\%)                       & 91.0 (-19.11\%)                     \\
+        \textbf{ViT-S Pruned $\lambda=1.5$} & 15.86 (-26.9\%)                            & 86.82\% (-3.60\%)                            & 3.43 (-25.47\%)                     & 1406.3 (+23.63\%)                       & 91.0 (-19.11\%)                      \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -557,34 +617,52 @@ Considerando la funzione obiettivo definita nella Sezione \ref{section:search-fo
     \label{tab:risultati-lambda}
 \end{table}
 
-Quanto osservato in Tabella \ref{tab:risultati-lambda} risulta in accordo con le aspettative. I tre valori testati producono modelli nettamente differenti:
+Quanto osservato in Tabella \ref{tab:risultati-lambda} risulta in accordo con
+le aspettative. I tre valori testati producono modelli nettamente differenti:
 \begin{itemize}
-    \item Utilizzando $\lambda=0.5$ l'algoritmo di ricerca preserva efficacemente l'accuratezza, ma questo porta ad una compressione ridotta;
-    \item Con $\lambda=1.0$ è possibile notare una situazione di equilibrio: il taglio di parametri è significativo, con una perdita di \textit{accuracy} maggiore ma tollerabile;
-    \item Infine, adottando $lambda=1.5$, si ottiene una compressione importante (oltre il 25\% dei parametri) ma con perdita di prestazioni molto più accentuata.
+    \item Utilizzando $\lambda=0.5$ l'algoritmo di ricerca preserva efficacemente
+          l'accuratezza, ma questo porta ad una compressione ridotta;
+    \item Con $\lambda=1.0$ è possibile notare una situazione di equilibrio: il taglio di
+          parametri è significativo, con una perdita di \textit{accuracy} maggiore ma
+          tollerabile;
+    \item Infine, adottando $lambda=1.5$, si ottiene una compressione importante (oltre
+          il 25\% dei parametri) ma con perdita di prestazioni molto più accentuata.
 \end{itemize}
 Dai risultati ottenuti, è possibile concludere che il parametro $\lambda$ può essere configurato sulla base degli obiettivi da raggiungere. Ad esempio, nel caso di un \textit{deploy} su dispositivi con capacità computazionali molto ridotte, è possibile incrementarlo al fine di ottenere un modello decisamente più compatto, accettando però un compromesso in termini di \textit{performance} predittive.
 
-
 \section{Tabella comparativa ImageNet-1K - DeiT-S}
+Al fine di confrontare i risultati del \textit{framework} proposto con gli
+approcci presenti in letteratura, è stato ulteriormente compresso il modello
+DeiT-Small mostrato nella Tabella \ref{tab:risultati-ImageNet-deit}, nello specifico la
+versione ottimizzata tramite \textit{Knowledge Distillation}. \par
+
+Al modello sono state applicate tre ulteriori iterazioni di compressione,
+mantenendo i medesimi dettagli implementativi del test originale ma
+introducendo due variazioni negli iperparametri: il valore di $\lambda$ è stato
+incrementato a $1.25$ e il numero di epoche di \textit{fine-tuning} per singola
+iterazione è stato fissato a $12$ (rispetto alle $10$ originarie). Questa
+configurazione si è resa necessaria per spingere l'architettura verso una
+maggiore compressione, rendendo il metodo direttamente confrontabile con i
+concorrenti e garantendo l'equità della comparazione.
+
 \begin{table}[H]
     \centering
     \footnotesize
     \setlength{\tabcolsep}{5pt} % Ottimizzato per 8 colonne complessive
     \begin{tabular}{l rr rr rr c c}
         \toprule
-        \textbf{Modello}  & \multicolumn{2}{c}{\textbf{Parametri (M)}} & \multicolumn{2}{c}{\textbf{Top-1 Acc.}} & \multicolumn{2}{c}{\textbf{GFLOPs}} & \textbf{Throughput} & \textbf{Latency} \\
+        \textbf{Modello}                                                 & \multicolumn{2}{c}{\textbf{Parametri (M)}} & \multicolumn{2}{c}{\textbf{Top-1 Acc.}} & \multicolumn{2}{c}{\textbf{GFLOPs}} & \textbf{Throughput} & \textbf{Latency}                                                                         \\
         \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-8} \cmidrule(lr){9-9}
-                          & Valore & $\Delta\%$ & Valore & $\Delta\%$ & Valore & $\Delta\%$ & $\Delta\%$ & $\Delta\%$ \\
+                                                                         & Valore ($\downarrow$)                      & $\Delta\%$                              & Valore ($\uparrow$)                 & $\Delta\%$          & Valore ($\downarrow$) & $\Delta\%$ & $\Delta\%$ ($\uparrow$) & $\Delta\%$ ($\downarrow$) \\
         \midrule
-        DEIT-S            & 22.00  & \text{---} & 79.80\% & \text{---} & 4.6  & \text{---} & \text{---} & \text{---} \\
+        DEIT-S                                                           & 22.00                                      & \text{---}                              & 79.80\%                             & \text{---}          & 4.6                   & \text{---} & \text{---}              & \text{---}                \\
         \midrule
-        \textbf{Ours}     & 15.40  & -30.0\%   & 79.26\% & -0.54\%    & 3.2  & -30.4\%   & +27.4\%    & -21.5\%    \\
-        \textbf{WDP}      & 15.00  & -31.8\%   & 78.55\% & -1.25\%    & 3.1  & -32.6\%   & +10.7\%    & -11.2\%    \\
-        \textbf{CAIT}     & 18.40  & -16.4\%   & 80.20\% & +0.40\%    & 2.1  & -54.4\%   & +90.0\%    & \text{N/A} \\
-        \textbf{S2ViTE}   & 14.60  & -33.6\%   & 79.22\% & -0.58\%    & \text{N/A} & -31.6\%   & \text{N/A} & -22.6\%    \\
-        \textbf{GOHSP}    & 14.40  & -35.0\%   & 79.98\% & +0.18\%    & \text{N/A} & -35.0\%   & \text{N/A} & -24.6\%    \\
-        \textbf{X-Pruner} & \text{N/A} & \text{N/A} & 78.93\% & -0.87\% & 2.4  & -47.9\%   & \text{N/A} & \text{N/A} \\
+        \textbf{GOHSP} \cite{yin2023gohspunifiedframeworkgraph}          & 14.40                                      & -35.0\%                                 & 79.98\%                             & +0.18\%             & \text{NA}             & -35.0\%    & \text{NA}               & -24.6\%                   \\
+        \textbf{S2ViTE} \cite{chen2021chasingsparsityvisiontransformers} & 14.60                                      & -33.6\%                                 & 79.22\%                             & -0.58\%             & \text{NA}             & -31.6\%    & \text{NA}               & -22.6\%                   \\
+        \textbf{WDP} \cite{yu2022width}                                  & 15.00                                      & -31.8\%                                 & 78.55\%                             & -1.25\%             & 3.1                   & -32.6\%    & +10.7\%                 & -11.2\%                   \\
+        \textbf{X-Pruner} \cite{li2022exploringplainvisiontransformer}   & \text{NA}                                  & \text{NA}                               & 78.93\%                             & -0.87\%             & 2.4                   & -47.9\%    & \text{NA}               & \text{NA}                 \\
+        \textbf{CAIT} \cite{wang2025caittriplewincompressionhigh}        & 18.40                                      & -16.4\%                                 & 80.20\%                             & +0.40\%             & 2.1                   & -54.4\%    & +90.0\%                 & \text{NA}                 \\
+        \textbf{Ours}                                                    & 15.40                                      & -30.0\%                                 & 79.26\%                             & -0.54\%             & 3.2                   & -30.4\%    & +27.4\%                 & -21.5\%                   \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -592,8 +670,36 @@ Dai risultati ottenuti, è possibile concludere che il parametro $\lambda$ può 
     \label{tab:comparativa_imagenet}
 \end{table}
 
+Come si evince dai dati riportati in Tabella \ref{tab:comparativa_imagenet}, il
+metodo proposto si colloca in una posizione competitiva rispetto allo
+stato dell'arte, mostrando un ottimo bilanciamento tra compressione e
+mantenimento delle prestazioni in accuratezza. \par
+Il modello ottenuto ha sorprendentemente raggiunto un livello di compressione
+maggiore (pari al 30\% dei parametri) ma aumentando il valore di
+\textit{accuracy}. A fronte di una riduzione netta del $30.0\%$ del volume dei
+parametri e del $30.4\%$ dei GFLOPs complessivi, il modello compresso dal framework proposto mostra un'accuratezza Top-1 del $79.26\%$ (a differenza di $79.15\%$ osservato nella Tabella \ref{tab:risultati-ImageNet-deit}). Questo valore ha subito un decremento di soli $0.54$ punti percentuali rispetto
+alla baseline ($79.80\%$).
+
+Questo risultato trova una spiegazione nell'aumento del
+numero di epoche di \textit{fine tuning} adottato nelle 3 iterazioni
+aggiuntive, cha hanno quindi consentito al modello di recuperare maggiormente
+le sue prestazioni originali. Si noti che, al prezzo di un maggiore tempo di
+esecuzione del processo di compressione, sarebbe possibile raggiungere
+risultati ancora superiori in termini di accuratezza, aumentando ulteriormente
+il numero di epoche. \par
+
+Il confronto analitico con gli altri approcci è stato effettuato considerando i risultati riportati dagli autori nei rispettivi articoli, limitando l'analisi a quei metodi che hanno adottato il modello DeiT-Small come base di partenza e ImageNet-1K come dataset di test, al fine di garantire un confronto equo e diretto. \par
+
+Analizzando le prestazioni del framework sviluppato rispetto ai metodi allo stato dell'arte, emergono risultati competitivi in diversi scenari. Confrontato con WDP \cite{yu2022width} e X-Pruner \cite{li2022exploringplainvisiontransformer}, il nostro approccio si dimostra superiore sul piano dell'accuratezza: a parità di compressione, WDP accusa un degrado importante della Top-1 Acc. ($-1.25\%$), mentre X-Pruner si arresta al $78.93\%$ (nonostante non sia stato reso noto il numero di parametri per quest'ultimo). Sul fronte dell'efficienza hardware, il nostro metodo surclassa nettamente WDP, garantendo un incremento del \textit{throughput} del $+27.4\%$ (contro $+10.7\%$) e una riduzione della latenza del $-21.5\%$ (contro $-11.2\%$). Il raffronto con S2ViTE \cite{chen2021chasingsparsityvisiontransformers} evidenzia invece prestazioni molto simili, caratterizzate da un'accuratezza equivalente a fronte di una compressione leggermente minore del nostro metodo, che porta S2ViTE a mantenere un marginale vantaggio sulla riduzione della latenza ($-22.6\%$ contro il nostro $-21.5\%$). Infine, approcci più recenti come GOHSP \cite{yin2023gohspunifiedframeworkgraph} e CAIT \cite{wang2025caittriplewincompressionhigh} si dimostrano superiori incrementando l'accuratezza rispetto alla baseline (rispettivamente del $+0.18\%$ e $+0.40\%$). CAIT, infatti, limita la riduzione dei parametri a un modesto $-16.4\%$, compensando con un notevole aumento del \textit{throughput} dovuto all'adozione di tecniche di \textit{token merging} da noi non adottate. GOHSP, d'altro canto, ottiene un miglioramento della latenza comparabile ma lievemente superiore al nostro ($-24.6\%$), risultato però giustificato da un livello di compressione più elevato ($-35.0\%$).
+
 \section{Deploy su mobile}
-Al fine di testare i benefici del framework di compressione proposto in uno scenario applicativo reale, è stato eseguito il \textit{deploy} locale su dispositivi mobili basati su sistema operativo Android. Si è scelto di adottare l'ecosistema \textbf{ONNX Runtime} per la gestione dell'esportazione dei modelli e l'esecuzione dell'inferenza \textit{on-device}, sfruttando l'elevata compatibilità del framework con i diversi acceleratori hardware presenti sul mercato.
+Al fine di testare i benefici del framework di compressione proposto in uno
+scenario applicativo reale, è stato eseguito il \textit{deploy} locale su
+dispositivi mobili basati su sistema operativo Android. Si è scelto di adottare
+l'ecosistema \textbf{ONNX Runtime} per la gestione dell'esportazione dei
+modelli e l'esecuzione dell'inferenza \textit{on-device}, sfruttando l'elevata
+compatibilità del framework con i diversi acceleratori hardware presenti sul
+mercato.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{images/deploy.png}
@@ -601,7 +707,20 @@ Al fine di testare i benefici del framework di compressione proposto in uno scen
     \label{figure:deploy}
 \end{figure}
 Il processo di \textit{deploy}, illustrato in Figura \ref{figure:deploy}, ha interessato sia il modello proposto (Tabella \ref{tab:comparativa_imagenet}) sia la controparte DeiT-S non compressa, utilizzate per confrontare le prestazioni in termini di latenza. I modelli sono stati inizialmente esportati nello standard ONNX, generando i rispettivi grafi computazionali, e successivamente convertiti ad una precisione di 16 bit dei parametri (\textit{Float16}). \par
-La riduzione della precisione (quantizzazione) dei pesi è una pratica consolidata nelle \textit{pipeline} di \textit{deploy} per dispositivi \textit{edge}, in quanto consente un importante risparmio di memoria e un incremento del \textit{throughput}. Per i modelli appartenenti alla famiglia dei Vision Transformer, tale scelta rappresenta un compromesso ottimale: come dimostrato da Liu et al. \cite{liu2021posttrainingquantizationvisiontransformer}, i modelli ViT sono notoriamente sensibili alle tecniche di quantizzazione \textit{post-training} tradizionali (come il passaggio a INT8), le quali introducono grossi cali (fino al 10\%) delle metriche di accuratezza in assenza di un successivo processo di \textit{fine-tuning}. Adottando invece una precisione a 16 bit, è possibile mantenere un'accuratezza invariata rispetto al modello originale, ma con un importante risparmio in termini di memoria e un incremento del \textit{throughput} durante l'inferenza. \par
+La riduzione della precisione (quantizzazione) dei pesi è una pratica
+consolidata nelle \textit{pipeline} di \textit{deploy} per dispositivi
+\textit{edge}, in quanto consente un importante risparmio di memoria e un
+incremento del \textit{throughput}. Per i modelli appartenenti alla famiglia
+dei Vision Transformer, tale scelta rappresenta un compromesso ottimale: come
+dimostrato da Liu et al.
+\cite{liu2021posttrainingquantizationvisiontransformer}, i modelli ViT sono
+notoriamente sensibili alle tecniche di quantizzazione \textit{post-training}
+tradizionali (come il passaggio a INT8), le quali introducono grossi cali (fino
+al 10\%) delle metriche di accuratezza in assenza di un successivo processo di
+\textit{fine-tuning}. Adottando invece una precisione a 16 bit, è possibile
+mantenere un'accuratezza invariata rispetto al modello originale, ma con un
+importante risparmio in termini di memoria e un incremento del
+\textit{throughput} durante l'inferenza. \par
 
 \begin{figure}[H]
     \centering
@@ -610,22 +729,46 @@ La riduzione della precisione (quantizzazione) dei pesi è una pratica consolida
     \label{figure:deploy_app}
 \end{figure}
 
-Una volta ottenuti i modelli esportati a 16 bit, questi sono stati integrati in un'applicazione Android nativa, sviluppata appositamente in linguaggio \textbf{Kotlin} per consentire l'esecuzione dell'inferenza \textit{on-device} e la misurazione della latenza. A tale scopo è stato utilizzato \textbf{ONNX Runtime Android} SDK, che si pone come intermediario tra i modelli esportati e le API di sistema per l'esecuzione dell'inferenza sui vari componenti hardware. \par
+Una volta ottenuti i modelli esportati a 16 bit, questi sono stati integrati in
+un'applicazione Android nativa, sviluppata appositamente in linguaggio
+\textbf{Kotlin} per consentire l'esecuzione dell'inferenza \textit{on-device} e
+la misurazione della latenza. A tale scopo è stato utilizzato \textbf{ONNX
+    Runtime Android} SDK, che si pone come intermediario tra i modelli esportati e
+le API di sistema per l'esecuzione dell'inferenza sui vari componenti hardware. \par
 
-Al fine di sfruttare l'accelerazione hardware dei dispositivo mobili moderni, sono state adottate le \textbf{Android Neural Networks API (NNAPI)}. Le NNAPI agiscono come uno strato di controllo che direziona le operazioni matematiche del Vision Transformer (come i prodotti tensoriali) verso gli acceleratori dedicati presenti sul system-on-chip (SoC) del dispositivo, quali la NPU (Neural Processing Unit) o la GPU, ove supportati. Qualora l'hardware del dispositivo non disponga di acceleratori compatibili con le operazioni a 16 bit, l'infrastruttura esegue un \textit{fallback} automatico sulla CPU. \par
+Al fine di sfruttare l'accelerazione hardware dei dispositivo mobili moderni,
+sono state adottate le \textbf{Android Neural Networks API (NNAPI)}. Le NNAPI
+agiscono come uno strato di controllo che direziona le operazioni matematiche
+del Vision Transformer (come i prodotti tensoriali) verso gli acceleratori
+dedicati presenti sul system-on-chip (SoC) del dispositivo, quali la NPU
+(Neural Processing Unit) o la GPU, ove supportati. Qualora l'hardware del
+dispositivo non disponga di acceleratori compatibili con le operazioni a 16
+bit, l'infrastruttura esegue un \textit{fallback} automatico sulla CPU. \par
 
 \begin{table}[H]
-\centering
-\begin{tabular}{lccc}
-\hline
-\textbf{Modello} & \textbf{Latenza Media (ms)} & \textbf{Std (ms)} & \textbf{Speedup (\%)} \\ \hline
-DeiT-S (Originale)    & 296,6 & 16,2 & Baseline \\
-DeiT-S (Compresso)    & 222,1 & 7,2  & +25,1\%  \\ \hline
-\end{tabular}
-\vspace{10pt}
-\caption{Analisi della latenza in fase di inferenza \textit{on-device}, sulla base di 12 test.}
-\label{tab:benchmark_mobile}
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        \textbf{Modello}   & \textbf{Latenza Media (ms)} & \textbf{Std (ms)} & \textbf{Speedup (\%)} \\ \hline
+        DeiT-S (Originale) & 296,6                       & 16,2              & Baseline              \\
+        DeiT-S (Compresso) & 222,1                       & 7,2               & +25,1\%               \\ \hline
+    \end{tabular}
+    \vspace{10pt}
+    \caption{Analisi della latenza in fase di inferenza \textit{on-device}, sulla base di 12 test.}
+    \label{tab:benchmark_mobile}
 \end{table}
 
-Come evidenziato dai dati statistici raccolti in Tabella \ref{tab:benchmark_mobile}, i tempi di inferenza presentano una variabilità importante. Tale fenomeno è comune nei sistemi operativi come Android, dove lo \textit{scheduler} alloca dinamicamente le risorse computazionali in base al carico istantaneo del sistema. L'analisi dei risultati mostra che il processo di compressione, eseguito dal \textit{framework} proposto, permette di ottenere uno \textit{speedup} medio del 25,1\%, riducendo la latenza in media da 296,6 ms a 222,1 ms. Oltre all'incremento prestazionale, si osserva una riduzione significativa della deviazione standard, che passa da 16,2 ms a 7,2 ms. Questo decremento evidenzia come l'ottimizzazione e il minor transito di dati in memoria rendano l'esecuzione del modello compresso significativamente più stabile e meno soggetta alle fluttuazioni di carico del sistema operativo rispetto alla controparte non compressa.
+Come evidenziato dai dati statistici raccolti in Tabella
+\ref{tab:benchmark_mobile}, i tempi di inferenza presentano una variabilità
+importante. Tale fenomeno è comune nei sistemi operativi come Android, dove lo
+\textit{scheduler} alloca dinamicamente le risorse computazionali in base al
+carico istantaneo del sistema. L'analisi dei risultati mostra che il processo
+di compressione, eseguito dal \textit{framework} proposto, permette di ottenere
+uno \textit{speedup} medio del 25,1\%, riducendo la latenza in media da 296,6
+ms a 222,1 ms. Oltre all'incremento prestazionale, si osserva una riduzione
+significativa della deviazione standard, che passa da 16,2 ms a 7,2 ms. Questo
+decremento evidenzia come l'ottimizzazione e il minor transito di dati in
+memoria rendano l'esecuzione del modello compresso significativamente più
+stabile e meno soggetta alle fluttuazioni di carico del sistema operativo
+rispetto alla controparte non compressa.
 
