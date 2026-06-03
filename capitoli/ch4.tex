@@ -115,9 +115,11 @@ assegnato un peso relativo pari a $0.9$, privilegiando così il trasferimento
 della conoscenza dal modello \textit{teacher} alla \textit{subnet} compressa. 
 
 \begin{equation}
-\label{eq:knowledge_distillation_loss}
-L_{\text{total}} = (1 - \alpha) \cdot L_{\text{CE}}(y, \text{sofmax}(z_s)) + \alpha \cdot \tau^2 \cdot L_{\text{KL}}(\text{softmax}(z_t / \tau), \text{softmax}(z_s / \tau))
+    \label{eq:knowledge_distillation_loss}
+    L_{\text{total}} = (1 - \alpha) L_{\text{CE}}(y, z_s) + \alpha \tau^2 L_{\text{KL}}\left( z_s^\tau, z_t^\tau \right),
 \end{equation}
+
+dove $z_s$ e $z_t$ denotano rispettivamente i logit in uscita dai modelli \textit{student} e \textit{teacher}. Il termine $L_{\text{CE}}$ rappresenta la \textit{Cross-Entropy} calcolata rispetto alle etichette reali $y$, mentre $L_{\text{KL}}$ indica la divergenza di Kullback-Leibler. I logit scalati dal parametro di temperatura $\tau$ sono definiti come $z^\tau = \text{softmax}(z / \tau)$, e $\alpha \in [0, 1]$ funge da coefficiente di bilanciamento tra le due componenti della funzione obiettivo. \par
 
 Nonostante Touvron et al.
 \cite{touvron2021trainingdataefficientimagetransformers} mostrano la
