@@ -65,7 +65,7 @@ Per i modelli DeiT invece, sono state adottate le modalità di \textit{data augm
 
 \section{Dettaglio implementativo}
 \label{section:impl}
-Di seguito i dettagli implementativi delle fasi di addestramento del framework, precedentemente e contestualmente alla compressione. Per la prima fase di \textit{Fine Tuning} dei modelli ViT, è stata adottata la seguente configurazione:
+Di seguito i dettagli implementativi delle fasi di addestramento del framework, precedentemente e contestualmente alla compressione. Tutti i test sono stati condotti su una GPU NVIDIA RTX 2070, per quanto riguarda invece i valori di \textit{throughput} e latenza, questi sono stati misurati su una GPU NVIDIA RTX 4080 mobile. Per la prima fase di \textit{Fine Tuning} dei modelli ViT, è stata adottata la seguente configurazione:
 \begin{itemize}
     \item \textbf{Ottimizzatore AdamW} con un fattore di \textbf{decadimento dei pesi} pari a \textbf{0.05} e con \textbf{learning rate discriminativi}: \textbf{$0.5 \times 10^{-5}$} per il \textit{backbone} del \textit{Transformer} e \textbf{$0.5 \times 10^{-4}$} per la testa di classificazione.
     \item \textbf{Scheduler} dei \textit{learning rate} di tipo \textbf{Cosine Annealing}.
