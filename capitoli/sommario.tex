@@ -1,6 +1,5 @@
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+L'evoluzione dei Vision Transformer (ViT) ha permesso l'evoluzione della visione artificiale moderna, ma la loro elevata complessità computazionale ostacola l'inferenza locale su dispositivi mobili ed edge, sollevando problematiche di privacy e latenza legate all'uso di servizi cloud. \par
+
+In questo lavoro si propone un framework automatico per la compressione strutturata di modelli ViT, modellando il pruning come un problema di ottimizzazione combinatoria multi-obiettivo risolto tramite un algoritmo Branch and Bound a profondità limitata. Per identificare i parametri ridondanti, viene formulata una metrica di importanza basata sulla matrice d'informazione di Fisher che approssima l'Hessiano della funzione di perdita. Questa metrica guida il taglio strutturato del modello, attraverso la selezione dei parametri meno rilevanti a fronte di azioni di pruning selezionate in fase di ottimizzazione. Il framework affronta la complessità combinatoria del problema sfruttando un set di ricerca limitato e dotato di tecniche di campionamento e augmentation volte a migliorare il processo di compressione, preservando le performance del modello. \par
+
+I test sperimentali su CIFAR-100 e ImageNet-1K con modelli ViT-Small e DeiT-Small dimostrano come sia possibile ottenere una riduzione che raggiunge il 30\% dei parametri a fronte di un calo di accuratezza inferiore all'1\%. Infine, il deploy su dispositivi mobili Android tramite ONNX Runtime e NNAPI evidenzia come i guadagni prestazionali siano misurabili e rilevanti, soprattutto in contesti caratterizzati da risorse limitate, validando l'efficacia pratica del metodo in scenari edge reali.
