@@ -623,14 +623,16 @@ cui risultati sono mostrati in Tabella \ref{tab:risultati-lambda}.
     \setlength{\tabcolsep}{4pt}
     \begin{tabular}{@{} l l l l l l @{}}
         \toprule
-        \textbf{Modello}                    & \multicolumn{1}{c}{\textbf{Parametri (M)}} & \multicolumn{1}{c}{\textbf{Top-1 Acc. (\%)}} & \multicolumn{1}{c}{\textbf{GFLOPs}} & \multicolumn{1}{c}{\textbf{Throughput}} & \multicolumn{1}{c}{\textbf{Latency}} \\ \midrule
+        \textbf{Model} & \textbf{Params} & \textbf{Top-1} & \textbf{FLOPs} & \textbf{Throughput} & \textbf{Latency} \\ 
+                       & \textbf{(M) $\downarrow$}    & \textbf{(\%) $\uparrow$}  & \textbf{(G) $\downarrow$}   & \textbf{($\text{imgs}/\text{s}$) $\uparrow$} & \textbf{($\Delta\%$) $\downarrow$} \\ 
+        \midrule
         ViT-Small                           & 21.70 \hphantom{(-00.0\%)}                 & 90.42\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.5 \hphantom{(+00.00\%)}            & 112.5 \hphantom{(-00.00\%)}          \\
         \midrule
-        \textbf{ViT-S Pruned $\lambda=0.5$} & 18.89 (-13.0\%)                            & 89.84\% (-0.58\%)                            & 4.00 (-13.13\%)                     & 1256.4 (+10.45\%)                       & 101.9 (-9.42\%)                      \\
+        \textbf{Pruned $\lambda=0.5$} & 18.89 (-13.0\%)                            & 89.84\% (-0.58\%)                            & 4.00 (-13.13\%)                     & 1256.4 (+10.45\%)                       & 101.9 (-9.42\%)                      \\
         \midrule
-        \textbf{ViT-S Pruned $\lambda=1.0$} & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                       & 97.8 (-13.06\%)                      \\
+        \textbf{Pruned $\lambda=1.0$} & 17.59 (-19.0\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.67\%)                     & 1308.6 (+15.04\%)                       & 97.8 (-13.06\%)                      \\
         \midrule
-        \textbf{ViT-S Pruned $\lambda=1.5$} & 15.86 (-26.9\%)                            & 86.82\% (-3.60\%)                            & 3.43 (-25.47\%)                     & 1406.3 (+23.63\%)                       & 91.0 (-19.11\%)                      \\
+        \textbf{Pruned $\lambda=1.5$} & 15.86 (-26.9\%)                            & 86.82\% (-3.60\%)                            & 3.43 (-25.47\%)                     & 1406.3 (+23.63\%)                       & 91.0 (-19.11\%)                      \\
         \bottomrule
     \end{tabular}
     \vspace{10pt}
@@ -650,6 +652,48 @@ le aspettative. I tre valori testati producono modelli nettamente differenti:
           il 25\% dei parametri) ma con perdita di prestazioni molto più accentuata.
 \end{itemize}
 Dai risultati ottenuti, è possibile concludere che il parametro $\lambda$ può essere configurato sulla base degli obiettivi da raggiungere. Ad esempio, nel caso di un \textit{deploy} su dispositivi con capacità computazionali molto ridotte, è possibile incrementarlo al fine di ottenere un modello decisamente più compatto, accettando però un compromesso in termini di \textit{performance} predittive.
+
+\subsection{Il fattore di tolleranza $\epsilon$ dell'algoritmo di ricerca}
+L'iperparametro $\epsilon$ regola il livello di esplorazione dell'algoritmo di ricerca. Come mostrato nella Tabella~\ref{tab:risultati-eps}, un valore più elevato di $\epsilon$ consente all'algoritmo di tollerare cali di accuratezza superiori e di eseguire un'esplorazione maggiormente ampia, dinamica che conduce tipicamente alla scoperta di nodi qualitativamente migliori. Al contrario, un valore inferiore limita il processo a nodi più conservativi e caratterizzati da un'elevata accuratezza, riducendo tuttavia le capacità complessive di compressione. L'individuazione della soglia ottimale risulta pertanto essenziale per bilanciare il trade-off tra la dimensione finale del modello e l'accuratezza preservata.
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \begin{tabular}{@{} l l l l l l @{}}
+        \toprule
+        \textbf{Model} & \textbf{Params} & \textbf{Top-1} & \textbf{FLOPs} & \textbf{Throughput} & \textbf{Latency} \\ 
+                       & \textbf{(M) $\downarrow$}    & \textbf{(\%) $\uparrow$}  & \textbf{(G) $\downarrow$}   & \textbf{($\text{imgs}/\text{s}$) $\uparrow$} & \textbf{($\Delta\%$) $\downarrow$} \\ 
+        \midrule
+        ViT-Small                           & 21.70 \hphantom{(-00.00\%)}                 & 90.42\% \hphantom{(-0.00\%)}                 & 4.60 \hphantom{(-00.00\%)}          & 1137.5 \hphantom{(+00.00\%)}            & 112.5 \hphantom{(-00.00\%)}          \\
+        \midrule
+        \textbf{Pruned $\epsilon = 0.0$}    & 18.71 (-13.78\%)                            & 89.60\% (-0.82\%)                            & 3.96 (-13.91\%)                     & 1189.4 (+4.56\%)                        & 107.6 (-4.36\%)                      \\
+        \midrule
+        \textbf{Pruned $\epsilon = 0.005$}  & 17.59 (-18.94\%)                            & 88.92\% (-1.50\%)                            & 3.74 (-18.70\%)                     & 1308.6 (+15.04\%)                       & 97.8 (-13.07\%)                      \\
+        \midrule
+        \textbf{Pruned $\epsilon = 0.01$}   & 17.93 (-17.37\%)                            & 89.26\% (-1.16\%)                            & 3.80 (-17.39\%)                     & 1255.1 (+10.34\%)                       & 102.0 (-9.33\%)                      \\
+        \bottomrule
+    \end{tabular}
+    \vspace{10pt}
+    \caption{Nella tabella sono presentati i risultati dell'applicazione del \textit{framework} di compressione al variare del valore di $\epsilon$, ovvero la soglia di tolleranza che regola il livello di esplorazione dell'algoritmo di ricerca, sul dataset \textit{CIFAR100} e sul modello \textit{ViT-Small}.}
+    \label{tab:risultati-eps}
+\end{table}
+
+Come è possibile notare dalla Tabella \ref{tab:risultati-eps}, escludendo del tutto il fattore di tolleranza, l'esplorazione risulta fortemente limitata. Questo porta di conseguenza ad una compressione molto ridotta e a vantaggi computazionali quasi irrilevanti. Con i due valori successivi di $\epsilon=0.005$ e $\epsilon=0.01$ la compressione diventa notevolmente maggiore, così come le metriche legate alla velocità del modello. In particolare, nel secondo caso, a causa di una maggiore esplorazione, è stato possibile mantenere un valore superiore di accuratezza rispetto al primo valore di $\epsilon$. 
+
+In Figura \ref{fig:nodes_eps_ablation} è possibile osservare l'andamento dei nodi esplorati per ogni iterazione, durante i tre esperimenti di ablazione sul valore di $\epsilon$. Come è possibile osservare, il valore medio dei nodi esplorati cresce velocemente all'aumentare di $\epsilon$, con un andamento quasi esponenziale. 
+
+Notare che, nel caso in cui venisse aumentato ulteriormente il valore di $\epsilon$, si rischia facilmente di assistere ad un esplosione del numero di nodi esplorati, con un conseguente costo esponenziale eccessivo. Tramite una verifica sperimentale è stato appurato che la qualità delle reti individuate a seguito della ricerca non aumenta particolarmente rispetto a quanto osservato in Tabella \ref{tab:risultati-eps} con il valore di $\epsilon=0.01$. Questo suggerisce che il bilanciamento \textit{exploration-exploitation} non sia più conveniente in questa situazione limite.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/Results/Test_eps_0_middle.png}
+    \includegraphics[width=0.8\linewidth]{images/Results/Test_eps_0_005_middle.png}
+    \includegraphics[width=0.8\linewidth]{images/Results/Test_eps_0_01_middle.png}
+\caption{Grafico del numero di nodi esplorati per iterazione nel test di ablazione di $\epsilon$. Il grafico in alto mostra $\epsilon=0.0$ (con una media di 27 nodi), quello al centro analizza $\epsilon=0.005$ (con una media di 45 nodi) e, infine, quello in basso illustra $\epsilon=0.01$ con una media superiore a 100 nodi.}
+    \label{fig:nodes_eps_ablation}
+\end{figure}
+
 
 \section{Comparazione con lo stato dell'arte su ImageNet-1K}
 Al fine di confrontare i risultati del \textit{framework} proposto con gli
@@ -712,6 +756,11 @@ il numero di epoche. \par
 Il confronto analitico con gli altri approcci è stato effettuato considerando i risultati riportati dagli autori nei rispettivi articoli, limitando l'analisi a quei metodi che hanno adottato il modello DeiT-Small come base di partenza e ImageNet-1K come dataset di test, al fine di garantire un confronto equo e diretto. \par
 
 Analizzando le prestazioni del framework sviluppato rispetto ai metodi allo stato dell'arte, emergono risultati competitivi in diversi scenari. Confrontato con WDP \cite{yu2022width} e X-Pruner \cite{yu2023xprunerexplainablepruningvision}, il nostro approccio si dimostra superiore sul piano dell'accuratezza: a parità di compressione, WDP accusa un degrado importante della Top-1 Acc. ($-1.25\%$), mentre X-Pruner si arresta al $78.93\%$ (nonostante non sia stato reso noto il numero di parametri per quest'ultimo). Sul fronte dell'efficienza hardware, il nostro metodo surclassa nettamente WDP, garantendo un incremento del \textit{throughput} del $+27.4\%$ (contro $+10.7\%$) e una riduzione della latenza del $-21.5\%$ (contro $-11.2\%$). Il raffronto con S2ViTE \cite{chen2021chasingsparsityvisiontransformers} evidenzia invece prestazioni molto simili, caratterizzate da un'accuratezza equivalente a fronte di una compressione leggermente minore del nostro metodo, che porta S2ViTE a mantenere un marginale vantaggio sulla riduzione della latenza ($-22.6\%$ contro il nostro $-21.5\%$). Infine, approcci più recenti come GOHSP \cite{yin2023gohspunifiedframeworkgraph} e CAIT \cite{wang2025caittriplewincompressionhigh} si dimostrano superiori incrementando l'accuratezza rispetto alla baseline (rispettivamente del $+0.18\%$ e $+0.40\%$). CAIT, infatti, limita la riduzione dei parametri a un modesto $-16.4\%$, compensando con un notevole aumento del \textit{throughput} dovuto all'adozione di tecniche di \textit{token merging} da noi non adottate. GOHSP, d'altro canto, ottiene un miglioramento della latenza comparabile ma lievemente superiore al nostro ($-24.6\%$), risultato però giustificato da un livello di compressione più elevato ($-35.0\%$).
+
+Successivamente, al fine di validare ulteriormente la bontà del framework proposto, è stato effettuato un test sul modello DeiT-Base. In maniera similare a quanto visto con i modelli precedenti sono state adottate 15 iterazioni di compressione, ma con un valore di $\lambda$ pari a 0.5, dovuto all'uso di un modello molto più ricco di parametri (86 milioni) rispetto alle controparti Small. 
+Adottando valori superiori di $\lambda$ si rischia di eseguire dei tagli eccessivi in una singola iterazione, che non sarebbero poi facilmente recuperabili dalla fase di \textit{recovery fine-tuning}. 
+
+
 
 \section{Deploy su mobile}
 Al fine di testare i benefici del framework di compressione proposto in uno
